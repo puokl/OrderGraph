@@ -1,13 +1,13 @@
-import { Box, Card, Container, Button, styled } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from 'src/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher';
-import Footer from 'src/components/Footer';
+import { Box, Card, Container, Button, styled } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "src/layouts/AccentSidebarLayout/Header/Buttons/LanguageSwitcher";
+import Footer from "src/components/Footer";
 
-import Logo from 'src/components/LogoSign';
-import Hero from './Hero';
-import Highlights from './Highlights';
+import Logo from "src/components/LogoSign";
+import Hero from "./Hero";
+import Highlights from "./Highlights";
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -51,13 +51,13 @@ function Overview() {
                 <LanguageSwitcher />
                 <Button
                   component={RouterLink}
-                  to="/extended-sidebar/dashboards"
+                  to="/accent-sidebar/"
                   variant="contained"
                   sx={{
-                    ml: 2
+                    ml: 2,
                   }}
                 >
-                  {t('Live Preview')}
+                  {t("Live Preview")}
                 </Button>
               </Box>
             </Box>

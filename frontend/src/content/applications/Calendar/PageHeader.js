@@ -1,7 +1,7 @@
-import { Typography, Button, Grid } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import EventTwoToneIcon from '@mui/icons-material/EventTwoTone';
-import PropTypes from 'prop-types';
+import { Typography, Button, Grid } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import EventTwoToneIcon from "@mui/icons-material/EventTwoTone";
+import PropTypes from "prop-types";
 
 const PageHeader = ({ handleCreateEvent }) => {
   const { t } = useTranslation();
@@ -10,23 +10,23 @@ const PageHeader = ({ handleCreateEvent }) => {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          {t('Events')}
+          {t("Let's get things done!")}
         </Typography>
         <Typography variant="subtitle2">
-          {t('Check out the latest events and meetings in your calendar')}
+          {t("Get an overview of your production line.")}
         </Typography>
       </Grid>
       <Grid item>
         <Button
           sx={{
-            mt: { xs: 2, md: 0 }
+            mt: { xs: 2, md: 0 },
           }}
           onClick={handleCreateEvent}
           variant="contained"
           color="primary"
           startIcon={<EventTwoToneIcon fontSize="small" />}
         >
-          {t('Add meeting')}
+          {t("Create Order")}
         </Button>
       </Grid>
     </Grid>
@@ -34,11 +34,11 @@ const PageHeader = ({ handleCreateEvent }) => {
 };
 
 PageHeader.propTypes = {
-  handleCreateEvent: PropTypes.func
+  handleCreateEvent: PropTypes.func,
 };
 
 PageHeader.defaultProps = {
-  handleCreateEvent: () => {}
+  handleCreateEvent: () => {},
 };
 
 export default PageHeader;

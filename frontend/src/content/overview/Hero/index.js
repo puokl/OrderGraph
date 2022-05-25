@@ -4,10 +4,10 @@ import {
   Container,
   Grid,
   Typography,
-  styled
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
+  styled,
+} from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { Link as RouterLink } from "react-router-dom";
 
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
@@ -131,51 +131,51 @@ function Hero() {
         container
       >
         <Grid item md={6} pr={{ xs: 0, md: 3 }}>
-          <LabelWrapper color="success">{`${t('Version')} 3.0`}</LabelWrapper>
+          <LabelWrapper color="success">{`${t("Version")} 3.0`}</LabelWrapper>
           <TypographyH1
             sx={{
-              mb: 2
+              mb: 2,
             }}
             variant="h1"
           >
-            {t('Tokyo React Javascript Admin Dashboard')}
+            {t("Tokyo React Javascript Admin Dashboard")}
           </TypographyH1>
           <TypographyH2
             sx={{
               lineHeight: 1.5,
-              pb: 4
+              pb: 4,
             }}
             variant="h4"
             color="text.secondary"
             fontWeight="normal"
           >
             {t(
-              'High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes'
+              "High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes"
             )}
           </TypographyH2>
           <Button
             component={RouterLink}
-            to="/extended-sidebar/dashboards"
+            to="/accent-sidebar/dashboards"
             size="large"
             variant="contained"
           >
-            {t('Browse Live Preview')}
+            {t("Browse Live Preview")}
           </Button>
           <Button
             sx={{
-              ml: 2
+              ml: 2,
             }}
             component="a"
             href="#key-features"
             size="large"
             variant="text"
           >
-            {t('Key Features')}
+            {t("Key Features")}
           </Button>
           <ListItemWrapper
             sx={{
               mt: 5,
-              mb: 2
+              mb: 2,
             }}
           >
             <MuiAvatar>
@@ -187,7 +187,7 @@ function Hero() {
             <Typography variant="h6">
               <b>Powered by MUI (Material-UI)</b>
               <Typography component="span" variant="subtitle2">
-                {' '}
+                {" "}
                 - A simple and customizable component library to build faster,
                 beautiful, andaccessible React apps.
               </Typography>
@@ -200,7 +200,7 @@ function Hero() {
             <Typography variant="h6">
               <b>Built with Javascript</b>
               <Typography component="span" variant="subtitle2">
-                {' '}
+                {" "}
                 - Tokyo React Javascript Admin Dashboard features a modern
                 technology stack and is built with React + Javascript.
               </Typography>
@@ -209,7 +209,7 @@ function Hero() {
         </Grid>
         <Grid item md={6}>
           <BoxContent>
-            <RouterLink to="/extended-sidebar/dashboards">
+            <RouterLink to="/accent-sidebar/dashboards">
               <ImgWrapper>
                 <img
                   alt="Tokyo"
@@ -219,7 +219,7 @@ function Hero() {
             </RouterLink>
             <BoxAccent
               sx={{
-                display: { xs: 'none', md: 'block' }
+                display: { xs: "none", md: "block" },
               }}
             />
           </BoxContent>

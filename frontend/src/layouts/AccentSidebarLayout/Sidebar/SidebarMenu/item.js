@@ -1,9 +1,9 @@
-import { useState, useContext } from 'react';
-import { NavLink as RouterLink } from 'react-router-dom';
-import clsx from 'clsx';
-import { SidebarContext } from 'src/contexts/SidebarContext';
+import { useState, useContext } from "react";
+import { NavLink as RouterLink } from "react-router-dom";
+import clsx from "clsx";
+import { SidebarContext } from "src/contexts/SidebarContext";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {
   Button,
   Tooltip,
@@ -11,11 +11,11 @@ import {
   Collapse,
   ListItem,
   styled,
-  tooltipClasses
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import ExpandLessTwoToneIcon from '@mui/icons-material/ExpandLessTwoTone';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+  tooltipClasses,
+} from "@mui/material";
+import { useTranslation } from "react-i18next";
+import ExpandLessTwoToneIcon from "@mui/icons-material/ExpandLessTwoTone";
+import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 
 const TooltipWrapper = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -24,14 +24,14 @@ const TooltipWrapper = styled(({ className, ...props }) => (
     backgroundColor: theme.colors.alpha.black[100],
     color: theme.palette.getContrastText(theme.colors.alpha.black[100]),
     fontSize: theme.typography.pxToRem(12),
-    fontWeight: 'bold',
+    fontWeight: "bold",
     borderRadius: theme.general.borderRadiusSm,
     boxShadow:
-      '0 .2rem .8rem rgba(7,9,25,.18), 0 .08rem .15rem rgba(7,9,25,.15)'
+      "0 .2rem .8rem rgba(7,9,25,.18), 0 .08rem .15rem rgba(7,9,25,.15)",
   },
   [`& .${tooltipClasses.arrow}`]: {
-    color: theme.colors.alpha.black[100]
-  }
+    color: theme.colors.alpha.black[100],
+  },
 }));
 
 const SidebarMenuItem = ({
@@ -57,22 +57,23 @@ const SidebarMenuItem = ({
     return (
       <ListItem component="div" className="Mui-children" key={name} {...rest}>
         <Button
-          className={clsx({ 'Mui-active': menuToggle })}
+          className={clsx({ "Mui-active": menuToggle })}
           startIcon={Icon && <Icon />}
           endIcon={
             menuToggle ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />
           }
           onClick={toggleMenu}
+          style={{ fontSize: "1.2rem" }}
         >
           {badgeTooltip ? (
             <TooltipWrapper title={badgeTooltip} arrow placement="right">
-              {badge === '' ? (
+              {badge === "" ? (
                 <Badge color="primary" variant="dot" />
               ) : (
                 <Badge badgeContent={badge} />
               )}
             </TooltipWrapper>
-          ) : badge === '' ? (
+          ) : badge === "" ? (
             <Badge color="primary" variant="dot" />
           ) : (
             <Badge badgeContent={badge} />
@@ -93,17 +94,18 @@ const SidebarMenuItem = ({
         onClick={closeSidebar}
         to={link}
         startIcon={Icon && <Icon />}
+        style={{ fontSize: "1.2rem" }}
       >
         {t(name)}
         {badgeTooltip ? (
           <TooltipWrapper title={badgeTooltip} arrow placement="right">
-            {badge === '' ? (
+            {badge === "" ? (
               <Badge color="primary" variant="dot" />
             ) : (
               <Badge badgeContent={badge} />
             )}
           </TooltipWrapper>
-        ) : badge === '' ? (
+        ) : badge === "" ? (
           <Badge color="primary" variant="dot" />
         ) : (
           <Badge badgeContent={badge} />
@@ -121,12 +123,12 @@ SidebarMenuItem.propTypes = {
   badge: PropTypes.string,
   badgeTooltip: PropTypes.string,
   open: PropTypes.bool,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
 };
 
 SidebarMenuItem.defaultProps = {
   open: false,
-  active: false
+  active: false,
 };
 
 export default SidebarMenuItem;

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 import {
   Box,
   Drawer,
@@ -6,17 +6,15 @@ import {
   Card,
   Container,
   styled,
-  useTheme
-} from '@mui/material';
-import { Outlet } from 'react-router-dom';
+  useTheme,
+} from "@mui/material";
+import { Outlet } from "react-router-dom";
 
-import Scrollbar from 'src/components/Scrollbar';
-import { SidebarContext } from 'src/contexts/SidebarContext';
-import SidebarMenu from 'src/layouts/AccentHeaderLayout/Sidebar/SidebarMenu';
-import SidebarTopSection from 'src/layouts/AccentHeaderLayout/Sidebar/SidebarTopSection';
-import ThemeSettings from 'src/components/ThemeSettings';
-import Logo from 'src/components/LogoSign';
-import TopBar from './TopBar';
+import Scrollbar from "src/components/Scrollbar";
+import { SidebarContext } from "src/contexts/SidebarContext";
+import ThemeSettings from "src/components/ThemeSettings";
+import Logo from "src/components/LogoSign";
+import TopBar from "./TopBar";
 
 const MainWrapper = styled(Box)(
   ({ theme }) => `
@@ -99,9 +97,9 @@ const TopNavigationLayout = () => {
           </Box>
           <Drawer
             sx={{
-              display: { lg: 'none', xs: 'inline-block' }
+              display: { lg: "none", xs: "inline-block" },
             }}
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            anchor={theme.direction === "rtl" ? "right" : "left"}
             open={sidebarToggle}
             onClose={closeSidebar}
             variant="temporary"
@@ -115,7 +113,7 @@ const TopNavigationLayout = () => {
                       width: 52,
                       ml: 1,
                       mt: 1,
-                      mb: 3
+                      mb: 3,
                     }}
                   >
                     <Logo />

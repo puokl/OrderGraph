@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef, useState } from "react";
 import {
   Popover,
   styled,
@@ -9,15 +9,15 @@ import {
   Stack,
   Divider,
   Box,
-  Tooltip
-} from '@mui/material';
-import { ThemeContext } from 'src/theme/ThemeProvider';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import Fab from '@mui/material/Fab';
-import { useTranslation } from 'react-i18next';
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone';
-import { NavLink } from 'react-router-dom';
+  Tooltip,
+} from "@mui/material";
+import { ThemeContext } from "src/theme/ThemeProvider";
+import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
+import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
+import Fab from "@mui/material/Fab";
+import { useTranslation } from "react-i18next";
+import UnfoldMoreTwoToneIcon from "@mui/icons-material/UnfoldMoreTwoTone";
+import { NavLink } from "react-router-dom";
 
 const ThemeSettingsButton = styled(Box)(
   ({ theme }) => `
@@ -36,12 +36,12 @@ const ThemeSettingsButton = styled(Box)(
               top: 13px;
               background: ${theme.colors.primary.main};
               animation: ripple 1s infinite;
-              transition: ${theme.transitions.create(['all'])};
+              transition: ${theme.transitions.create(["all"])};
           }
 
           .MuiSvgIcon-root {
             animation: pulse 1s infinite;
-            transition: ${theme.transitions.create(['all'])};
+            transition: ${theme.transitions.create(["all"])};
           }
   `
 );
@@ -211,7 +211,7 @@ const ThemeSettings = () => {
   };
 
   const setThemeName = useContext(ThemeContext);
-  const curThemeName = localStorage.getItem('appTheme') || 'PureLightTheme';
+  const curThemeName = localStorage.getItem("appTheme") || "PureLightTheme";
 
   const [theme, setTheme] = useState(curThemeName);
 
@@ -232,7 +232,7 @@ const ThemeSettings = () => {
   return (
     <>
       <ThemeSettingsButton>
-        <Tooltip arrow title={t('Theme Settings')}>
+        <Tooltip arrow title={t("Theme Settings")}>
           <Fab ref={ref} onClick={handleOpen} color="primary" aria-label="add">
             <SettingsTwoToneIcon />
           </Fab>
@@ -243,21 +243,21 @@ const ThemeSettings = () => {
           onClose={handleClose}
           open={isOpen}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left'
+            vertical: "bottom",
+            horizontal: "left",
           }}
           transformOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
+            vertical: "bottom",
+            horizontal: "right",
           }}
         >
           <Box p={2}>
             <Typography
               sx={{
                 mb: 2,
-                textAlign: 'center',
-                fontWeight: 'bold',
-                textTransform: 'uppercase'
+                textAlign: "center",
+                fontWeight: "bold",
+                textTransform: "uppercase",
               }}
               variant="body1"
             >
@@ -270,7 +270,7 @@ const ThemeSettings = () => {
               endIcon={<UnfoldMoreTwoToneIcon />}
               color="primary"
               aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
+              aria-expanded={open ? "true" : undefined}
               onClick={openMenu}
             >
               Choose layout
@@ -281,26 +281,17 @@ const ThemeSettings = () => {
               open={open}
               onClose={closeMenu}
               anchorOrigin={{
-                vertical: 'center',
-                horizontal: 'center'
+                vertical: "center",
+                horizontal: "center",
               }}
               transformOrigin={{
-                vertical: 'center',
-                horizontal: 'center'
+                vertical: "center",
+                horizontal: "center",
               }}
             >
               <MenuItem
                 sx={{
-                  fontWeight: 'bold'
-                }}
-                component={NavLink}
-                to="/extended-sidebar/dashboards"
-              >
-                Extended Sidebar
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontWeight: 'bold'
+                  fontWeight: "bold",
                 }}
                 component={NavLink}
                 to="/accent-header/dashboards"
@@ -309,7 +300,7 @@ const ThemeSettings = () => {
               </MenuItem>
               <MenuItem
                 sx={{
-                  fontWeight: 'bold'
+                  fontWeight: "bold",
                 }}
                 component={NavLink}
                 to="/accent-sidebar/dashboards"
@@ -318,34 +309,7 @@ const ThemeSettings = () => {
               </MenuItem>
               <MenuItem
                 sx={{
-                  fontWeight: 'bold'
-                }}
-                component={NavLink}
-                to="/boxed-sidebar/dashboards"
-              >
-                Boxed Sidebar
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontWeight: 'bold'
-                }}
-                component={NavLink}
-                to="/collapsed-sidebar/dashboards"
-              >
-                Collapsed Sidebar
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontWeight: 'bold'
-                }}
-                component={NavLink}
-                to="/bottom-navigation/dashboards"
-              >
-                Bottom Navigation
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontWeight: 'bold'
+                  fontWeight: "bold",
                 }}
                 component={NavLink}
                 to="/top-navigation/dashboards"
@@ -364,9 +328,9 @@ const ThemeSettings = () => {
                 sx={{
                   mt: 1,
                   mb: 3,
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase'
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
                 variant="body1"
               >
@@ -375,12 +339,12 @@ const ThemeSettings = () => {
               <Stack alignItems="center" spacing={2}>
                 <Tooltip placement="left" title="Pure Light" arrow>
                   <ButtonWrapper
-                    className={theme === 'PureLightTheme' ? 'active' : ''}
+                    className={theme === "PureLightTheme" ? "active" : ""}
                     onClick={() => {
-                      changeTheme('PureLightTheme');
+                      changeTheme("PureLightTheme");
                     }}
                   >
-                    {theme === 'PureLightTheme' && (
+                    {theme === "PureLightTheme" && (
                       <CheckSelected>
                         <CheckTwoToneIcon />
                       </CheckSelected>
@@ -393,12 +357,12 @@ const ThemeSettings = () => {
                 </Tooltip>
                 <Tooltip placement="left" title="Grey Goose" arrow>
                   <ButtonWrapper
-                    className={theme === 'GreyGooseTheme' ? 'active' : ''}
+                    className={theme === "GreyGooseTheme" ? "active" : ""}
                     onClick={() => {
-                      changeTheme('GreyGooseTheme');
+                      changeTheme("GreyGooseTheme");
                     }}
                   >
-                    {theme === 'GreyGooseTheme' && (
+                    {theme === "GreyGooseTheme" && (
                       <CheckSelected>
                         <CheckTwoToneIcon />
                       </CheckSelected>
@@ -411,12 +375,12 @@ const ThemeSettings = () => {
                 </Tooltip>
                 <Tooltip placement="left" title="Purple Flow" arrow>
                   <ButtonWrapper
-                    className={theme === 'PurpleFlowTheme' ? 'active' : ''}
+                    className={theme === "PurpleFlowTheme" ? "active" : ""}
                     onClick={() => {
-                      changeTheme('PurpleFlowTheme');
+                      changeTheme("PurpleFlowTheme");
                     }}
                   >
-                    {theme === 'PurpleFlowTheme' && (
+                    {theme === "PurpleFlowTheme" && (
                       <CheckSelected>
                         <CheckTwoToneIcon />
                       </CheckSelected>
@@ -434,9 +398,9 @@ const ThemeSettings = () => {
                 sx={{
                   mt: 1,
                   mb: 3,
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase'
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
                 variant="body1"
               >
@@ -445,12 +409,12 @@ const ThemeSettings = () => {
               <Stack alignItems="center" spacing={2}>
                 <Tooltip placement="left" title="Nebula Fighter" arrow>
                   <ButtonWrapper
-                    className={theme === 'NebulaFighterTheme' ? 'active' : ''}
+                    className={theme === "NebulaFighterTheme" ? "active" : ""}
                     onClick={() => {
-                      changeTheme('NebulaFighterTheme');
+                      changeTheme("NebulaFighterTheme");
                     }}
                   >
-                    {theme === 'NebulaFighterTheme' && (
+                    {theme === "NebulaFighterTheme" && (
                       <CheckSelected>
                         <CheckTwoToneIcon />
                       </CheckSelected>
@@ -463,12 +427,12 @@ const ThemeSettings = () => {
                 </Tooltip>
                 <Tooltip placement="left" title="Green Fields" arrow>
                   <ButtonWrapper
-                    className={theme === 'GreenFieldsTheme' ? 'active' : ''}
+                    className={theme === "GreenFieldsTheme" ? "active" : ""}
                     onClick={() => {
-                      changeTheme('GreenFieldsTheme');
+                      changeTheme("GreenFieldsTheme");
                     }}
                   >
-                    {theme === 'GreenFieldsTheme' && (
+                    {theme === "GreenFieldsTheme" && (
                       <CheckSelected>
                         <CheckTwoToneIcon />
                       </CheckSelected>
@@ -481,12 +445,12 @@ const ThemeSettings = () => {
                 </Tooltip>
                 <Tooltip placement="left" title="Dark Spaces" arrow>
                   <ButtonWrapper
-                    className={theme === 'DarkSpacesTheme' ? 'active' : ''}
+                    className={theme === "DarkSpacesTheme" ? "active" : ""}
                     onClick={() => {
-                      changeTheme('DarkSpacesTheme');
+                      changeTheme("DarkSpacesTheme");
                     }}
                   >
-                    {theme === 'DarkSpacesTheme' && (
+                    {theme === "DarkSpacesTheme" && (
                       <CheckSelected>
                         <CheckTwoToneIcon />
                       </CheckSelected>

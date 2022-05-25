@@ -1,12 +1,12 @@
-import { useContext } from 'react';
-import Scrollbar from 'src/components/Scrollbar';
-import { SidebarContext } from 'src/contexts/SidebarContext';
+import { useContext } from "react";
+import Scrollbar from "src/components/Scrollbar";
+import { SidebarContext } from "src/contexts/SidebarContext";
 
-import { Box, Drawer, styled, useTheme } from '@mui/material';
+import { Box, Drawer, styled, useTheme, Divider } from "@mui/material";
 
-import Logo from 'src/components/LogoSign';
-import SidebarMenu from './SidebarMenu';
-import SidebarTopSection from './SidebarTopSection';
+import Logo from "src/components/LogoSign";
+import SidebarMenu from "./SidebarMenu";
+import SidebarTopSection from "./SidebarTopSection";
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -37,12 +37,12 @@ function Sidebar() {
       <SidebarWrapper
         sx={{
           display: {
-            xs: 'none',
-            lg: 'inline-block'
+            xs: "none",
+            lg: "inline-block",
           },
-          position: 'fixed',
+          position: "fixed",
           left: 0,
-          top: 0
+          top: 0,
         }}
       >
         <Scrollbar>
@@ -51,21 +51,31 @@ function Sidebar() {
               sx={{
                 width: 52,
                 mt: 2,
-                mb: 3
+                mb: 3,
               }}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              margin="auto"
             >
               <Logo />
             </Box>
-            <SidebarTopSection />
           </TopSection>
+          <Divider
+            sx={{
+              my: theme.spacing(3),
+              mx: theme.spacing(2),
+              background: theme.sidebar.boxShadow,
+            }}
+          />
           <SidebarMenu />
         </Scrollbar>
       </SidebarWrapper>
       <Drawer
         sx={{
-          boxShadow: `${theme.sidebar.boxShadow}`
+          boxShadow: `${theme.sidebar.boxShadow}`,
         }}
-        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+        anchor={theme.direction === "rtl" ? "right" : "left"}
         open={sidebarToggle}
         onClose={closeSidebar}
         variant="temporary"
@@ -79,7 +89,7 @@ function Sidebar() {
                   width: 52,
                   ml: 1,
                   mt: 1,
-                  mb: 3
+                  mb: 3,
                 }}
               >
                 <Logo />

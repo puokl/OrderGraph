@@ -1,6 +1,6 @@
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -17,28 +17,18 @@ import {
   Tabs,
   Tab,
   Tooltip,
-  styled
-} from '@mui/material';
+  styled,
+} from "@mui/material";
 
-import Text from 'src/components/Text';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import deFlag from 'country-flag-icons/3x2/DE.svg';
-import usFlag from 'country-flag-icons/3x2/US.svg';
-import esFlag from 'country-flag-icons/3x2/ES.svg';
-import frFlag from 'country-flag-icons/3x2/FR.svg';
-import cnFlag from 'country-flag-icons/3x2/CN.svg';
-import aeFlag from 'country-flag-icons/3x2/AE.svg';
-import ActiveReferrals from 'src/content/dashboards/Analytics/ActiveReferrals';
-import MonthlyGoalsTarget from 'src/content/dashboards/Fitness/MonthlyGoalsTarget';
-import Transfers from 'src/content/dashboards/Banking/Transfers';
-import RecentTransactions from 'src/content/dashboards/Commerce/RecentTransactions';
-import Thermostat from 'src/content/dashboards/Automation/Thermostat';
-import AccountSecurity from 'src/content/dashboards/Crypto/AccountSecurity';
-import AppointmentsAlt from 'src/content/dashboards/Healthcare/AppointmentsAlt';
-import UnresolvedTickets from 'src/content/dashboards/Helpdesk/UnresolvedTickets';
-import ResourcesAlarm from 'src/content/dashboards/Monitoring/ResourcesAlarm';
-import Performance from 'src/content/dashboards/Tasks/Performance';
+import Text from "src/components/Text";
+import LaunchTwoToneIcon from "@mui/icons-material/LaunchTwoTone";
+import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
+import deFlag from "country-flag-icons/3x2/DE.svg";
+import usFlag from "country-flag-icons/3x2/US.svg";
+import esFlag from "country-flag-icons/3x2/ES.svg";
+import frFlag from "country-flag-icons/3x2/FR.svg";
+import cnFlag from "country-flag-icons/3x2/CN.svg";
+import aeFlag from "country-flag-icons/3x2/AE.svg";
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -54,7 +44,7 @@ const BoxRtl = styled(Box)(
 `
 );
 
-const ImageWrapper = styled('img')(
+const ImageWrapper = styled("img")(
   ({ theme }) => `
         margin-right: ${theme.spacing(1)};
         width: 44px;
@@ -82,7 +72,7 @@ const CardImg = styled(Card)(
     align-items: center;
     justify-content: center;
     border: 1px solid ${theme.colors.alpha.black[10]};
-    transition: ${theme.transitions.create(['border'])};
+    transition: ${theme.transitions.create(["border"])};
 
     &:hover {
       border-color: ${theme.colors.primary.main};
@@ -151,7 +141,7 @@ const ScreenshotWrapper = styled(Card)(
 `
 );
 
-const Screenshot = styled('img')(
+const Screenshot = styled("img")(
   ({ theme }) => `
     width: 100%;
     height: auto;
@@ -341,21 +331,21 @@ const LayoutImgButton = styled(RouterLink)(
 );
 
 const icons = {
-  Auth0: '/static/images/logo/auth0.svg',
-  FirebaseAuth: '/static/images/logo/firebase.svg',
-  JWT: '/static/images/logo/jwt.svg',
-  Amplify: '/static/images/logo/amplify.svg'
+  Auth0: "/static/images/logo/auth0.svg",
+  FirebaseAuth: "/static/images/logo/firebase.svg",
+  JWT: "/static/images/logo/jwt.svg",
+  Amplify: "/static/images/logo/amplify.svg",
 };
 
 function Highlights() {
   const { t } = useTranslation();
 
-  const [currentTab, setCurrentTab] = useState('performance');
+  const [currentTab, setCurrentTab] = useState("performance");
 
   const tabs = [
-    { value: 'performance', label: t('Performance') },
-    { value: 'auth_services', label: t('Auth Services') },
-    { value: 'rtl_languages', label: t('RTL & Languages') }
+    { value: "performance", label: t("Performance") },
+    { value: "auth_services", label: t("Auth Services") },
+    { value: "rtl_languages", label: t("RTL & Languages") },
   ];
 
   const handleTabsChange = (_event, value) => {
@@ -379,7 +369,7 @@ function Highlights() {
         </BoxWave>
         <BoxLayoutsImage
           sx={{
-            backgroundImage: 'url("/static/images/placeholders/covers/7.jpg")'
+            backgroundImage: 'url("/static/images/placeholders/covers/7.jpg")',
           }}
         />
         <BoxLayoutsContent maxWidth="lg">
@@ -393,7 +383,7 @@ function Highlights() {
               <TypographyFeature
                 className="typo-feature"
                 sx={{
-                  mt: { lg: 10 }
+                  mt: { lg: 10 },
                 }}
               >
                 7
@@ -401,7 +391,7 @@ function Highlights() {
               <TypographyHeading
                 className="typo-heading"
                 sx={{
-                  mb: 1
+                  mb: 1,
                 }}
                 variant="h3"
               >
@@ -410,7 +400,7 @@ function Highlights() {
               <TypographySubHeading
                 className="typo-subheading"
                 sx={{
-                  lineHeight: 1.5
+                  lineHeight: 1.5,
                 }}
                 variant="h4"
                 color="text.secondary"
@@ -427,7 +417,7 @@ function Highlights() {
                 rel="noopener"
                 to="/accent-header/dashboards"
               >
-                <Typography variant="h4">{t('Accent Header')}</Typography>
+                <Typography variant="h4">{t("Accent Header")}</Typography>
                 <img
                   src="/static/images/overview/accent_header.png"
                   alt="Accent Header"
@@ -440,7 +430,7 @@ function Highlights() {
                 rel="noopener"
                 to="/extended-sidebar/dashboards"
               >
-                <Typography variant="h4">{t('Extended Sidebar')}</Typography>
+                <Typography variant="h4">{t("Extended Sidebar")}</Typography>
                 <img
                   src="/static/images/overview/extended_sidebar.png"
                   alt="Extended Sidebar"
@@ -453,7 +443,7 @@ function Highlights() {
                 rel="noopener"
                 to="/accent-sidebar/dashboards"
               >
-                <Typography variant="h4">{t('Accent Sidebar')}</Typography>
+                <Typography variant="h4">{t("Accent Sidebar")}</Typography>
                 <img
                   src="/static/images/overview/accent_sidebar.png"
                   alt="Accent Sidebar"
@@ -466,7 +456,7 @@ function Highlights() {
                 rel="noopener"
                 to="/boxed-sidebar/dashboards"
               >
-                <Typography variant="h4">{t('Boxed Sidebar')}</Typography>
+                <Typography variant="h4">{t("Boxed Sidebar")}</Typography>
                 <img
                   src="/static/images/overview/boxed_sidebar.png"
                   alt="Boxed Sidebar"
@@ -479,7 +469,7 @@ function Highlights() {
                 rel="noopener"
                 to="/collapsed-sidebar/dashboards"
               >
-                <Typography variant="h4">{t('Collapsed Sidebar')}</Typography>
+                <Typography variant="h4">{t("Collapsed Sidebar")}</Typography>
                 <img
                   src="/static/images/overview/collapsed_sidebar.png"
                   alt="Collapsed Sidebar"
@@ -492,7 +482,7 @@ function Highlights() {
                 rel="noopener"
                 to="/top-navigation/dashboards"
               >
-                <Typography variant="h4">{t('Top Navigation')}</Typography>
+                <Typography variant="h4">{t("Top Navigation")}</Typography>
                 <img
                   src="/static/images/overview/top_navigation.png"
                   alt="Bottom navigation"
@@ -505,7 +495,7 @@ function Highlights() {
                 rel="noopener"
                 to="/bottom-navigation/dashboards"
               >
-                <Typography variant="h4">{t('Bottom Navigation')}</Typography>
+                <Typography variant="h4">{t("Bottom Navigation")}</Typography>
                 <img
                   src="/static/images/overview/bottom_navigation.png"
                   alt="Bottom navigation"
@@ -530,12 +520,12 @@ function Highlights() {
       <Container
         maxWidth="lg"
         sx={{
-          py: { xs: 8, md: 10 }
+          py: { xs: 8, md: 10 },
         }}
       >
         <Grid
           spacing={0}
-          direction={{ xs: 'column-reverse', md: 'row' }}
+          direction={{ xs: "column-reverse", md: "row" }}
           justifyContent="center"
           container
         >
@@ -545,8 +535,8 @@ function Highlights() {
                 top: { xs: -50, md: 0 },
                 left: { xs: -150, md: -45 },
                 minHeight: { xs: 530, md: 1130 },
-                transform: { xs: 'scale(.5)', md: 'none' },
-                position: 'relative'
+                transform: { xs: "scale(.5)", md: "none" },
+                position: "relative",
               }}
             >
               <Button
@@ -555,204 +545,14 @@ function Highlights() {
                 to="/extended-sidebar/dashboards/banking"
                 variant="contained"
                 sx={{
-                  position: 'absolute',
-                  display: { xs: 'none', lg: 'block' },
+                  position: "absolute",
+                  display: { xs: "none", lg: "block" },
                   right: { xs: 0, md: -80, lg: 50 },
-                  bottom: 150
+                  bottom: 150,
                 }}
               >
                 View more components
               </Button>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 500,
-                  top: -50,
-                  left: -30,
-                  transform:
-                    'translate(0px, 120px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '2.1s 2.1s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <ResourcesAlarm />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 300,
-                  top: -180,
-                  left: 210,
-                  transform:
-                    'translate(0px, 120px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '2.8s 1.2s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <ActiveReferrals />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 330,
-                  top: 635,
-                  left: 970,
-                  transform:
-                    'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '2.1s 1.5s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <UnresolvedTickets />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 280,
-                  top: 350,
-                  left: -65,
-                  transform:
-                    'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '3.5s 2.4s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <Transfers />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 420,
-                  top: 290,
-                  left: 116,
-                  transform:
-                    'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '1.5s 1s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <Thermostat />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 500,
-                  top: 210,
-                  left: 930,
-                  transform:
-                    'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '2.5s 3s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <RecentTransactions />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 400,
-                  top: 480,
-                  left: 700,
-                  transform:
-                    'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '2.5s 3s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <AppointmentsAlt />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 400,
-                  top: 545,
-                  left: 515,
-                  transform:
-                    'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '3s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <MonthlyGoalsTarget />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 330,
-                  top: 213,
-                  left: 477,
-                  transform:
-                    'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '2s 2s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <AccountSecurity />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 330,
-                  top: 400,
-                  left: -315,
-                  transform:
-                    'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <Box
-                  sx={{
-                    animation: '2s 2s infinite alternate ease-in-out float'
-                  }}
-                >
-                  <Performance />
-                </Box>
-              </Box>
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -760,23 +560,23 @@ function Highlights() {
               <TypographyFeature>500+</TypographyFeature>
               <TypographyHeading
                 sx={{
-                  mb: 1
+                  mb: 1,
                 }}
                 variant="h3"
               >
-                {t('Multi-Purpose Components')}
+                {t("Multi-Purpose Components")}
               </TypographyHeading>
               <TypographySubHeading
                 sx={{
                   lineHeight: 1.5,
-                  pr: 8
+                  pr: 8,
                 }}
                 variant="h4"
                 color="text.secondary"
                 fontWeight="normal"
               >
                 {t(
-                  'With Tokyo you can build apps for any purpose, from commerce to health or learning. We’ve got you covered!'
+                  "With Tokyo you can build apps for any purpose, from commerce to health or learning. We’ve got you covered!"
                 )}
               </TypographySubHeading>
             </Box>
@@ -786,7 +586,7 @@ function Highlights() {
           spacing={6}
           sx={{
             mt: 4,
-            justifyContent: { lg: 'center' }
+            justifyContent: { lg: "center" },
           }}
           container
         >
@@ -795,24 +595,24 @@ function Highlights() {
               <TypographyFeature>17</TypographyFeature>
               <TypographyHeading
                 sx={{
-                  mb: 1
+                  mb: 1,
                 }}
                 variant="h3"
               >
-                {t('Dashboard Pages')}
+                {t("Dashboard Pages")}
               </TypographyHeading>
               <TypographySubHeading
                 sx={{
                   maxWidth: 500,
                   lineHeight: 1.5,
-                  mb: 3
+                  mb: 3,
                 }}
                 variant="h4"
                 color="text.secondary"
                 fontWeight="normal"
               >
                 {t(
-                  'Tokyo comes integrated with 13 dashboards split across multiple popular product niches'
+                  "Tokyo comes integrated with 13 dashboards split across multiple popular product niches"
                 )}
                 :
               </TypographySubHeading>
@@ -827,7 +627,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/reports"
                     variant="outlined"
                   >
-                    {t('Reports')}
+                    {t("Reports")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -840,7 +640,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/expenses"
                     variant="outlined"
                   >
-                    {t('Expenses')}
+                    {t("Expenses")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -853,7 +653,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/products"
                     variant="outlined"
                   >
-                    {t('Products')}
+                    {t("Products")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -866,7 +666,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/statistics"
                     variant="outlined"
                   >
-                    {t('Statistics')}
+                    {t("Statistics")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -879,7 +679,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/automation"
                     variant="outlined"
                   >
-                    {t('Automation')}
+                    {t("Automation")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -892,7 +692,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/analytics"
                     variant="outlined"
                   >
-                    {t('Analytics')}
+                    {t("Analytics")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -905,7 +705,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/banking"
                     variant="outlined"
                   >
-                    {t('Banking')}
+                    {t("Banking")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -918,7 +718,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/commerce"
                     variant="outlined"
                   >
-                    {t('Commerce')}
+                    {t("Commerce")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -931,7 +731,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/crypto"
                     variant="outlined"
                   >
-                    {t('Crypto')}
+                    {t("Crypto")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -944,7 +744,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/finance"
                     variant="outlined"
                   >
-                    {t('Finance')}
+                    {t("Finance")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -957,7 +757,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/fitness"
                     variant="outlined"
                   >
-                    {t('Fitness')}
+                    {t("Fitness")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -970,7 +770,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/healthcare/doctor"
                     variant="outlined"
                   >
-                    {t('Doctor')}
+                    {t("Doctor")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -983,7 +783,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/healthcare/hospital"
                     variant="outlined"
                   >
-                    {t('Hospital')}
+                    {t("Hospital")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -996,7 +796,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/helpdesk"
                     variant="outlined"
                   >
-                    {t('Helpdesk')}
+                    {t("Helpdesk")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -1009,7 +809,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/learning"
                     variant="outlined"
                   >
-                    {t('Learning')}
+                    {t("Learning")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -1022,7 +822,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/monitoring"
                     variant="outlined"
                   >
-                    {t('Monitoring')}
+                    {t("Monitoring")}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -1035,7 +835,7 @@ function Highlights() {
                     to="/extended-sidebar/dashboards/tasks"
                     variant="outlined"
                   >
-                    {t('Tasks')}
+                    {t("Tasks")}
                   </Button>
                 </Grid>
               </Grid>
@@ -1044,43 +844,43 @@ function Highlights() {
           <Grid item md={8}>
             <Box
               sx={{
-                position: 'relative'
+                position: "relative",
               }}
             >
               <TypographyFeature>6</TypographyFeature>
               <TypographyHeading
                 sx={{
-                  mb: 1
+                  mb: 1,
                 }}
                 variant="h3"
               >
-                {t('Applications')}
+                {t("Applications")}
               </TypographyHeading>
               <TypographySubHeading
                 sx={{
                   maxWidth: 500,
                   lineHeight: 1.5,
-                  pr: 8
+                  pr: 8,
                 }}
                 variant="h4"
                 color="text.secondary"
                 fontWeight="normal"
               >
                 {t(
-                  'Use these as standalone apps or included in a bigger project. You choose!'
+                  "Use these as standalone apps or included in a bigger project. You choose!"
                 )}
               </TypographySubHeading>
               <Typography
                 variant="subtitle1"
                 sx={{
-                  py: 2
+                  py: 2,
                 }}
                 component="p"
               >
                 <Text color="warning">
                   <b>
                     {t(
-                      'Includes redux state management, working forms with validation, working filtering and more'
+                      "Includes redux state management, working forms with validation, working filtering and more"
                     )}
                   </b>
                 </Text>
@@ -1089,13 +889,13 @@ function Highlights() {
                 <Grid item xs={12} lg={6}>
                   <Card
                     sx={{
-                      mt: 2
+                      mt: 2,
                     }}
                   >
                     <List disablePadding>
                       <ListItem
                         sx={{
-                          py: 2
+                          py: 2,
                         }}
                       >
                         <ListItemAvatar>
@@ -1104,16 +904,16 @@ function Highlights() {
                           </AvatarWrapperSuccess>
                         </ListItemAvatar>
                         <ListItemText
-                          primary={t('Jobs Platform')}
+                          primary={t("Jobs Platform")}
                           primaryTypographyProps={{
-                            variant: 'h4',
-                            color: 'textPrimary',
-                            gutterBottom: true
+                            variant: "h4",
+                            color: "textPrimary",
+                            gutterBottom: true,
                           }}
-                          secondary={t('API calls examples included')}
+                          secondary={t("API calls examples included")}
                           secondaryTypographyProps={{
-                            variant: 'subtitle2',
-                            noWrap: true
+                            variant: "subtitle2",
+                            noWrap: true,
                           }}
                         />
                         <Button
@@ -1124,13 +924,13 @@ function Highlights() {
                           component={RouterLink}
                           to="/extended-sidebar/applications/jobs-platform"
                         >
-                          {t('View')}
+                          {t("View")}
                         </Button>
                       </ListItem>
                       <Divider />
                       <ListItem
                         sx={{
-                          py: 2
+                          py: 2,
                         }}
                       >
                         <ListItemAvatar>
@@ -1139,18 +939,18 @@ function Highlights() {
                           </AvatarWrapperSuccess>
                         </ListItemAvatar>
                         <ListItemText
-                          primary={t('Projects Board')}
+                          primary={t("Projects Board")}
                           primaryTypographyProps={{
-                            variant: 'h4',
-                            color: 'textPrimary',
-                            gutterBottom: true
+                            variant: "h4",
+                            color: "textPrimary",
+                            gutterBottom: true,
                           }}
                           secondary={t(
-                            'editable fields, drag & drop functionality'
+                            "editable fields, drag & drop functionality"
                           )}
                           secondaryTypographyProps={{
-                            variant: 'subtitle2',
-                            noWrap: true
+                            variant: "subtitle2",
+                            noWrap: true,
                           }}
                         />
                         <Button
@@ -1161,13 +961,13 @@ function Highlights() {
                           component={RouterLink}
                           to="/extended-sidebar/applications/projects-board"
                         >
-                          {t('View')}
+                          {t("View")}
                         </Button>
                       </ListItem>
                       <Divider />
                       <ListItem
                         sx={{
-                          py: 2
+                          py: 2,
                         }}
                       >
                         <ListItemAvatar>
@@ -1176,16 +976,16 @@ function Highlights() {
                           </AvatarWrapperSuccess>
                         </ListItemAvatar>
                         <ListItemText
-                          primary={t('Mailbox')}
+                          primary={t("Mailbox")}
                           primaryTypographyProps={{
-                            variant: 'h4',
-                            color: 'textPrimary',
-                            gutterBottom: true
+                            variant: "h4",
+                            color: "textPrimary",
+                            gutterBottom: true,
                           }}
-                          secondary={t('redux, tags & filtering')}
+                          secondary={t("redux, tags & filtering")}
                           secondaryTypographyProps={{
-                            variant: 'subtitle2',
-                            noWrap: true
+                            variant: "subtitle2",
+                            noWrap: true,
                           }}
                         />
                         <Button
@@ -1196,7 +996,7 @@ function Highlights() {
                           component={RouterLink}
                           to="/extended-sidebar/applications/mailbox"
                         >
-                          {t('View')}
+                          {t("View")}
                         </Button>
                       </ListItem>
                     </List>
@@ -1205,13 +1005,13 @@ function Highlights() {
                 <Grid item xs={12} lg={6}>
                   <Card
                     sx={{
-                      mt: 2
+                      mt: 2,
                     }}
                   >
                     <List disablePadding>
                       <ListItem
                         sx={{
-                          py: 2
+                          py: 2,
                         }}
                       >
                         <ListItemAvatar>
@@ -1220,16 +1020,16 @@ function Highlights() {
                           </AvatarWrapperSuccess>
                         </ListItemAvatar>
                         <ListItemText
-                          primary={t('File Manager')}
+                          primary={t("File Manager")}
                           primaryTypographyProps={{
-                            variant: 'h4',
-                            color: 'textPrimary',
-                            gutterBottom: true
+                            variant: "h4",
+                            color: "textPrimary",
+                            gutterBottom: true,
                           }}
-                          secondary={t('file details drawer sidebar')}
+                          secondary={t("file details drawer sidebar")}
                           secondaryTypographyProps={{
-                            variant: 'subtitle2',
-                            noWrap: true
+                            variant: "subtitle2",
+                            noWrap: true,
                           }}
                         />
                         <Button
@@ -1240,13 +1040,13 @@ function Highlights() {
                           component={RouterLink}
                           to="/extended-sidebar/applications/file-manager"
                         >
-                          {t('View')}
+                          {t("View")}
                         </Button>
                       </ListItem>
                       <Divider />
                       <ListItem
                         sx={{
-                          py: 2
+                          py: 2,
                         }}
                       >
                         <ListItemAvatar>
@@ -1255,16 +1055,16 @@ function Highlights() {
                           </AvatarWrapperSuccess>
                         </ListItemAvatar>
                         <ListItemText
-                          primary={t('Messenger')}
+                          primary={t("Messenger")}
                           primaryTypographyProps={{
-                            variant: 'h4',
-                            color: 'textPrimary',
-                            gutterBottom: true
+                            variant: "h4",
+                            color: "textPrimary",
+                            gutterBottom: true,
                           }}
-                          secondary={t('beautiful functional design')}
+                          secondary={t("beautiful functional design")}
                           secondaryTypographyProps={{
-                            variant: 'subtitle2',
-                            noWrap: true
+                            variant: "subtitle2",
+                            noWrap: true,
                           }}
                         />
                         <Button
@@ -1275,13 +1075,13 @@ function Highlights() {
                           component={RouterLink}
                           to="/extended-sidebar/applications/messenger"
                         >
-                          {t('View')}
+                          {t("View")}
                         </Button>
                       </ListItem>
                       <Divider />
                       <ListItem
                         sx={{
-                          py: 2
+                          py: 2,
                         }}
                       >
                         <ListItemAvatar>
@@ -1290,16 +1090,16 @@ function Highlights() {
                           </AvatarWrapperSuccess>
                         </ListItemAvatar>
                         <ListItemText
-                          primary={t('Calendar')}
+                          primary={t("Calendar")}
                           primaryTypographyProps={{
-                            variant: 'h4',
-                            color: 'textPrimary',
-                            gutterBottom: true
+                            variant: "h4",
+                            color: "textPrimary",
+                            gutterBottom: true,
                           }}
-                          secondary={t('working redux state management')}
+                          secondary={t("working redux state management")}
                           secondaryTypographyProps={{
-                            variant: 'subtitle2',
-                            noWrap: true
+                            variant: "subtitle2",
+                            noWrap: true,
                           }}
                         />
                         <Button
@@ -1310,7 +1110,7 @@ function Highlights() {
                           component={RouterLink}
                           to="/extended-sidebar/applications/calendar"
                         >
-                          {t('View')}
+                          {t("View")}
                         </Button>
                       </ListItem>
                     </List>
@@ -1322,41 +1122,41 @@ function Highlights() {
         </Grid>
         <Grid
           container
-          direction={{ xs: 'column-reverse', md: 'row' }}
+          direction={{ xs: "column-reverse", md: "row" }}
           sx={{
             mt: 12,
-            mb: 12
+            mb: 12,
           }}
           spacing={4}
         >
           <Grid item md={6} lg={7}>
             <Box
               sx={{
-                transform: { xs: 'scale(.9)', md: 'scale(.85)', lg: 'none' },
-                left: { xs: '50px', md: '-180px', lg: '-45px' },
+                transform: { xs: "scale(.9)", md: "scale(.85)", lg: "none" },
+                left: { xs: "50px", md: "-180px", lg: "-45px" },
                 minHeight: 600,
-                position: 'relative'
+                position: "relative",
               }}
             >
               <Box
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: -150,
                   left: -50,
                   transform:
-                    'translate(0px, 120px) perspective(5200px) rotate(87deg) rotateY(330deg) rotateZ(285deg)',
-                  transformStyle: 'preserve-3d'
+                    "translate(0px, 120px) perspective(5200px) rotate(87deg) rotateY(330deg) rotateZ(285deg)",
+                  transformStyle: "preserve-3d",
                 }}
               >
                 <Box
                   sx={{
-                    animation: '2.1s 2.1s infinite alternate ease-in-out float'
+                    animation: "2.1s 2.1s infinite alternate ease-in-out float",
                   }}
                 >
                   <Card
                     sx={{
-                      padding: '15px',
-                      background: '#f2f5f9'
+                      padding: "15px",
+                      background: "#f2f5f9",
                     }}
                   >
                     <img
@@ -1368,23 +1168,23 @@ function Highlights() {
               </Box>
               <Box
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 30,
                   left: 180,
                   transform:
-                    'translate(0px, 120px) perspective(5200px) rotate(87deg) rotateY(330deg) rotateZ(285deg)',
-                  transformStyle: 'preserve-3d'
+                    "translate(0px, 120px) perspective(5200px) rotate(87deg) rotateY(330deg) rotateZ(285deg)",
+                  transformStyle: "preserve-3d",
                 }}
               >
                 <Box
                   sx={{
-                    animation: '1.5s 1s infinite alternate ease-in-out float'
+                    animation: "1.5s 1s infinite alternate ease-in-out float",
                   }}
                 >
                   <Card
                     sx={{
-                      padding: '15px',
-                      background: '#f2f5f9'
+                      padding: "15px",
+                      background: "#f2f5f9",
                     }}
                   >
                     <img
@@ -1396,23 +1196,23 @@ function Highlights() {
               </Box>
               <Box
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 120,
                   left: -60,
                   transform:
-                    'translate(0px, 120px) perspective(5200px) rotate(87deg) rotateY(330deg) rotateZ(285deg)',
-                  transformStyle: 'preserve-3d'
+                    "translate(0px, 120px) perspective(5200px) rotate(87deg) rotateY(330deg) rotateZ(285deg)",
+                  transformStyle: "preserve-3d",
                 }}
               >
                 <Box
                   sx={{
-                    animation: '2.8s 1.2s infinite alternate ease-in-out float'
+                    animation: "2.8s 1.2s infinite alternate ease-in-out float",
                   }}
                 >
                   <Card
                     sx={{
-                      padding: '15px',
-                      background: '#f2f5f9'
+                      padding: "15px",
+                      background: "#f2f5f9",
                     }}
                   >
                     <img
@@ -1428,7 +1228,7 @@ function Highlights() {
             <TypographyFeature>7</TypographyFeature>
             <TypographyHeading
               sx={{
-                mb: 1
+                mb: 1,
               }}
               variant="h3"
             >
@@ -1440,14 +1240,14 @@ function Highlights() {
                 maxWidth: 500,
                 lineHeight: 1.5,
                 pr: 8,
-                mb: 4
+                mb: 4,
               }}
               variant="h4"
               color="text.secondary"
               fontWeight="normal"
             >
               {t(
-                'Integrated forms with validation, API calls examples, working filters and search functionality!'
+                "Integrated forms with validation, API calls examples, working filters and search functionality!"
               )}
             </TypographySubHeading>
             <Grid container spacing={2}>
@@ -1461,7 +1261,7 @@ function Highlights() {
                   to="/extended-sidebar/management/users"
                   variant="outlined"
                 >
-                  {t('Users')}
+                  {t("Users")}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -1474,7 +1274,7 @@ function Highlights() {
                   to="/extended-sidebar/management/users/single/2"
                   variant="outlined"
                 >
-                  {t('Profile')}
+                  {t("Profile")}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -1487,7 +1287,7 @@ function Highlights() {
                   to="/extended-sidebar/management/projects/list"
                   variant="outlined"
                 >
-                  {t('Projects')}
+                  {t("Projects")}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -1500,7 +1300,7 @@ function Highlights() {
                   to="/extended-sidebar/management/commerce/products/single/1"
                   variant="outlined"
                 >
-                  {t('View Product')}
+                  {t("View Product")}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -1513,7 +1313,7 @@ function Highlights() {
                   to="/extended-sidebar/management/commerce/products/create"
                   variant="outlined"
                 >
-                  {t('Create Product')}
+                  {t("Create Product")}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -1526,7 +1326,7 @@ function Highlights() {
                   to="/extended-sidebar/management/commerce/shop"
                   variant="outlined"
                 >
-                  {t('Shop')}
+                  {t("Shop")}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -1539,7 +1339,7 @@ function Highlights() {
                   to="/extended-sidebar/management/invoices/list"
                   variant="outlined"
                 >
-                  {t('Invoices')}
+                  {t("Invoices")}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -1552,7 +1352,7 @@ function Highlights() {
                   to="/extended-sidebar/management/invoices/single/1"
                   variant="outlined"
                 >
-                  {t('Single Invoice')}
+                  {t("Single Invoice")}
                 </Button>
               </Grid>
             </Grid>
@@ -1563,17 +1363,17 @@ function Highlights() {
           textAlign="center"
           sx={{
             mt: 8,
-            mb: 2
+            mb: 2,
           }}
           variant="h1"
         >
-          {t('Key Features')}
+          {t("Key Features")}
         </TypographyH1Primary>
         <Container maxWidth="sm">
           <TypographyH2
             sx={{
               pb: 4,
-              lineHeight: 1.5
+              lineHeight: 1.5,
             }}
             textAlign="center"
             variant="h4"
@@ -1581,7 +1381,7 @@ function Highlights() {
             fontWeight="normal"
           >
             {t(
-              'Some of the features that make Tokyo one of the best admin templates available today'
+              "Some of the features that make Tokyo one of the best admin templates available today"
             )}
           </TypographyH2>
         </Container>
@@ -1599,17 +1399,17 @@ function Highlights() {
             ))}
           </Tabs>
         </TabsContainerWrapper>
-        {currentTab === 'performance' && (
+        {currentTab === "performance" && (
           <Grid
             sx={{
-              mt: 8
+              mt: 8,
             }}
             container
             spacing={4}
           >
             <Grid item xs={12} md={6}>
               <Typography sx={{ mb: 1 }} variant="h2">
-                {t('Beautiful design is little without performance')}.
+                {t("Beautiful design is little without performance")}.
               </Typography>
               <Typography variant="subtitle2">
                 {t(
@@ -1620,62 +1420,62 @@ function Highlights() {
               <List
                 disablePadding
                 sx={{
-                  mt: 2
+                  mt: 2,
                 }}
               >
                 <ListItem>
                   <AvatarSuccess
                     sx={{
-                      mr: 2
+                      mr: 2,
                     }}
                   >
                     <CheckTwoToneIcon />
                   </AvatarSuccess>
                   <ListItemText
                     primary={t(
-                      '96+ Google Lighthouse performance score across all app pages.'
+                      "96+ Google Lighthouse performance score across all app pages."
                     )}
                   />
                 </ListItem>
                 <ListItem>
                   <AvatarSuccess
                     sx={{
-                      mr: 2
+                      mr: 2,
                     }}
                   >
                     <CheckTwoToneIcon />
                   </AvatarSuccess>
                   <ListItemText
                     primary={t(
-                      'Perfectly responsive. Go ahead, browse the live preview and resize any page.'
+                      "Perfectly responsive. Go ahead, browse the live preview and resize any page."
                     )}
                   />
                 </ListItem>
                 <ListItem>
                   <AvatarSuccess
                     sx={{
-                      mr: 2
+                      mr: 2,
                     }}
                   >
                     <CheckTwoToneIcon />
                   </AvatarSuccess>
                   <ListItemText
                     primary={t(
-                      'Progressive Web App Optimized. You can view Tokyo offline on any screen size.'
+                      "Progressive Web App Optimized. You can view Tokyo offline on any screen size."
                     )}
                   />
                 </ListItem>
                 <ListItem>
                   <AvatarSuccess
                     sx={{
-                      mr: 2
+                      mr: 2,
                     }}
                   >
                     <CheckTwoToneIcon />
                   </AvatarSuccess>
                   <ListItemText
                     primary={t(
-                      'Google Lighthouse Best Practices and SEO scrores over 95 for all pages.'
+                      "Google Lighthouse Best Practices and SEO scrores over 95 for all pages."
                     )}
                   />
                 </ListItem>
@@ -1695,22 +1495,22 @@ function Highlights() {
             </Grid>
           </Grid>
         )}
-        {currentTab === 'auth_services' && (
+        {currentTab === "auth_services" && (
           <>
             <Typography
               textAlign="center"
               sx={{
                 mt: 14,
-                mb: 2
+                mb: 2,
               }}
               variant="h2"
             >
-              {t('Integrated Auth Services')}
+              {t("Integrated Auth Services")}
             </Typography>
             <Container
               sx={{
-                position: 'relative',
-                pb: 4
+                position: "relative",
+                pb: 4,
               }}
               maxWidth="sm"
             >
@@ -1720,7 +1520,7 @@ function Highlights() {
                     width: 80,
                     height: 80,
                     top: -110,
-                    left: -30
+                    left: -30,
                   }}
                 >
                   <img width={40} alt="Auth0" src={icons.Auth0} />
@@ -1732,7 +1532,7 @@ function Highlights() {
                     width: 120,
                     height: 120,
                     top: -40,
-                    left: -190
+                    left: -190,
                   }}
                 >
                   <img width={50} alt="Firebase" src={icons.FirebaseAuth} />
@@ -1744,7 +1544,7 @@ function Highlights() {
                     width: 130,
                     height: 130,
                     top: -50,
-                    right: -160
+                    right: -160,
                   }}
                 >
                   <img width={80} alt="JSON Web Token" src={icons.JWT} />
@@ -1756,7 +1556,7 @@ function Highlights() {
                     width: 90,
                     height: 90,
                     top: -120,
-                    right: 20
+                    right: 20,
                   }}
                 >
                   <img width={50} alt="Amplify" src={icons.Amplify} />
@@ -1765,7 +1565,7 @@ function Highlights() {
               <TypographyH2
                 sx={{
                   pb: 4,
-                  lineHeight: 1.5
+                  lineHeight: 1.5,
                 }}
                 textAlign="center"
                 variant="h4"
@@ -1773,7 +1573,7 @@ function Highlights() {
                 fontWeight="normal"
               >
                 {t(
-                  'Easily switch between multiple integrated auth methods based on your app needs'
+                  "Easily switch between multiple integrated auth methods based on your app needs"
                 )}
                 .
               </TypographyH2>
@@ -1782,16 +1582,16 @@ function Highlights() {
             <Grid
               container
               sx={{
-                textAlign: 'center'
+                textAlign: "center",
               }}
               spacing={4}
             >
               <Grid item xs={12} md={4}>
                 <AvatarSuccess
                   sx={{
-                    mx: 'auto',
+                    mx: "auto",
                     width: 50,
-                    height: 50
+                    height: 50,
                   }}
                 >
                   <CheckTwoToneIcon />
@@ -1799,23 +1599,23 @@ function Highlights() {
                 <Typography
                   variant="h3"
                   sx={{
-                    py: 2
+                    py: 2,
                   }}
                 >
-                  {t('Multiple Auth Methods')}
+                  {t("Multiple Auth Methods")}
                 </Typography>
                 <Typography variant="subtitle2">
                   {t(
-                    'Firebase, AWS Amplify, JWT Tokens and Auth0 are available in this release'
+                    "Firebase, AWS Amplify, JWT Tokens and Auth0 are available in this release"
                   )}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={4}>
                 <AvatarSuccess
                   sx={{
-                    mx: 'auto',
+                    mx: "auto",
                     width: 50,
-                    height: 50
+                    height: 50,
                   }}
                 >
                   <CheckTwoToneIcon />
@@ -1823,23 +1623,23 @@ function Highlights() {
                 <Typography
                   variant="h3"
                   sx={{
-                    py: 2
+                    py: 2,
                   }}
                 >
-                  {t('Status Pages')}
+                  {t("Status Pages")}
                 </Typography>
                 <Typography variant="subtitle2">
                   {t(
-                    'Multiple status pages included 500, 404 Error Pages, Coming Soon, Maintenance'
+                    "Multiple status pages included 500, 404 Error Pages, Coming Soon, Maintenance"
                   )}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={4}>
                 <AvatarSuccess
                   sx={{
-                    mx: 'auto',
+                    mx: "auto",
                     width: 50,
-                    height: 50
+                    height: 50,
                   }}
                 >
                   <CheckTwoToneIcon />
@@ -1847,24 +1647,24 @@ function Highlights() {
                 <Typography
                   variant="h3"
                   sx={{
-                    py: 2
+                    py: 2,
                   }}
                 >
-                  {t('Auth Pages')}
+                  {t("Auth Pages")}
                 </Typography>
                 <Typography variant="subtitle2">
                   {t(
-                    'Login/Register Pages, Wizards, Recover Password with confirmation'
+                    "Login/Register Pages, Wizards, Recover Password with confirmation"
                   )}
                 </Typography>
               </Grid>
             </Grid>
           </>
         )}
-        {currentTab === 'rtl_languages' && (
+        {currentTab === "rtl_languages" && (
           <BoxRtl
             sx={{
-              pt: 10
+              pt: 10,
             }}
           >
             <Container maxWidth="lg">
@@ -1874,18 +1674,18 @@ function Highlights() {
                   xs={12}
                   md={5}
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center'
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
                   <Box>
                     <TypographyH1Primary variant="h1">
-                      {t('Right-To-Left Layouts & Translation-Ready')}
+                      {t("Right-To-Left Layouts & Translation-Ready")}
                     </TypographyH1Primary>
                     <Typography
                       variant="subtitle2"
                       sx={{
-                        py: 2
+                        py: 2,
                       }}
                     >
                       {t(
@@ -1895,10 +1695,10 @@ function Highlights() {
                     <Typography
                       variant="h4"
                       sx={{
-                        my: 2
+                        my: 2,
                       }}
                     >
-                      {t('Languages already integrated')}:
+                      {t("Languages already integrated")}:
                     </Typography>
                     <ImageWrapper alt="USA" src={usFlag} />
                     <ImageWrapper alt="Germany" src={deFlag} />
@@ -1909,12 +1709,12 @@ function Highlights() {
 
                     <Typography
                       sx={{
-                        pt: 1
+                        pt: 1,
                       }}
                       variant="subtitle1"
                     >
                       {t(
-                        'You can add and define translations for any language required. '
+                        "You can add and define translations for any language required. "
                       )}
                     </Typography>
                   </Box>
@@ -1936,30 +1736,30 @@ function Highlights() {
       <Container
         sx={{
           pt: { xs: 6, md: 12 },
-          pb: { xs: 5, md: 15 }
+          pb: { xs: 5, md: 15 },
         }}
         maxWidth="md"
       >
         <TypographyH1Primary
           textAlign="center"
           sx={{
-            mb: 2
+            mb: 2,
           }}
           variant="h1"
         >
-          {t('Design Source Files')}
+          {t("Design Source Files")}
         </TypographyH1Primary>
         <Container
           sx={{
             mb: 6,
-            textAlign: 'center'
+            textAlign: "center",
           }}
           maxWidth="sm"
         >
           <TypographyH2
             sx={{
               pb: 4,
-              lineHeight: 1.5
+              lineHeight: 1.5,
             }}
             textAlign="center"
             variant="h4"
@@ -1967,13 +1767,13 @@ function Highlights() {
             fontWeight="normal"
           >
             {t(
-              'Start working on your project directly from one of the included starter kits or use the Figma/Sketch files to create a prototype first'
+              "Start working on your project directly from one of the included starter kits or use the Figma/Sketch files to create a prototype first"
             )}
           </TypographyH2>
           <TypographyH2
             sx={{
               pb: 4,
-              lineHeight: 1.5
+              lineHeight: 1.5,
             }}
             textAlign="center"
             variant="h4"
@@ -1981,7 +1781,7 @@ function Highlights() {
             fontWeight="normal"
           >
             <Text color="error">
-              {t('Only available with certain pricing plans!')}
+              {t("Only available with certain pricing plans!")}
             </Text>
           </TypographyH2>
 
@@ -1993,23 +1793,23 @@ function Highlights() {
             rel="noopener"
             variant="outlined"
           >
-            {t('View Figma Preview')}
+            {t("View Figma Preview")}
           </Button>
         </Container>
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
             <Card
               sx={{
-                overflow: 'visible'
+                overflow: "visible",
               }}
             >
               <AvatarSuccess
                 sx={{
                   width: 60,
                   height: 60,
-                  mx: 'auto',
-                  position: 'relative',
-                  top: -28
+                  mx: "auto",
+                  position: "relative",
+                  top: -28,
                 }}
               >
                 <CheckTwoToneIcon />
@@ -2017,7 +1817,7 @@ function Highlights() {
               <Box
                 px={4}
                 pb={4}
-                display={{ xs: 'block', md: 'flex' }}
+                display={{ xs: "block", md: "flex" }}
                 alignItems="flex-start"
               >
                 <img
@@ -2027,20 +1827,20 @@ function Highlights() {
                 />
                 <Box
                   sx={{
-                    pl: { xs: 0, md: 3 }
+                    pl: { xs: 0, md: 3 },
                   }}
                 >
                   <Typography variant="h3">
-                    Figma {t('Design Files')}
+                    Figma {t("Design Files")}
                   </Typography>
                   <Typography
                     sx={{
-                      pt: 1
+                      pt: 1,
                     }}
                     variant="subtitle2"
                   >
                     {t(
-                      'Complete with reusable components, all pages and sections are available in the Figma ecosystem.'
+                      "Complete with reusable components, all pages and sections are available in the Figma ecosystem."
                     )}
                   </Typography>
                 </Box>
@@ -2051,16 +1851,16 @@ function Highlights() {
             <Card
               sx={{
                 mt: { xs: 5, md: 0 },
-                overflow: 'visible'
+                overflow: "visible",
               }}
             >
               <AvatarSuccess
                 sx={{
                   width: 60,
                   height: 60,
-                  mx: 'auto',
-                  position: 'relative',
-                  top: -28
+                  mx: "auto",
+                  position: "relative",
+                  top: -28,
                 }}
               >
                 <CheckTwoToneIcon />
@@ -2068,7 +1868,7 @@ function Highlights() {
               <Box
                 px={4}
                 pb={4}
-                display={{ xs: 'block', md: 'flex' }}
+                display={{ xs: "block", md: "flex" }}
                 alignItems="flex-start"
               >
                 <img
@@ -2078,20 +1878,20 @@ function Highlights() {
                 />
                 <Box
                   sx={{
-                    pl: { xs: 0, md: 3 }
+                    pl: { xs: 0, md: 3 },
                   }}
                 >
                   <Typography variant="h3">
-                    Sketch {t('Design Files')}
+                    Sketch {t("Design Files")}
                   </Typography>
                   <Typography
                     sx={{
-                      pt: 1
+                      pt: 1,
                     }}
                     variant="subtitle2"
                   >
                     {t(
-                      'Besid Figma files, Tokyo also has included Sketch design files for certain pricing plans.'
+                      "Besid Figma files, Tokyo also has included Sketch design files for certain pricing plans."
                     )}
                   </Typography>
                 </Box>

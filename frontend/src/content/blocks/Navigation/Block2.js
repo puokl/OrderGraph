@@ -10,14 +10,14 @@ import {
   IconButton,
   ListItemText,
   styled,
-  useTheme
-} from '@mui/material';
+  useTheme,
+} from "@mui/material";
 
-import { useTranslation } from 'react-i18next';
-import HelpTwoToneIcon from '@mui/icons-material/HelpTwoTone';
-import BounceRate from 'src/content/dashboards/Analytics/BounceRate';
-import ConversionsAlt from 'src/content/dashboards/Analytics/ConversionsAlt';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
+import { useTranslation } from "react-i18next";
+import HelpTwoToneIcon from "@mui/icons-material/HelpTwoTone";
+// import BounceRate from 'src/content/dashboards/Analytics/BounceRate';
+// import ConversionsAlt from 'src/content/dashboards/Analytics/ConversionsAlt';
+import ChevronRightTwoToneIcon from "@mui/icons-material/ChevronRightTwoTone";
 
 const BoxComposed = styled(Box)(
   () => `
@@ -70,7 +70,7 @@ const BoxComposedBg = styled(Box)(
 const IconButtonWrapper = styled(IconButton)(
   ({ theme }) => `
       background: transparent;
-      transition: ${theme.transitions.create(['all'])};
+      transition: ${theme.transitions.create(["all"])};
       color: ${theme.colors.alpha.trueWhite[70]};
       border-radius: 50px;
   
@@ -99,7 +99,7 @@ const MenuListWrapper = styled(MenuList)(
             top: 50%;
             margin-top: -10px;
             height: 0;
-            transition: ${theme.transitions.create(['all'])};
+            transition: ${theme.transitions.create(["all"])};
             opacity: 0;
             position: absolute;
             border-top-right-radius: ${theme.general.borderRadius};
@@ -149,8 +149,8 @@ function Block2() {
           xs={12}
           lg={4}
           sx={{
-            display: 'flex',
-            flexDirection: 'column'
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Box
@@ -164,19 +164,19 @@ function Block2() {
                 <Avatar
                   variant="square"
                   sx={{
-                    mx: 'auto',
+                    mx: "auto",
                     mb: 1.5,
-                    width: 'auto',
+                    width: "auto",
                     height: 54,
-                    '& img': {
-                      objectFit: 'contain'
-                    }
+                    "& img": {
+                      objectFit: "contain",
+                    },
                   }}
                   src="/static/images/placeholders/logo/stripe.svg"
                 />
                 <Typography variant="subtitle2" textAlign="center">
                   {t(
-                    'High performance React template built with lots of powerful components across multiple product niches for fast & perfect apps development processes'
+                    "High performance React template built with lots of powerful components across multiple product niches for fast & perfect apps development processes"
                   )}
                   .
                 </Typography>
@@ -185,57 +185,57 @@ function Block2() {
                 disablePadding
                 sx={{
                   mb: 3,
-                  mr: 3
+                  mr: 3,
                 }}
               >
                 <MenuItem selected>
                   <ListItemText
                     primaryTypographyProps={{
-                      variant: 'h5'
+                      variant: "h5",
                     }}
-                    primary={t('Analytics')}
+                    primary={t("Analytics")}
                   />
                   <ChevronRightTwoToneIcon
                     sx={{
                       color: `${theme.colors.alpha.black[30]}`,
-                      opacity: 0.8
+                      opacity: 0.8,
                     }}
                   />
                 </MenuItem>
                 <MenuItem>
                   <ListItemText
                     primaryTypographyProps={{
-                      variant: 'h5'
+                      variant: "h5",
                     }}
-                    primary={t('Reports Management')}
+                    primary={t("Reports Management")}
                   />
                   <ChevronRightTwoToneIcon
                     sx={{
                       color: `${theme.colors.alpha.black[30]}`,
-                      opacity: 0.8
+                      opacity: 0.8,
                     }}
                   />
                 </MenuItem>
                 <MenuItem>
                   <ListItemText
                     primaryTypographyProps={{
-                      variant: 'h5'
+                      variant: "h5",
                     }}
-                    primary={t('Real Estate')}
+                    primary={t("Real Estate")}
                   />
                   <ChevronRightTwoToneIcon
                     sx={{
                       color: `${theme.colors.alpha.black[30]}`,
-                      opacity: 0.8
+                      opacity: 0.8,
                     }}
                   />
                 </MenuItem>
                 <MenuItem>
                   <ListItemText
                     primaryTypographyProps={{
-                      variant: 'h5'
+                      variant: "h5",
                     }}
-                    primary={t('Server Status')}
+                    primary={t("Server Status")}
                   />
                   <Box display="flex" alignItems="center">
                     <LabelWrapper
@@ -244,7 +244,7 @@ function Block2() {
                         background: `${theme.colors.success.main}`,
                         color: `${theme.palette.getContrastText(
                           theme.colors.success.dark
-                        )}`
+                        )}`,
                       }}
                     >
                       23
@@ -253,7 +253,7 @@ function Block2() {
                       sx={{
                         ml: 1,
                         color: `${theme.colors.alpha.black[30]}`,
-                        opacity: 0.8
+                        opacity: 0.8,
                       }}
                     />
                   </Box>
@@ -267,28 +267,28 @@ function Block2() {
           xs={12}
           lg={8}
           sx={{
-            display: 'flex'
+            display: "flex",
           }}
         >
           <BoxComposed
             display="flex"
             alignItems="center"
             sx={{
-              width: '100%',
-              position: 'relative',
-              minHeight: '100%',
-              background: `${theme.colors.gradients.black1}`
+              width: "100%",
+              position: "relative",
+              minHeight: "100%",
+              background: `${theme.colors.gradients.black1}`,
             }}
           >
             <CardActions display="flex" alignItems="center">
               <Tooltip
                 arrow
-                title={t('This is a helper placeholder')}
+                title={t("This is a helper placeholder")}
                 placement="right"
               >
                 <IconButtonWrapper
                   sx={{
-                    ml: 0.5
+                    ml: 0.5,
                   }}
                 >
                   <HelpTwoToneIcon fontSize="small" />
@@ -298,14 +298,14 @@ function Block2() {
             <BoxComposedBg
               sx={{
                 opacity: 0.5,
-                background: `${theme.colors.gradients.purple1}`
+                background: `${theme.colors.gradients.purple1}`,
               }}
             />
             <BoxComposedImage
               sx={{
                 opacity: 0.3,
                 backgroundImage:
-                  'url("/static/images/placeholders/covers/3.jpg")'
+                  'url("/static/images/placeholders/covers/3.jpg")',
               }}
             />
             <BoxComposedContent
@@ -314,16 +314,7 @@ function Block2() {
               alignItems="center"
               flexDirection="column"
               p={{ xs: 4, xl: 8 }}
-            >
-              <Grid container spacing={4}>
-                <Grid item xs={12} md={6}>
-                  <ConversionsAlt />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <BounceRate />
-                </Grid>
-              </Grid>
-            </BoxComposedContent>
+            ></BoxComposedContent>
           </BoxComposed>
         </Grid>
       </Grid>
