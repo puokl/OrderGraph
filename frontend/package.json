@@ -1,7 +1,7 @@
 {
   "name": "tokyo-react-admin-dashboard-js",
   "version": "3.0.0",
-  "title": "Tokyo React Javascript Admin Dashboard",
+  "title": "OrderGraph",
   "description": "High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes.",
   "author": {
     "name": "BloomUI.com",
@@ -75,6 +75,7 @@
     "yup": "0.32.11"
   },
   "scripts": {
+   "dev": "react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const connectDB = require("./db");
 const authRoute = require("./src/routes/auth");
+
 const port = process.env.PORT || 6000;
 
 
