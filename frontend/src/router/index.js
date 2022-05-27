@@ -13,6 +13,9 @@ import managementRoutes from "./management";
 import documentationRoutes from "./documentation";
 import accountRoutes from "./account";
 import baseRoutes from "./base";
+import clientsRoutes from "./clients";
+import ordersRoutes from "./orders";
+import suppliersRoutes from "./suppliers";
 
 const router = [
   {
@@ -36,7 +39,7 @@ const router = [
   // Accent Sidebar Layout
 
   {
-    path: "accent-sidebar",
+    path: "/",
     element: (
       <Authenticated>
         <AccentSidebarLayout />
@@ -62,6 +65,18 @@ const router = [
       {
         path: "management",
         children: managementRoutes,
+      },
+      {
+        path: "clients",
+        children: clientsRoutes,
+      },
+      {
+        path: "orders",
+        children: ordersRoutes,
+      },
+      {
+        path: "suppliers",
+        children: suppliersRoutes,
       },
     ],
   },
