@@ -6,8 +6,9 @@ const connectDB = async () => {
            maxPoolSize: 100,
       useNewUrlParser: true,
       useUnifiedTopology: true, 
+
         });
-        console.log("Connected to MongoDB");
+        console.log(`Connected to MongoDB: ${conn.connection.host}`.cyan.underline);
     } catch(error) {
         console.log(error);
         process.exit(1)
