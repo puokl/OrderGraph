@@ -16,6 +16,8 @@ import baseRoutes from "./base";
 import clientsRoutes from "./clients";
 import ordersRoutes from "./orders";
 import suppliersRoutes from "./suppliers";
+import organizationRoutes from "./organization";
+import usersRoutes from "./users";
 
 const router = [
   {
@@ -77,6 +79,14 @@ const router = [
       {
         path: "suppliers",
         children: suppliersRoutes,
+      },
+      {
+        path: "organization",
+        children: organizationRoutes,
+      },
+      {
+        path: "users",
+        children: usersRoutes,
       },
     ],
   },
