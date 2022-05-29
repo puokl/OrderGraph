@@ -10,17 +10,22 @@ const Loader = (Component) => (props) =>
     </Suspense>
   );
 
-// Dashboards
+// Users
 
-const Calendar = Loader(
-  lazy(() => import("src/content/applications/Calendar"))
+const Users = Loader(lazy(() => import("src/customComponents/users/users")));
+const TestUsers = Loader(
+  lazy(() => import("src/customComponents/users/index"))
 );
 
-const dashboardsRoutes = [
+const usersRoutes = [
   {
     path: "/",
-    element: <Calendar />,
+    element: <Users />,
+  },
+  {
+    path: "/test",
+    element: <TestUsers />,
   },
 ];
 
-export default dashboardsRoutes;
+export default usersRoutes;
