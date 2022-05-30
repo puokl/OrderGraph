@@ -252,9 +252,9 @@ const Results = ({ users }) => {
 
   const [toggleView, setToggleView] = useState("table_view");
 
-  const handleViewOrientation = (_event, newValue) => {
-    setToggleView(newValue);
-  };
+  // const handleViewOrientation = (_event, newValue) => {
+  //   setToggleView(newValue);
+  // };
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
@@ -401,7 +401,7 @@ const Results = ({ users }) => {
                           <TableCell>{getUserRoleLabel(user.role)}</TableCell>
                           <TableCell align="center">
                             <Typography noWrap>
-                              <Tooltip title={t("View")} arrow>
+                              <Tooltip title={t("Edit")} arrow>
                                 <IconButton
                                   component={RouterLink}
                                   to={`/${

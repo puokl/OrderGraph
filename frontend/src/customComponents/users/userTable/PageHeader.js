@@ -161,16 +161,12 @@ function PageHeader() {
         <Formik
           initialValues={{
             email: "",
-            username: "",
             first_name: "",
             last_name: "",
             password: "",
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            username: Yup.string()
-              .max(255)
-              .required(t("The username field is required")),
             first_name: Yup.string()
               .max(255)
               .required(t("The first name field is required")),
@@ -224,14 +220,15 @@ function PageHeader() {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <TextField
-                          error={Boolean(touched.username && errors.username)}
+                          error={Boolean(touched.email && errors.email)}
                           fullWidth
-                          helperText={touched.username && errors.username}
-                          label={t("Username")}
-                          name="username"
+                          helperText={touched.email && errors.email}
+                          label={t("Email address")}
+                          name="email"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          value={values.username}
+                          type="email"
+                          value={values.email}
                           variant="outlined"
                         />
                       </Grid>
@@ -260,20 +257,6 @@ function PageHeader() {
                           onBlur={handleBlur}
                           onChange={handleChange}
                           value={values.last_name}
-                          variant="outlined"
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          error={Boolean(touched.email && errors.email)}
-                          fullWidth
-                          helperText={touched.email && errors.email}
-                          label={t("Email address")}
-                          name="email"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          type="email"
-                          value={values.email}
                           variant="outlined"
                         />
                       </Grid>
@@ -336,33 +319,6 @@ function PageHeader() {
                           </label>
                         </ButtonUploadWrapper>
                       </AvatarWrapper>
-                      <Divider
-                        flexItem
-                        sx={{
-                          m: 4,
-                        }}
-                      />
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        flexDirection="column"
-                        justifyContent="space-between"
-                      >
-                        <Typography
-                          variant="h4"
-                          sx={{
-                            pb: 1,
-                          }}
-                        >
-                          {t("Public Profile")}
-                        </Typography>
-                        <Switch
-                          checked={publicProfile.public}
-                          onChange={handlePublicProfile}
-                          name="public"
-                          color="primary"
-                        />
-                      </Box>
                     </Box>
                   </Grid>
                 </Grid>
