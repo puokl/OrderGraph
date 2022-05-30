@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { styled } from '@mui/material/styles';
 import wait from 'src/utils/wait';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// import 'react-quill/dist/quill.snow.css';
 
 import {
   Grid,

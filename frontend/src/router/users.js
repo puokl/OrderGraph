@@ -12,9 +12,9 @@ const Loader = (Component) => (props) =>
 
 // Users
 
-const Users = Loader(lazy(() => import("src/customComponents/users/users")));
+const Users = Loader(lazy(() => import("src/customComponents/users/users.js")));
 const TestUsers = Loader(
-  lazy(() => import("src/customComponents/users/index"))
+  lazy(() => import("src/customComponents/users/index.js"))
 );
 
 const usersRoutes = [
