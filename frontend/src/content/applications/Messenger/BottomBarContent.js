@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
-/* eslint-disable jsx-a11y/label-has-for */
 import {
   Avatar,
   Tooltip,
@@ -8,12 +6,12 @@ import {
   Button,
   styled,
   InputBase,
-  useTheme
-} from '@mui/material';
-import useAuth from 'src/hooks/useAuth';
-import { useTranslation } from 'react-i18next';
-import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone';
-import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
+  useTheme,
+} from "@mui/material";
+import useAuth from "src/hooks/useAuth";
+import { useTranslation } from "react-i18next";
+import AttachFileTwoToneIcon from "@mui/icons-material/AttachFileTwoTone";
+import SendTwoToneIcon from "@mui/icons-material/SendTwoTone";
 
 const MessageInputWrapper = styled(InputBase)(
   ({ theme }) => `
@@ -23,8 +21,8 @@ const MessageInputWrapper = styled(InputBase)(
 `
 );
 
-const Input = styled('input')({
-  display: 'none'
+const Input = styled("input")({
+  display: "none",
 });
 
 function BottomBarContent() {
@@ -36,25 +34,25 @@ function BottomBarContent() {
     <Box
       sx={{
         background: theme.colors.alpha.white[50],
-        display: 'flex',
-        alignItems: 'center',
-        p: 2
+        display: "flex",
+        alignItems: "center",
+        p: 2,
       }}
     >
       <Box flexGrow={1} display="flex" alignItems="center">
         <Avatar
-          sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }}
+          sx={{ display: { xs: "none", sm: "flex" }, mr: 1 }}
           alt={user.name}
           src={user.avatar}
         />
         <MessageInputWrapper
           autoFocus
-          placeholder={t('Write your message here...')}
+          placeholder={t("Write your message here...")}
           fullWidth
         />
       </Box>
       <Box>
-        <Tooltip arrow placement="top" title={t('Choose an emoji')}>
+        <Tooltip arrow placement="top" title={t("Choose an emoji")}>
           <IconButton
             sx={{ fontSize: theme.typography.pxToRem(16) }}
             color="primary"
@@ -63,7 +61,7 @@ function BottomBarContent() {
           </IconButton>
         </Tooltip>
         <Input accept="image/*" id="messenger-upload-file" type="file" />
-        <Tooltip arrow placement="top" title={t('Attach a file')}>
+        <Tooltip arrow placement="top" title={t("Attach a file")}>
           <label htmlFor="messenger-upload-file">
             <IconButton sx={{ mx: 1 }} color="primary" component="span">
               <AttachFileTwoToneIcon fontSize="small" />
@@ -71,7 +69,7 @@ function BottomBarContent() {
           </label>
         </Tooltip>
         <Button startIcon={<SendTwoToneIcon />} variant="contained">
-          {t('Send')}
+          {t("Send")}
         </Button>
       </Box>
     </Box>

@@ -1,50 +1,51 @@
-import { setHours, setMinutes, subDays, addDays } from "date-fns";
-import _ from "lodash";
-import { mock } from "src/utils/axios";
-import randomId from "src/utils/randomId";
+import { setHours, setMinutes, subDays, addDays } from 'date-fns';
+import _ from 'lodash';
+import { mock } from 'src/utils/axios';
+import randomId from 'src/utils/randomId';
 
 let events = [
   {
-    id: "1",
+    id: '1',
     allDay: false,
-    color: "#57CA22",
-    description: "",
+    color: '#57CA22',
+    description: '',
     end: setHours(setMinutes(subDays(new Date(), 1), 14), 6),
     start: setHours(setMinutes(subDays(new Date(), 1), 8), 6),
-    title: "Investors Meeting",
+    title: 'Investors Meeting'
   },
   {
-    id: "2",
+    id: '2',
     allDay: false,
-    color: "#FF1943",
-    description: "",
-    end: setHours(setMinutes(addDays(new Date(), 2), 5), 4),
-    start: setHours(setMinutes(addDays(new Date(), 2), 7), 3),
-    title: "UX Design Gathering",
+    color: '#FF1943',
+    description: '',
+    end: setHours(setMinutes(addDays(new Date(), 1), 14), 6),
+    start: setHours(setMinutes(addDays(new Date(), 1), 8), 6),
+    title: 'UX Design Gathering'
   },
   {
-    id: "3",
+    id: '3',
     allDay: false,
-    color: "#1975FF",
-    description: "",
+    color: '#1975FF',
+    description: '',
     end: setHours(setMinutes(subDays(new Date(), 3), 3), 1),
     start: setHours(setMinutes(subDays(new Date(), 4), 3), 2),
-    title: "Set up a board meeting",
+    title: 'Set up a board meeting'
   },
   {
-    id: "4",
+    id: '4',
     allDay: false,
-    color: "#1975FF",
-    description: "",
+    color: '#1975FF',
+    description: '',
     end: setHours(setMinutes(addDays(new Date(), 5), 1), 4),
     start: setHours(setMinutes(addDays(new Date(), 5), 1), 4),
-    title: "Call all developers",
-  },
+    title: 'Call all developers'
+  }
 ];
 
-mock.onGet("/api/calendar/meetings").reply(200, { events });
+mock.onGet('/api/calendar/meetings').reply(200, { events });
 
-mock.onPost("/api/calendar/meetings/create").reply((request) => {
+mock.onPost('/api/calendar/meetings/create').reply((request) => {
+
   try {
     const { allDay, description, end, start, title } = JSON.parse(request.data);
     const event = {
@@ -54,6 +55,7 @@ mock.onPost("/api/calendar/meetings/create").reply((request) => {
       end,
       start,
       title,
+
     };
 
     events = [...events, event];
@@ -61,11 +63,12 @@ mock.onPost("/api/calendar/meetings/create").reply((request) => {
     return [200, { event }];
   } catch (err) {
     console.error(err);
-    return [500, { message: "Encountered a server error" }];
+    return [500, { message: 'Encountered a server error' }];
   }
 });
 
-mock.onPost("/api/calendar/meetings/update").reply((request) => {
+mock.onPost('/api/calendar/meetings/update').reply((request) => {
+
   try {
     const { eventId, update } = JSON.parse(request.data);
     let event = null;
@@ -82,11 +85,12 @@ mock.onPost("/api/calendar/meetings/update").reply((request) => {
     return [200, { event }];
   } catch (err) {
     console.error(err);
-    return [500, { message: "Encountered a server error" }];
+    return [500, { message: 'Encountered a server error' }];
   }
 });
 
-mock.onPost("/api/calendar/meetings/delete").reply((request) => {
+mock.onPost('/api/calendar/meetings/delete').reply((request) => {
+
   try {
     const { eventId } = JSON.parse(request.data);
 
@@ -95,6 +99,7 @@ mock.onPost("/api/calendar/meetings/delete").reply((request) => {
     return [200, { eventId }];
   } catch (err) {
     console.error(err);
-    return [500, { message: "Encountered a server error" }];
+    return [500, { message: 'Encountered a server error' }];
+
   }
 });

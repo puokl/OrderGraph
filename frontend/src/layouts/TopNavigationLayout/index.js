@@ -9,7 +9,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
-
+import SidebarTopSection from "../AccentSidebarLayout/Sidebar/SidebarTopSection";
+import SidebarMenu from "../AccentSidebarLayout/Sidebar/SidebarMenu"
 import Scrollbar from "src/components/Scrollbar";
 import { SidebarContext } from "src/contexts/SidebarContext";
 import ThemeSettings from "src/components/ThemeSettings";
@@ -115,10 +116,10 @@ const TopNavigationLayout = () => {
                       mt: 1,
                       mb: 3,
                     }}
-                  >
+                  >SidebarTopSection
                     <Logo />
                   </Box>
-                  <SidebarTopSection />
+                  < SidebarTopSection />
                 </TopSection>
                 <SidebarMenu />
               </Scrollbar>

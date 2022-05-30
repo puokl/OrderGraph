@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-for */
 import PropTypes from 'prop-types';
 
 import {
