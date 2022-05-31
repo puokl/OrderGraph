@@ -1,7 +1,7 @@
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
-import { Formik } from 'formik';
-import { Link as RouterLink } from 'react-router-dom';
+import { Formik } from "formik";
+import { Link as RouterLink } from "react-router-dom";
 
 import {
   Box,
@@ -12,11 +12,11 @@ import {
   Typography,
   Link,
   FormControlLabel,
-  CircularProgress
-} from '@mui/material';
-import useAuth from 'src/hooks/useAuth';
-import useRefMounted from 'src/hooks/useRefMounted';
-import { useTranslation } from 'react-i18next';
+  CircularProgress,
+} from "@mui/material";
+import useAuth from "src/hooks/useAuth";
+import useRefMounted from "src/hooks/useRefMounted";
+import { useTranslation } from "react-i18next";
 
 const LoginJWT = () => {
   const { login } = useAuth();
@@ -26,23 +26,23 @@ const LoginJWT = () => {
   return (
     <Formik
       initialValues={{
-        email: 'demo@example.com',
-        password: 'TokyoPass1@',
+        email: "demo@example.com",
+        password: "TokyoPass1@",
         terms: true,
-        submit: null
+        submit: null,
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
-          .email(t('The email provided should be a valid email address'))
+          .email(t("The email provided should be a valid email address"))
           .max(255)
-          .required(t('The email field is required')),
+          .required(t("The email field is required")),
         password: Yup.string()
           .max(255)
-          .required(t('The password field is required')),
+          .required(t("The password field is required")),
         terms: Yup.boolean().oneOf(
           [true],
-          t('You must agree to our terms and conditions')
-        )
+          t("You must agree to our terms and conditions")
+        ),
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
@@ -69,7 +69,7 @@ const LoginJWT = () => {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
       }) => (
         <form noValidate onSubmit={handleSubmit}>
           <TextField
@@ -78,7 +78,7 @@ const LoginJWT = () => {
             margin="normal"
             autoFocus
             helperText={touched.email && errors.email}
-            label={t('Email address')}
+            label={t("Email address")}
             name="email"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -91,7 +91,7 @@ const LoginJWT = () => {
             fullWidth
             margin="normal"
             helperText={touched.password && errors.password}
-            label={t('Password')}
+            label={t("Password")}
             name="password"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -116,9 +116,9 @@ const LoginJWT = () => {
               label={
                 <>
                   <Typography variant="body2">
-                    {t('I accept the')}{' '}
+                    {t("I accept the")}{" "}
                     <Link component="a" href="#">
-                      {t('terms and conditions')}
+                      {t("terms and conditions")}
                     </Link>
                     .
                   </Typography>
@@ -126,7 +126,7 @@ const LoginJWT = () => {
               }
             />
             <Link component={RouterLink} to="/account/recover-password">
-              <b>{t('Lost password?')}</b>
+              <b>{t("Lost password?")}</b>
             </Link>
           </Box>
 
@@ -136,7 +136,7 @@ const LoginJWT = () => {
 
           <Button
             sx={{
-              mt: 3
+              mt: 3,
             }}
             color="primary"
             startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
@@ -146,7 +146,7 @@ const LoginJWT = () => {
             size="large"
             variant="contained"
           >
-            {t('Sign in')}
+            {t("Sign in now")}
           </Button>
         </form>
       )}

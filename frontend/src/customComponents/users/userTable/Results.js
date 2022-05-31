@@ -174,7 +174,8 @@ const applyPagination = (users, page, limit) => {
   return users.slice(page * limit, page * limit + limit);
 };
 
-const Results = ({ users }) => {
+const Results = (props) => {
+  const { users } = props;
   const [selectedItems, setSelectedUsers] = useState([]);
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();

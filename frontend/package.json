@@ -23,7 +23,7 @@
     "@mui/lab": "5.0.0-alpha.55",
     "@mui/material": "5.1.1",
     "@mui/styles": "5.1.1",
-    "@reduxjs/toolkit": "1.6.2",
+    "@reduxjs/toolkit": "^1.8.2",
     "apexcharts": "3.30.0",
     "aws-amplify": "4.3.7",
     "axios": "0.24.0",

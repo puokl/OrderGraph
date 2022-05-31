@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import axios from "src/utils/axios";
+// import axios from "src/utils/axios";
+import axios from "src/utils/axios2";
 
 import { Helmet } from "react-helmet-async";
 import Footer from "src/components/Footer";
@@ -16,21 +17,20 @@ function TestUsers() {
   const isMountedRef = useRefMounted();
   const [users, setUsers] = useState([]);
 
-  const getUsers = useCallback(async () => {
+  const getUsers = async () => {
     try {
       const response = await axios.get("/api/users");
-
-      if (isMountedRef.current) {
-        setUsers(response.data.users);
-      }
+      console.log(response);
+      setUsers(response.data);
     } catch (err) {
       console.error(err);
     }
-  }, [isMountedRef]);
+  };
 
   useEffect(() => {
     getUsers();
-  }, [getUsers]);
+    console.log(process.env.REACT_APP_BASE_URL);
+  }, []);
 
   return (
     <div
