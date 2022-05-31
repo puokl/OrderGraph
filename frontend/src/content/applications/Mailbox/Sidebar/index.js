@@ -141,7 +141,6 @@ const MailboxSidebar = () => {
 };
 
 MailboxSidebar.propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
   containerRef: PropTypes.any.isRequired
 };
 
