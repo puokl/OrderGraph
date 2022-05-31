@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import wait from 'src/utils/wait';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { useState } from "react";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import { useTranslation } from "react-i18next";
+import { styled } from "@mui/material/styles";
+import wait from "src/utils/wait";
+import ReactQuill from "react-quill";
+// import 'react-quill/dist/quill.snow.css';
 
 import {
   Grid,
@@ -26,15 +26,15 @@ import {
   Avatar,
   Autocomplete,
   Button,
-  useTheme
-} from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
-import { useDropzone } from 'react-dropzone';
-import { useSnackbar } from 'notistack';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
+  useTheme,
+} from "@mui/material";
+import DatePicker from "@mui/lab/DatePicker";
+import { useDropzone } from "react-dropzone";
+import { useSnackbar } from "notistack";
+import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
+import CloudUploadTwoToneIcon from "@mui/icons-material/CloudUploadTwoTone";
+import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
+import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
 
 const BoxUploadWrapper = styled(Box)(
   ({ theme }) => `
@@ -47,7 +47,7 @@ const BoxUploadWrapper = styled(Box)(
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: ${theme.transitions.create(['border', 'background'])};
+    transition: ${theme.transitions.create(["border", "background"])};
 
     &:hover {
       background: ${theme.colors.alpha.white[100]};
@@ -113,10 +113,10 @@ const AvatarDanger = styled(Avatar)(
 );
 
 const projectTags = [
-  { title: 'Development' },
-  { title: 'Design Project' },
-  { title: 'Marketing Research' },
-  { title: 'Software' }
+  { title: "Development" },
+  { title: "Design Project" },
+  { title: "Marketing Research" },
+  { title: "Software" },
 ];
 
 function PageHeader() {
@@ -127,25 +127,25 @@ function PageHeader() {
 
   const members = [
     {
-      avatar: '/static/images/avatars/1.jpg',
-      name: 'Maren Lipshutz'
+      avatar: "/static/images/avatars/1.jpg",
+      name: "Maren Lipshutz",
     },
     {
-      avatar: '/static/images/avatars/2.jpg',
-      name: 'Zain Vetrovs'
+      avatar: "/static/images/avatars/2.jpg",
+      name: "Zain Vetrovs",
     },
     {
-      avatar: '/static/images/avatars/3.jpg',
-      name: 'Hanna Siphron'
+      avatar: "/static/images/avatars/3.jpg",
+      name: "Hanna Siphron",
     },
     {
-      avatar: '/static/images/avatars/4.jpg',
-      name: 'Cristofer Aminoff'
+      avatar: "/static/images/avatars/4.jpg",
+      name: "Cristofer Aminoff",
     },
     {
-      avatar: '/static/images/avatars/5.jpg',
-      name: 'Maria Calzoni'
-    }
+      avatar: "/static/images/avatars/5.jpg",
+      name: "Maria Calzoni",
+    },
   ];
 
   const {
@@ -154,9 +154,9 @@ function PageHeader() {
     isDragAccept,
     isDragReject,
     getRootProps,
-    getInputProps
+    getInputProps,
   } = useDropzone({
-    accept: 'image/jpeg, image/png'
+    accept: "image/jpeg, image/png",
   });
 
   const files = acceptedFiles.map((file, index) => (
@@ -178,13 +178,13 @@ function PageHeader() {
   };
 
   const handleCreateProjectSuccess = () => {
-    enqueueSnackbar(t('A new project has been created successfully'), {
-      variant: 'success',
+    enqueueSnackbar(t("A new project has been created successfully"), {
+      variant: "success",
       anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right'
+        vertical: "top",
+        horizontal: "right",
       },
-      TransitionComponent: Zoom
+      TransitionComponent: Zoom,
     });
 
     setOpen(false);
@@ -195,22 +195,22 @@ function PageHeader() {
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <Typography variant="h3" component="h3" gutterBottom>
-            {t('Projects')}
+            {t("Projects")}
           </Typography>
           <Typography variant="subtitle2">
-            {t('These are your active projects')}
+            {t("These are your active projects")}
           </Typography>
         </Grid>
         <Grid item>
           <Button
             sx={{
-              mt: { xs: 2, sm: 0 }
+              mt: { xs: 2, sm: 0 },
             }}
             onClick={handleCreateProjectOpen}
             variant="contained"
             startIcon={<AddTwoToneIcon fontSize="small" />}
           >
-            {t('Create new project')}
+            {t("Create new project")}
           </Button>
         </Grid>
       </Grid>
@@ -222,25 +222,25 @@ function PageHeader() {
       >
         <DialogTitle
           sx={{
-            p: 3
+            p: 3,
           }}
         >
           <Typography variant="h4" gutterBottom>
-            {t('Create new project')}
+            {t("Create new project")}
           </Typography>
           <Typography variant="subtitle2">
-            {t('Use this dialog window to add a new project')}
+            {t("Use this dialog window to add a new project")}
           </Typography>
         </DialogTitle>
         <Formik
           initialValues={{
-            title: '',
-            submit: null
+            title: "",
+            submit: null,
           }}
           validationSchema={Yup.object().shape({
             title: Yup.string()
               .max(255)
-              .required(t('The title field is required'))
+              .required(t("The title field is required")),
           })}
           onSubmit={async (
             _values,
@@ -267,13 +267,13 @@ function PageHeader() {
             handleSubmit,
             isSubmitting,
             touched,
-            values
+            values,
           }) => (
             <form onSubmit={handleSubmit}>
               <DialogContent
                 dividers
                 sx={{
-                  p: 3
+                  p: 3,
                 }}
               >
                 <Grid container spacing={0}>
@@ -283,22 +283,22 @@ function PageHeader() {
                     sm={4}
                     md={3}
                     justifyContent="flex-end"
-                    textAlign={{ sm: 'right' }}
+                    textAlign={{ sm: "right" }}
                   >
                     <Box
                       pr={3}
                       sx={{
                         pt: `${theme.spacing(2)}`,
-                        pb: { xs: 1, md: 0 }
+                        pb: { xs: 1, md: 0 },
                       }}
                       alignSelf="center"
                     >
-                      <b>{t('Project title')}:</b>
+                      <b>{t("Project title")}:</b>
                     </Box>
                   </Grid>
                   <Grid
                     sx={{
-                      mb: `${theme.spacing(3)}`
+                      mb: `${theme.spacing(3)}`,
                     }}
                     item
                     xs={12}
@@ -310,26 +310,26 @@ function PageHeader() {
                       fullWidth
                       helperText={touched.title && errors.title}
                       name="title"
-                      placeholder={t('Project title here...')}
+                      placeholder={t("Project title here...")}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.title}
                       variant="outlined"
                     />
                   </Grid>
-                  <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                  <Grid item xs={12} sm={4} md={3} textAlign={{ sm: "right" }}>
                     <Box
                       pr={3}
                       sx={{
-                        pb: { xs: 1, md: 0 }
+                        pb: { xs: 1, md: 0 },
                       }}
                     >
-                      <b>{t('Description')}:</b>
+                      <b>{t("Description")}:</b>
                     </Box>
                   </Grid>
                   <Grid
                     sx={{
-                      mb: `${theme.spacing(3)}`
+                      mb: `${theme.spacing(3)}`,
                     }}
                     item
                     xs={12}
@@ -346,22 +346,22 @@ function PageHeader() {
                     sm={4}
                     md={3}
                     justifyContent="flex-end"
-                    textAlign={{ sm: 'right' }}
+                    textAlign={{ sm: "right" }}
                   >
                     <Box
                       pr={3}
                       sx={{
                         pt: `${theme.spacing(2)}`,
-                        pb: { xs: 1, md: 0 }
+                        pb: { xs: 1, md: 0 },
                       }}
                       alignSelf="center"
                     >
-                      <b>{t('Tags')}:</b>
+                      <b>{t("Tags")}:</b>
                     </Box>
                   </Grid>
                   <Grid
                     sx={{
-                      mb: `${theme.spacing(3)}`
+                      mb: `${theme.spacing(3)}`,
                     }}
                     item
                     xs={12}
@@ -371,7 +371,7 @@ function PageHeader() {
                     <Autocomplete
                       multiple
                       sx={{
-                        m: 0
+                        m: 0,
                       }}
                       limitTags={2}
                       options={projectTags}
@@ -381,24 +381,24 @@ function PageHeader() {
                           {...params}
                           fullWidth
                           variant="outlined"
-                          placeholder={t('Select project tags...')}
+                          placeholder={t("Select project tags...")}
                         />
                       )}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                  <Grid item xs={12} sm={4} md={3} textAlign={{ sm: "right" }}>
                     <Box
                       pr={3}
                       sx={{
-                        pb: { xs: 1, md: 0 }
+                        pb: { xs: 1, md: 0 },
                       }}
                     >
-                      <b>{t('Upload files')}:</b>
+                      <b>{t("Upload files")}:</b>
                     </Box>
                   </Grid>
                   <Grid
                     sx={{
-                      mb: `${theme.spacing(3)}`
+                      mb: `${theme.spacing(3)}`,
                     }}
                     item
                     xs={12}
@@ -414,10 +414,10 @@ function PageHeader() {
                           </AvatarSuccess>
                           <Typography
                             sx={{
-                              mt: 2
+                              mt: 2,
                             }}
                           >
-                            {t('Drop the files to start uploading')}
+                            {t("Drop the files to start uploading")}
                           </Typography>
                         </>
                       )}
@@ -428,10 +428,10 @@ function PageHeader() {
                           </AvatarDanger>
                           <Typography
                             sx={{
-                              mt: 2
+                              mt: 2,
                             }}
                           >
-                            {t('You cannot upload these file types')}
+                            {t("You cannot upload these file types")}
                           </Typography>
                         </>
                       )}
@@ -442,10 +442,10 @@ function PageHeader() {
                           </AvatarWrapper>
                           <Typography
                             sx={{
-                              mt: 2
+                              mt: 2,
                             }}
                           >
-                            {t('Drag & drop files here')}
+                            {t("Drag & drop files here")}
                           </Typography>
                         </>
                       )}
@@ -455,16 +455,16 @@ function PageHeader() {
                         <Alert
                           sx={{
                             py: 0,
-                            mt: 2
+                            mt: 2,
                           }}
                           severity="success"
                         >
-                          {t('You have uploaded')} <b>{files.length}</b>{' '}
-                          {t('files')}!
+                          {t("You have uploaded")} <b>{files.length}</b>{" "}
+                          {t("files")}!
                         </Alert>
                         <Divider
                           sx={{
-                            mt: 2
+                            mt: 2,
                           }}
                         />
                         <List disablePadding component="div">
@@ -479,22 +479,22 @@ function PageHeader() {
                     sm={4}
                     md={3}
                     justifyContent="flex-end"
-                    textAlign={{ sm: 'right' }}
+                    textAlign={{ sm: "right" }}
                   >
                     <Box
                       pr={3}
                       sx={{
                         pt: `${theme.spacing(2)}`,
-                        pb: { xs: 1, md: 0 }
+                        pb: { xs: 1, md: 0 },
                       }}
                       alignSelf="center"
                     >
-                      <b>{t('Members')}:</b>
+                      <b>{t("Members")}:</b>
                     </Box>
                   </Grid>
                   <Grid
                     sx={{
-                      mb: `${theme.spacing(3)}`
+                      mb: `${theme.spacing(3)}`,
                     }}
                     item
                     xs={12}
@@ -504,7 +504,7 @@ function PageHeader() {
                     <Autocomplete
                       multiple
                       sx={{
-                        m: 0
+                        m: 0,
                       }}
                       limitTags={2}
                       options={members}
@@ -512,7 +512,7 @@ function PageHeader() {
                         <li {...props}>
                           <Avatar
                             sx={{
-                              mr: 1
+                              mr: 1,
                             }}
                             src={option.avatar}
                           />
@@ -526,9 +526,9 @@ function PageHeader() {
                           variant="outlined"
                           fullWidth
                           InputLabelProps={{
-                            shrink: true
+                            shrink: true,
                           }}
-                          placeholder={t('Select project members...')}
+                          placeholder={t("Select project members...")}
                         />
                       )}
                       renderTags={(members, getTagProps) =>
@@ -549,22 +549,22 @@ function PageHeader() {
                     sm={4}
                     md={3}
                     justifyContent="flex-end"
-                    textAlign={{ sm: 'right' }}
+                    textAlign={{ sm: "right" }}
                   >
                     <Box
                       pr={3}
                       sx={{
                         pt: `${theme.spacing(2)}`,
-                        pb: { xs: 1, md: 0 }
+                        pb: { xs: 1, md: 0 },
                       }}
                       alignSelf="center"
                     >
-                      <b>{t('Due Date')}:</b>
+                      <b>{t("Due Date")}:</b>
                     </Box>
                   </Grid>
                   <Grid
                     sx={{
-                      mb: `${theme.spacing(3)}`
+                      mb: `${theme.spacing(3)}`,
                     }}
                     item
                     xs={12}
@@ -578,7 +578,7 @@ function PageHeader() {
                       }}
                       renderInput={(params) => (
                         <TextField
-                          placeholder={t('Select due date...')}
+                          placeholder={t("Select due date...")}
                           {...params}
                         />
                       )}
@@ -590,11 +590,11 @@ function PageHeader() {
                     xs={12}
                     sm={4}
                     md={3}
-                    textAlign={{ sm: 'right' }}
+                    textAlign={{ sm: "right" }}
                   />
                   <Grid
                     sx={{
-                      mb: `${theme.spacing(3)}`
+                      mb: `${theme.spacing(3)}`,
                     }}
                     item
                     xs={12}
@@ -603,7 +603,7 @@ function PageHeader() {
                   >
                     <Button
                       sx={{
-                        mr: 2
+                        mr: 2,
                       }}
                       type="submit"
                       startIcon={
@@ -613,7 +613,7 @@ function PageHeader() {
                       variant="contained"
                       size="large"
                     >
-                      {t('Create project')}
+                      {t("Create project")}
                     </Button>
                     <Button
                       color="secondary"
@@ -621,7 +621,7 @@ function PageHeader() {
                       variant="outlined"
                       onClick={handleCreateProjectClose}
                     >
-                      {t('Cancel')}
+                      {t("Cancel")}
                     </Button>
                   </Grid>
                 </Grid>
