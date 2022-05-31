@@ -16,8 +16,8 @@ const generateToken = (id) =>{
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-    const {name, email, password} = req.body
-        if (!name || !email || !password) {
+    const {firstname, lastname, email, password} = req.body
+        if (!firstname || !lastname || !email || !password) {
             res.status(400)
             throw new Error("Please add all fields")
         }
@@ -27,7 +27,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (userExists) {
         res.status(400)
-        throw new Error("User already exists")
+        throw new Error("Email already in use")
     }
 
     // hash password
@@ -36,13 +36,14 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // Create user
     const user = await User.create({
-        name, email, password: hashedPassword
+        firstname, lastname, email, password: hashedPassword
     })
 
     if (user) {
         res.status(201).json({
             _id:user.id,
-            name: user.name,
+            firstname: user.firstname,
+            lastname: user.lasttname,
             email: user.email,
             token: generateToken(user._id)
         })
