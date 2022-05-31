@@ -16,11 +16,19 @@ const AddClient = Loader(
   lazy(() => import("src/customComponents/clients/createNewClients"))
 );
 
+const ClientOverview = Loader(
+  lazy(()=> import("src/customComponents/clients/ClientOverview"))
+)
+
 const clientsRoutes = [
   {
     path: "add",
     element: <AddClient />,
   },
+  {
+    path: "overview",
+    element: <ClientOverview/>
+  }
 ];
 
 export default clientsRoutes;
