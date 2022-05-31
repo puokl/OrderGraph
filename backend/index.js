@@ -1,16 +1,21 @@
-const express = require("express");
 const colors = require("colors");
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const port = process.env.PORT || 6000;
+
+// express
+const express = require("express");
+const app = express();
+
+// database
 const connectDB = require("./src/config/db");
 const cors = require("cors");
-// const authRoute = require("./src/routes/auth");
-const port = process.env.PORT || 8000;
 
-// middlewares
+// routers
+const userRouter = require("./src/routes/userRoutes");
+const organizationRouter = require("./src/routes/organizationRoutes");
+
 dotenv.config();
 
-const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -37,8 +42,10 @@ app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 // // end Cors
 
-// app.use("/api/auth", authRoute)
-app.use("/api/users", require("./src/routes/userRoutes"));
+app.use("/api/users", userRouter);
+app.use("/api/users", organizationRouter);
+
+connectDB();
 
 app.listen(port, () => {
   console.log(`Backend server is running on port ${port}`);
