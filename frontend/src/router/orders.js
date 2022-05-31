@@ -10,17 +10,17 @@ const Loader = (Component) => (props) =>
     </Suspense>
   );
 
-// Dashboards
+// Orders
 
 const Calendar = Loader(
   lazy(() => import("src/content/applications/Calendar"))
 );
 
-const dashboardsRoutes = [
+const ordersRoutes = [
   {
     path: "/",
     element: <Calendar />,
   },
 ];
 
-export default dashboardsRoutes;
+export default ordersRoutes;

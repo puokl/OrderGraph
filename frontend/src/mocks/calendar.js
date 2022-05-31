@@ -45,6 +45,7 @@ let events = [
 mock.onGet('/api/calendar/meetings').reply(200, { events });
 
 mock.onPost('/api/calendar/meetings/create').reply((request) => {
+
   try {
     const { allDay, description, end, start, title } = JSON.parse(request.data);
     const event = {
@@ -53,7 +54,8 @@ mock.onPost('/api/calendar/meetings/create').reply((request) => {
       description,
       end,
       start,
-      title
+      title,
+
     };
 
     events = [...events, event];
@@ -66,6 +68,7 @@ mock.onPost('/api/calendar/meetings/create').reply((request) => {
 });
 
 mock.onPost('/api/calendar/meetings/update').reply((request) => {
+
   try {
     const { eventId, update } = JSON.parse(request.data);
     let event = null;
@@ -87,6 +90,7 @@ mock.onPost('/api/calendar/meetings/update').reply((request) => {
 });
 
 mock.onPost('/api/calendar/meetings/delete').reply((request) => {
+
   try {
     const { eventId } = JSON.parse(request.data);
 
@@ -96,5 +100,6 @@ mock.onPost('/api/calendar/meetings/delete').reply((request) => {
   } catch (err) {
     console.error(err);
     return [500, { message: 'Encountered a server error' }];
+
   }
 });
