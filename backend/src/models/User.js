@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-    name: {
+    firstname: {
         type: String,
         required: [true, "Please add a name"],
         min: 3,
@@ -28,8 +28,9 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Please add a role"],
         min: 3,
         max: 20,
-        enum: ['worker', 'admin'],
-      default: 'worker',
+        enum: ["worker", "admin"],
+        default: "worker"
+    
     },
     password: {
       type: String,

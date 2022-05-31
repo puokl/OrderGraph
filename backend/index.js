@@ -1,6 +1,6 @@
 const colors = require("colors");
 const dotenv = require("dotenv");
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 8000;
 
 // express
 const express = require("express");
@@ -19,7 +19,6 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-connectDB();
 
 // // Cors
 const corsOptions = {

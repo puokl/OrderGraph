@@ -4,7 +4,6 @@ const {
     registerOrganization,
 updateOrganization,
 getOrganization
-
 } = require("../controllers/organizationController")
 
 const {protect} = require("../middleware/authMiddleware")
