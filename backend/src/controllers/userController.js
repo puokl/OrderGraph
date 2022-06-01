@@ -104,10 +104,51 @@ const testUser = asyncHandler(async (req, res) => {
   res.status(200).json(bob);
 });
 
+
+// @desc    Delete user data
+// @route   DELETE /api/users/test
+// @access  Private
+const deleteUser = asyncHandler(async (req, res) => {
+   const userToDelete = req.body._id;
+  try {
+     const deleteUsers = await User.deleteMany(
+    {_id: {
+       $in: [...userToDelete]
+     }
+    },
+    
+  ).then(function(err, result) {
+      if (err) {
+        res.send(err)
+      } else {
+        res.send(result)
+      }
+    })
+      
+  } catch (error) {
+    console.log(error);
+  }
+ 
+});
+
+
+// router.delete("/:id", async (req, res) => {
+//   if (req.bosy.userId === req.params.id || req.body.isAdmin) {
+//     try {
+//       const user = await User.findByIdAndDelete(req.params.id);
+//       res.status(200).json("Account has been deleted");
+//     } catch (error) {
+//       return res.status(500).json(error);
+//     }
+//   } else {
+//     return res.status(403).json("You can delete only your account!");
+//   }
+// });
 module.exports = {
   registerUser,
   loginUser,
   getUser,
   testUser,
   getUsers,
+  deleteUser
 };

@@ -13,6 +13,7 @@ const cors = require("cors");
 // routers
 const userRouter = require("./src/routes/userRoutes");
 const organizationRouter = require("./src/routes/organizationRoutes");
+const orderRouter = require("./src/routes/orderRoute")
 
 dotenv.config();
 
@@ -42,7 +43,8 @@ app.use(cors(corsOptions));
 // // end Cors
 
 app.use("/api/users", userRouter);
-app.use("/api/users", organizationRouter);
+app.use("/api/organization", organizationRouter);
+app.use("/api/order", orderRouter)
 
 connectDB();
 

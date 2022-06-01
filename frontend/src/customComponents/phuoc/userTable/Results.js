@@ -140,7 +140,7 @@ const applyFilters = (users, query, filters) => {
     let matches = true;
 
     if (query) {
-      const properties = ["email", "firstname", "lastname", "role"];
+      const properties = ["email", "firstname", "lastname"];
       let containsQuery = false;
 
       properties.forEach((property) => {
