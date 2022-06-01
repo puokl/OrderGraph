@@ -21,6 +21,10 @@ const clientsRoutes = [
     path: "add",
     element: <AddClient />,
   },
+  {
+    path: ":id",
+    element: <></>,
+  },
 ];
 
 export default clientsRoutes;

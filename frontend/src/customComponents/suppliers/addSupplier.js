@@ -33,70 +33,70 @@ const handleQueryChange = (event) => {
 
 const DialogWrapper = styled(Dialog)(
   () => `
-      .MuiDialog-paper {
-        overflow: visible;
-      }
-`
+        .MuiDialog-paper {
+          overflow: visible;
+        }
+  `
 );
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
-      background-color: ${theme.colors.error.lighter};
-      color: ${theme.colors.error.main};
-      width: ${theme.spacing(12)};
-      height: ${theme.spacing(12)};
-
-      .MuiSvgIcon-root {
-        font-size: ${theme.typography.pxToRem(45)};
-      }
-`
+        background-color: ${theme.colors.error.lighter};
+        color: ${theme.colors.error.main};
+        width: ${theme.spacing(12)};
+        height: ${theme.spacing(12)};
+  
+        .MuiSvgIcon-root {
+          font-size: ${theme.typography.pxToRem(45)};
+        }
+  `
 );
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
-
-  position: relative;
-  overflow: visible;
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: inherit;
-    z-index: 1;
-    transition: ${theme.transitions.create(["box-shadow"])};
-  }
-      
-    &.Mui-selected::after {
-      box-shadow: 0 0 0 3px ${theme.colors.primary.main};
+  
+    position: relative;
+    overflow: visible;
+  
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border-radius: inherit;
+      z-index: 1;
+      transition: ${theme.transitions.create(["box-shadow"])};
     }
-  `
+        
+      &.Mui-selected::after {
+        box-shadow: 0 0 0 3px ${theme.colors.primary.main};
+      }
+    `
 );
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
-     background: ${theme.colors.error.main};
-     color: ${theme.palette.error.contrastText};
-
-     &:hover {
-        background: ${theme.colors.error.dark};
-     }
-    `
+       background: ${theme.colors.error.main};
+       color: ${theme.palette.error.contrastText};
+  
+       &:hover {
+          background: ${theme.colors.error.dark};
+       }
+      `
 );
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
-     background: ${theme.colors.error.lighter};
-     color: ${theme.colors.error.main};
-     padding: ${theme.spacing(0.75)};
-
-     &:hover {
-      background: ${lighten(theme.colors.error.lighter, 0.4)};
-     }
-`
+       background: ${theme.colors.error.lighter};
+       color: ${theme.colors.error.main};
+       padding: ${theme.spacing(0.75)};
+  
+       &:hover {
+        background: ${lighten(theme.colors.error.lighter, 0.4)};
+       }
+  `
 );
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -200,13 +200,12 @@ const handleLimitChange = (event) => {
   setLimit(parseInt(event.target.value));
 };
 
-function AddClient() {
+function AddSupplier() {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
-  const [showContact, setShowContact] = useState(false);
   const navigate = useNavigate();
-  const navigateToClientOverview = () => {
-    navigate("/clients/overview");
+  const navigateToSupplierOverview = () => {
+    navigate("/suppliers/overview");
   };
 
   const projectTags = [{ title: "Person" }, { title: "Company" }];
@@ -261,7 +260,7 @@ function AddClient() {
               mb: 3,
             }}
           >
-            <CardHeader title="Client Details" />
+            <CardHeader title="Supplier Details" />
             <Grid container spacing={1}>
               {/* Client Type */}
               <Grid item xs={12}>
@@ -272,7 +271,6 @@ function AddClient() {
                       m: 0,
                     }}
                     limitTags={2}
-                    onInputChange={() => setShowContact(!showContact)}
                     options={projectTags}
                     getOptionLabel={(option) => option.title}
                     renderInput={(params) => (
@@ -295,12 +293,12 @@ function AddClient() {
                       m: 0,
                     }}
                     /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
                     /*                     onChange={handleQueryChange} */
                     placeholder={t("Client Name...")}
                     /*                     value={query} */
@@ -318,12 +316,12 @@ function AddClient() {
                       m: 0,
                     }}
                     /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
                     /*                     onChange={handleQueryChange} */
                     placeholder={t("E-Mail...")}
                     /*                     value={query} */
@@ -342,12 +340,12 @@ function AddClient() {
                       m: 0,
                     }}
                     /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
                     /*                     onChange={handleQueryChange} */
                     placeholder={t("Phone Number...")}
                     /*                     value={query} */
@@ -423,107 +421,105 @@ function AddClient() {
               </Grid>
               {/* Divider, New Grid, Card, only shows visible if Project Tags = Company  */}
 
-              {showContact ? (
-                <>
-                  <CardHeader title="Contact Person" />
-                  <Grid
-                    sx={{
-                      px: 1,
-                    }}
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="stretch"
-                    spacing={1}
-                  >
-                    {/* Company Name Contact Person */}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <Box p={1}>
-                        <TextField
-                          sx={{
-                            m: 0,
-                          }}
-                          /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
-                          /*                     onChange={handleQueryChange} */
-                          placeholder={t("Name...")}
-                          /*                     value={query} */
-                          fullWidth
-                          variant="outlined"
-                          lable="Name"
-                        />
-                      </Box>
-                    </Grid>
-                    {/* Role */}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <Box p={1}>
-                        <Autocomplete
-                          multiple
-                          sx={{
-                            m: 0,
-                          }}
-                          limitTags={2}
-                          options={roleTags}
-                          getOptionLabel={(option) => option.title}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              fullWidth
-                              variant="outlined"
-                              label={t("Role")}
-                              placeholder={t("Role...")}
-                            />
-                          )}
-                        />
-                      </Box>
-                    </Grid>
-                    {/* Phone  Number */}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <Box p={1}>
-                        <TextField
-                          sx={{
-                            m: 0,
-                          }}
-                          /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
-                          /*                     onChange={handleQueryChange} */
-                          placeholder={t("Phone Number...")}
-                          /*                     value={query} */
-                          fullWidth
-                          variant="outlined"
-                          lable="Phone Number"
-                          id="PhoneNumber"
-                        />
-                      </Box>
-                    </Grid>
-                    {/* E-Mail */}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <Box p={1}>
-                        <TextField
-                          sx={{
-                            m: 0,
-                          }}
-                          placeholder={t("E-Mail...")}
-                          fullWidth
-                          variant="outlined"
-                          lable="E-Mail"
-                          id="E-Mail"
-                        />
-                      </Box>
-                    </Grid>
+              <>
+                <CardHeader title="Contact Person" />
+                <Grid
+                  sx={{
+                    px: 1,
+                  }}
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="stretch"
+                  spacing={1}
+                >
+                  {/* Company Name Contact Person */}
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box p={1}>
+                      <TextField
+                        sx={{
+                          m: 0,
+                        }}
+                        /*                     InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
+                        /*                     onChange={handleQueryChange} */
+                        placeholder={t("Name...")}
+                        /*                     value={query} */
+                        fullWidth
+                        variant="outlined"
+                        lable="Name"
+                      />
+                    </Box>
                   </Grid>
-                </>
-              ) : null}
+                  {/* Role */}
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box p={1}>
+                      <Autocomplete
+                        multiple
+                        sx={{
+                          m: 0,
+                        }}
+                        limitTags={2}
+                        options={roleTags}
+                        getOptionLabel={(option) => option.title}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            fullWidth
+                            variant="outlined"
+                            label={t("Role")}
+                            placeholder={t("Role...")}
+                          />
+                        )}
+                      />
+                    </Box>
+                  </Grid>
+                  {/* Phone  Number */}
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box p={1}>
+                      <TextField
+                        sx={{
+                          m: 0,
+                        }}
+                        /*                     InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
+                        /*                     onChange={handleQueryChange} */
+                        placeholder={t("Phone Number...")}
+                        /*                     value={query} */
+                        fullWidth
+                        variant="outlined"
+                        lable="Phone Number"
+                        id="PhoneNumber"
+                      />
+                    </Box>
+                  </Grid>
+                  {/* E-Mail */}
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box p={1}>
+                      <TextField
+                        sx={{
+                          m: 0,
+                        }}
+                        placeholder={t("E-Mail...")}
+                        fullWidth
+                        variant="outlined"
+                        lable="E-Mail"
+                        id="E-Mail"
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </>
               <Button
                 sx={{
                   mt: { lg: 2, md: 0 },
@@ -532,7 +528,7 @@ function AddClient() {
                 /*           onClick={handleCreateEvent} */
                 variant="outlined"
                 color="primary"
-                onClick={navigateToClientOverview}
+                onClick={navigateToSupplierOverview}
               >
                 Cancel
               </Button>
@@ -553,83 +549,7 @@ function AddClient() {
         </Grid>
       </Grid>
     </>
-
-    /*     <div>
-      <Helmet>
-        <title>Add new Client</title>
-      </Helmet>
-      <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper>
-      <Grid
-        sx={{
-          px: 4,
-        }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={4}
-      >
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title="Client Details" />
-            <CardContent>
-              <Grid item xs={12} sm={12}>
-                <TextField fullWidth label="Client type" id="clientType" />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="clientName"
-                  label="Client Name"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} lg={6}>
-                <TextField
-                  fullWidth
-                  id="E-Mail"
-                  label="E-Mail"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} lg={6}>
-                <TextField
-                  id="phoneNumber"
-                  label="Phone Number"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} lg={6}>
-                <TextField
-                  fullWidth
-                  id="vatId"
-                  label="Vat Id"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} lg={12}>
-                <TextField
-                  fullWidth
-                  label="Shipping Adress"
-                  id="billingAdress"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} lg={12}>
-                <TextField
-                  fullWidth
-                  label="Additional Information"
-                  id="shippingAdress"
-                />
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </div> */
   );
 }
 
-export default AddClient;
+export default AddSupplier;

@@ -12,14 +12,14 @@ const Loader = (Component) => (props) =>
 
 // Suppliers
 
-const Calendar = Loader(
-  lazy(() => import("src/content/applications/Calendar"))
+const AddSupplier = Loader(
+  lazy(() => import("src/customComponents/suppliers/addSupplier"))
 );
 
 const suppliersRoutes = [
   {
-    path: "/",
-    element: <Calendar />,
+    path: "add",
+    element: <AddSupplier />,
   },
 ];
 
