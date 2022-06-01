@@ -12,14 +12,18 @@ const Loader = (Component) => (props) =>
 
 // Clients
 
-const Calendar = Loader(
-  lazy(() => import("src/content/applications/Calendar"))
+const AddClient = Loader(
+  lazy(() => import("src/customComponents/clients/createNewClients"))
 );
 
 const clientsRoutes = [
   {
-    path: "/",
-    element: <Calendar />,
+    path: "add",
+    element: <AddClient />,
+  },
+  {
+    path: ":id",
+    element: <></>,
   },
 ];
 

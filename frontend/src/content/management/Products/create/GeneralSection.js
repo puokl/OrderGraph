@@ -4,10 +4,10 @@ import {
   Box,
   Card,
   Grid,
-  styled
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import ReactQuill from 'react-quill';
+  styled,
+} from "@mui/material";
+import { useTranslation } from "react-i18next";
+import ReactQuill from "react-quill";
 // import 'react-quill/dist/quill.snow.css';
 
 const EditorWrapper = styled(Box)(
@@ -50,10 +50,10 @@ const EditorWrapper = styled(Box)(
 );
 
 const productTags = [
-  { title: 'new' },
-  { title: 'fresh' },
-  { title: '2021' },
-  { title: 'electronics' }
+  { title: "new" },
+  { title: "fresh" },
+  { title: "2021" },
+  { title: "electronics" },
 ];
 
 function GeneralSection() {
@@ -62,7 +62,7 @@ function GeneralSection() {
   return (
     <Card
       sx={{
-        p: 3
+        p: 3,
       }}
     >
       <Grid container spacing={3}>
@@ -70,7 +70,7 @@ function GeneralSection() {
           <TextField
             fullWidth
             name="title"
-            placeholder={t('Project title here...')}
+            placeholder={t("Project title here...")}
             variant="outlined"
           />
         </Grid>
@@ -84,7 +84,7 @@ function GeneralSection() {
             multiple
             freeSolo
             sx={{
-              m: 0
+              m: 0,
             }}
             limitTags={5}
             options={productTags}
@@ -94,7 +94,7 @@ function GeneralSection() {
                 {...params}
                 fullWidth
                 variant="outlined"
-                placeholder={t('Select project tags...')}
+                placeholder={t("Select project tags...")}
               />
             )}
           />
