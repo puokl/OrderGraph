@@ -30,7 +30,7 @@ function TestUsers() {
   useEffect(() => {
     getUsers();
     console.log(process.env.REACT_APP_BASE_URL);
-  }, []);
+  }, [isMountedRef]);
 
   return (
     <div
@@ -49,7 +49,7 @@ function TestUsers() {
           <title>Users - Management</title>
         </Helmet>
         <PageTitleWrapper>
-          <PageHeader />
+          <PageHeader getUsers={getUsers} />
         </PageTitleWrapper>
 
         <Grid
@@ -63,7 +63,7 @@ function TestUsers() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <Results users={users} />
+            <Results users={users} getUsers={getUsers} />
           </Grid>
         </Grid>
       </div>

@@ -1,4 +1,5 @@
 import { useState, forwardRef } from "react";
+import axios from "src/utils/axios2";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
@@ -175,12 +176,11 @@ const applyPagination = (users, page, limit) => {
 };
 
 const Results = (props) => {
-  const { users } = props;
+  const { users, getUsers } = props;
   const [selectedUsers, setSelectedUsers] = useState([]);
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
-  const [multipleSelected, setMultipleSelected] = useState(false);
 
   const tabs = [
     {
@@ -224,11 +224,12 @@ const Results = (props) => {
   };
 
   const handleSelectAllUsers = (event) => {
+    console.log(selectedUsers);
     setSelectedUsers(event.target.checked ? users.map((user) => user._id) : []);
-    setMultipleSelected(!multipleSelected);
   };
 
   const handleSelectOneUser = (_event, userId) => {
+    console.log(selectedUsers);
     if (!selectedUsers.includes(userId)) {
       setSelectedUsers((prevSelected) => [...prevSelected, userId]);
     } else {
@@ -268,19 +269,52 @@ const Results = (props) => {
 
   const closeConfirmDelete = () => {
     setOpenConfirmDelete(false);
+    setSelectedUsers([]);
   };
 
-  const handleDeleteCompleted = () => {
+  const handleDeleteCompleted = async () => {
     setOpenConfirmDelete(false);
 
-    enqueueSnackbar(t("The user account has been removed"), {
-      variant: "success",
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "right",
-      },
-      TransitionComponent: Zoom,
-    });
+    const usersToDelete = { _id: [...selectedUsers] };
+    console.log(usersToDelete);
+    try {
+      console.log("attempt");
+      const response = await axios.delete("/api/users/delete", {
+        data: usersToDelete,
+      });
+      console.log(response);
+      if (response.data.deletedCount > 0) {
+        enqueueSnackbar(t("Successfully deleted."), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+        getUsers();
+        setSelectedUsers([]);
+      } else {
+        enqueueSnackbar(t("An error occured, please try deleting again."), {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(t("An error occured, please try deleting again."), {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+        TransitionComponent: Zoom,
+      });
+    }
   };
 
   return (
@@ -422,7 +456,10 @@ const Results = (props) => {
                               </Tooltip>
                               <Tooltip title={t("Delete")} arrow>
                                 <IconButton
-                                  onClick={handleConfirmDelete}
+                                  onClick={() => {
+                                    handleConfirmDelete();
+                                    setSelectedUsers([user._id]);
+                                  }}
                                   color="error"
                                 >
                                   <DeleteTwoToneIcon fontSize="small" />

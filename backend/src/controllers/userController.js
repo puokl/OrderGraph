@@ -14,7 +14,7 @@ const generateToken = (id) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { firstname, lastname, email, password, role } = req.body;
+  const { firstname, lastname, email, password, role, organization } = req.body;
   if (!firstname || !lastname || !email || !password) {
     res.status(400);
     throw new Error("Please add all fields");
@@ -38,6 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
     lastname,
     email,
     role,
+    organization,
     password: hashedPassword,
   });
 
@@ -45,9 +46,10 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user.id,
       firstname: user.firstname,
-      lastname: user.lasttname,
+      lastname: user.lastname,
       email: user.email,
       role: user.role,
+      organization: user.organization,
       token: generateToken(user._id),
     });
   } else {
@@ -104,33 +106,28 @@ const testUser = asyncHandler(async (req, res) => {
   res.status(200).json(bob);
 });
 
-
 // @desc    Delete user data
 // @route   DELETE /api/users/test
 // @access  Private
 const deleteUser = asyncHandler(async (req, res) => {
-   const userToDelete = req.body._id;
+  console.log(req.body);
+  const userToDelete = req.body._id;
   try {
-     const deleteUsers = await User.deleteMany(
-    {_id: {
-       $in: [...userToDelete]
-     }
-    },
-    
-  ).then(function(err, result) {
+    const deleteUsers = await User.deleteMany({
+      _id: {
+        $in: [...userToDelete],
+      },
+    }).then(function (err, result) {
       if (err) {
-        res.send(err)
+        res.send(err);
       } else {
-        res.send(result)
+        res.send(result);
       }
-    })
-      
+    });
   } catch (error) {
     console.log(error);
   }
- 
 });
-
 
 // router.delete("/:id", async (req, res) => {
 //   if (req.bosy.userId === req.params.id || req.body.isAdmin) {
@@ -150,5 +147,5 @@ module.exports = {
   getUser,
   testUser,
   getUsers,
-  deleteUser
+  deleteUser,
 };
