@@ -176,10 +176,11 @@ const applyPagination = (users, page, limit) => {
 
 const Results = (props) => {
   const { users } = props;
-  const [selectedItems, setSelectedUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
+  const [multipleSelected, setMultipleSelected] = useState(false);
 
   const tabs = [
     {
@@ -223,11 +224,12 @@ const Results = (props) => {
   };
 
   const handleSelectAllUsers = (event) => {
-    setSelectedUsers(event.target.checked ? users.map((user) => user.id) : []);
+    setSelectedUsers(event.target.checked ? users.map((user) => user._id) : []);
+    setMultipleSelected(!multipleSelected);
   };
 
   const handleSelectOneUser = (_event, userId) => {
-    if (!selectedItems.includes(userId)) {
+    if (!selectedUsers.includes(userId)) {
       setSelectedUsers((prevSelected) => [...prevSelected, userId]);
     } else {
       setSelectedUsers((prevSelected) =>
@@ -246,10 +248,11 @@ const Results = (props) => {
 
   const filteredUsers = applyFilters(users, query, filters);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
-  const selectedBulkActions = selectedItems.length > 0;
+  const selectedBulkActions = selectedUsers.length > 0;
   const selectedSomeUsers =
-    selectedItems.length > 0 && selectedItems.length < users.length;
-  const selectedAllUsers = selectedItems.length === users.length;
+    selectedUsers.length > 0 && selectedUsers.length < users.length;
+  const selectedAllUsers = selectedUsers.length === users.length;
+  const selectedMultiple = selectedUsers.length > 1;
 
   const [toggleView, setToggleView] = useState("table_view");
 
@@ -366,14 +369,18 @@ const Results = (props) => {
                   </TableHead>
                   <TableBody>
                     {paginatedUsers.map((user) => {
-                      const isUserSelected = selectedItems.includes(user.id);
+                      const isUserSelected = selectedUsers.includes(user._id);
                       return (
-                        <TableRow hover key={user.id} selected={isUserSelected}>
+                        <TableRow
+                          hover
+                          key={user._id}
+                          selected={isUserSelected}
+                        >
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isUserSelected}
                               onChange={(event) =>
-                                handleSelectOneUser(event, user.id)
+                                handleSelectOneUser(event, user._id)
                               }
                               value={isUserSelected}
                             />
@@ -472,7 +479,13 @@ const Results = (props) => {
             }}
             variant="h3"
           >
-            {t("Are you sure you want to permanently delete this user account")}
+            {t(
+              `Are you sure you want to permanently delete ${
+                selectedMultiple || selectedAllUsers
+                  ? "these user accounts"
+                  : "this user account"
+              }`
+            )}
             ?
           </Typography>
 
