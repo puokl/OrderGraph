@@ -1,19 +1,24 @@
 import { Typography, Button, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import EventTwoToneIcon from "@mui/icons-material/EventTwoTone";
+import { useNavigate } from "react-router";
 import PropTypes from "prop-types";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const PageHeader = ({ handleCreateEvent }) => {
+const PageHeader = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const navigateToClientOverview = () => {
+    navigate("/clients/overview");
+  };
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          {t("Let's get things done!")}
+          Add New Clients
         </Typography>
         <Typography variant="subtitle2">
-          {t("Get an overview of your production line.")}
+          Fill in the fields below to add a new client
         </Typography>
       </Grid>
       <Grid item>
@@ -21,12 +26,12 @@ const PageHeader = ({ handleCreateEvent }) => {
           sx={{
             mt: { xs: 2, md: 0 },
           }}
-          onClick={handleCreateEvent}
+          onClick={navigateToClientOverview}
           variant="contained"
           color="primary"
-          startIcon={<EventTwoToneIcon fontSize="small" />}
+          startIcon={<ArrowBackIcon fontSize="small" />}
         >
-          {t("Create Order")}
+          Back to Clients Overview
         </Button>
       </Grid>
     </Grid>
