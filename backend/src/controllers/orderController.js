@@ -6,10 +6,15 @@ const Order = require("../models/Order")
 // @route   POST /api/order
 // @access  Private
 const newOrder = asyncHandler(async (req, res) => {
-  
-    
-    res.status(200).json(req.user)
+  const {orderName} = req.body
+    req.body.createdByUser = req.params.userId
+    req.body.createdByOrganization = req.params.organizationId
+  const order = await Order.create(req.body)
+    res.status(200).json({order
+    })
 })
+
+
 
 
 // @desc    Get an order
@@ -34,6 +39,8 @@ const getAllOrder = asyncHandler(async (req, res) => {
 const updateOrder = asyncHandler(async (req, res) => {
     res.status(200).json(req.user)
 })
+
+
 
 
 

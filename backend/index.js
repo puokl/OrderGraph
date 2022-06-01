@@ -1,6 +1,7 @@
 const colors = require("colors");
 const dotenv = require("dotenv");
 const port = process.env.PORT || 8000;
+const morgan = require("morgan");
 
 // express
 const express = require("express");
@@ -20,6 +21,8 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// morgan
+app.use(morgan('dev'));
 
 // // Cors
 const corsOptions = {
