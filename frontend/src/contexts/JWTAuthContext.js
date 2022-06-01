@@ -1,5 +1,5 @@
 import { createContext, useEffect, useReducer } from 'react';
-import axios from 'src/utils/axios';
+import axios from 'src/utils/axios2';
 import { verify, JWT_SECRET } from 'src/utils/jwt';
 import PropTypes from 'prop-types';
 
@@ -113,10 +113,11 @@ export const AuthProvider = (props) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
+    const response = await axios.post('/api/users/login', {
       email,
       password
     });
+    console.log(response)
     const { accessToken, user } = response.data;
 
     setSession(accessToken);
@@ -134,7 +135,7 @@ export const AuthProvider = (props) => {
   };
 
   const register = async (email, name, password) => {
-    const response = await axios.post('/api/account/register', {
+    const response = await axios.post('/api/users/register', {
       email,
       name,
       password

@@ -8,7 +8,7 @@ getOrganization
 
 const {protect} = require("../middleware/authMiddleware")
 
-router.post("/", protect,registerOrganization)
+router.post("/neworganization", registerOrganization)
 router.get("/organization", protect, getOrganization)
 router.put("/organization/update", protect, updateOrganization)
 

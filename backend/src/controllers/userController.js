@@ -13,9 +13,55 @@ const generateToken = (id) => {
 // @desc    Register new user
 // @route   POST /api/users
 // @access  Public
+// const registerUser = asyncHandler(async (req, res) => {
+//   const { firstname, lastname, email, password, role } = req.body;
+//   if (!firstname || !lastname || !email || !password) {
+//     res.status(400);
+//     throw new Error("Please add all fields");
+//   }
+
+//   // check if user exists
+//   const userExists = await User.findOne({ email });
+
+//   if (userExists) {
+//     res.status(400);
+//     throw new Error("Email already in use");
+//   }
+
+//   // hash password
+//   const salt = await bcrypt.genSalt(10);
+//   const hashedPassword = await bcrypt.hash(password, salt);
+
+//   // Create user
+//   const user = await User.create({
+//     firstname,
+//     lastname,
+//     email,
+//     role,
+//     password: hashedPassword,
+//   });
+
+//   if (user) {
+//     res.status(201).json({
+//       _id: user.id,
+//       firstname: user.firstname,
+//       lastname: user.lasttname,
+//       email: user.email,
+//       role: user.role,
+//       token: generateToken(user._id),
+//     });
+//   } else {
+//     res.status(400);
+//     throw new Error("Invalid user data");
+//   }
+// });
+
+// delete after test
 const registerUser = asyncHandler(async (req, res) => {
   const { firstname, lastname, email, password, role, organization } = req.body;
   if (!firstname || !lastname || !email || !password) {
+    // const { name, email, password} = req.body;
+    // if (!name || !email || !password) {
     res.status(400);
     throw new Error("Please add all fields");
   }
@@ -57,6 +103,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid user data");
   }
 });
+// test until here
 
 // @desc    Authenticate a user
 // @route   POST /api/users/login
@@ -106,6 +153,30 @@ const testUser = asyncHandler(async (req, res) => {
   res.status(200).json(bob);
 });
 
+// @desc    Update user data
+// @route   PUT /api/users/test
+// @access  Private
+const updateUser = async (req, res) => {
+  const { email, firstname, lastname } = req.body;
+  // if (!email || !name || !lastName) {
+  //   res.status(400)
+  //   throw new Error("Please add all fields")
+  // }
+
+  // const user = await User.findOne({ _id: req.params.userId })
+
+  // user.email = email
+  // user.firstname = firstname
+  // user.lastname = lastname
+
+  // await user.save()
+  const user = await User.findByIdAndUpdate(req.params.id, {
+    $set: req.body,
+  });
+
+  res.status(200).json("Account has been updated");
+};
+
 // @desc    Delete user data
 // @route   DELETE /api/users/test
 // @access  Private
@@ -148,4 +219,5 @@ module.exports = {
   testUser,
   getUsers,
   deleteUser,
+  updateUser,
 };

@@ -13,24 +13,30 @@ const registerOrganization = asyncHandler(async (req, res) => {
             throw new Error("Please add all fields")
         }
 
+        const organization = await Organization.create({
+        companyName,
+        companySize,
+    })
+
     // check if user has already a company value in db
     
-    res.status(200).json(req.user)
+    res.status(200).json({companyName: organization.companyName,
+        companySize: organization.companySize})
 })
 
 
-// @desc    Register new user
+// @desc    Update organization
 // @route   PUT /api/organization
-// @access  Private
+// @access  
 const updateOrganization = asyncHandler(async (req, res) => {
     res.status(200).json(req.user)
 })
 
 
 
-// @desc    Register new user
+// @desc    Get organization
 // @route   GET /api/organization
-// @access  Private
+// @access  
 const getOrganization = asyncHandler(async (req, res) => {
     res.status(200).json(req.user)
 })

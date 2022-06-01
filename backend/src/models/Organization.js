@@ -6,6 +6,7 @@ const OrganizationSchema = new mongoose.Schema({
         required: [true, "Please add a company name"],
         min: 3,
         max: 20,
+        trim: true,
     },
     companySize: {
         type: String,
@@ -17,12 +18,7 @@ const OrganizationSchema = new mongoose.Schema({
 
 // ],
   
-//     // change it to organization
-//     createdBy: {
-//       type: mongoose.Types.ObjectId,
-//       ref: 'User',
-//       required: [true, 'Please provide user'],
-//     },
+
 },{timestamps:true});
 
 module.exports= mongoose.model("Organization", OrganizationSchema);
