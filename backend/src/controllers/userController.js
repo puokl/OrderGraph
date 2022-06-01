@@ -57,6 +57,7 @@ const generateToken = (id) => {
 // });
 
 
+// delete after test
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password} = req.body;
   if (!name || !email || !password) {
@@ -95,7 +96,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid user data");
   }
 });
-
+// test until here
 
 // @desc    Authenticate a user
 // @route   POST /api/users/login
