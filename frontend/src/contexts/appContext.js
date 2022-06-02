@@ -13,34 +13,9 @@ const user = localStorage.getItem('user')
 const userLocation = localStorage.getItem('location')
 
 const initialState = {
-  isLoading: false,
-  showAlert: false,
-  alertText: '',
-  alertType: '',
-  user: user ? JSON.parse(user) : null,
-  token: token,
-  userLocation: userLocation || '',
-  showSidebar: false,
-  isEditing: false,
-  editJobId: '',
-  position: '',
-  company: '',
-  jobLocation: userLocation || '',
-  jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
-  jobType: 'full-time',
-  statusOptions: ['interview', 'declined', 'pending'],
-  status: 'pending',
-  jobs: [],
-  totalJobs: 0,
-  numOfPages: 1,
-  page: 1,
-  stats: {},
-  monthlyApplications: [],
-  search: '',
-  searchStatus: 'all',
-  searchType: 'all',
-  sort: 'latest',
-  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+   isAuthenticated: false,
+  isInitialized: false,
+  user: null,
 }
 
 const AppContext = React.createContext()
