@@ -13,54 +13,10 @@ const generateToken = (id) => {
 // @desc    Register new user
 // @route   POST /api/users
 // @access  Public
-// const registerUser = asyncHandler(async (req, res) => {
-//   const { firstname, lastname, email, password, role } = req.body;
-//   if (!firstname || !lastname || !email || !password) {
-//     res.status(400);
-//     throw new Error("Please add all fields");
-//   }
 
-//   // check if user exists
-//   const userExists = await User.findOne({ email });
-
-//   if (userExists) {
-//     res.status(400);
-//     throw new Error("Email already in use");
-//   }
-
-//   // hash password
-//   const salt = await bcrypt.genSalt(10);
-//   const hashedPassword = await bcrypt.hash(password, salt);
-
-//   // Create user
-//   const user = await User.create({
-//     firstname,
-//     lastname,
-//     email,
-//     role,
-//     password: hashedPassword,
-//   });
-
-//   if (user) {
-//     res.status(201).json({
-//       _id: user.id,
-//       firstname: user.firstname,
-//       lastname: user.lasttname,
-//       email: user.email,
-//       role: user.role,
-//       token: generateToken(user._id),
-//     });
-//   } else {
-//     res.status(400);
-//     throw new Error("Invalid user data");
-//   }
-// });
-
-
-// delete after test
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password} = req.body;
-  if (!name || !email || !password) {
+  const { firstname, lastname, email, password, role } = req.body;
+  if (!firstname || !lastname || !email || !password) {
     res.status(400);
     throw new Error("Please add all fields");
   }
@@ -79,16 +35,20 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // Create user
   const user = await User.create({
-    name,
+    firstname,
+    lastname,
     email,
+    role,
     password: hashedPassword,
   });
 
   if (user) {
     res.status(201).json({
       _id: user.id,
-      name: user.lasttname,
+      firstname: user.firstname,
+      lastname: user.lasttname,
       email: user.email,
+      role: user.role,
       token: generateToken(user._id),
     });
   } else {
@@ -96,7 +56,48 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid user data");
   }
 });
-// test until here
+
+
+// // delete after test
+// const registerUser = asyncHandler(async (req, res) => {
+//   const { name, email, password} = req.body;
+//   if (!name || !email || !password) {
+//     res.status(400);
+//     throw new Error("Please add all fields");
+//   }
+
+//   // check if user exists
+//   const userExists = await User.findOne({ email });
+
+//   if (userExists) {
+//     res.status(400);
+//     throw new Error("Email already in use");
+//   }
+
+//   // hash password
+//   const salt = await bcrypt.genSalt(10);
+//   const hashedPassword = await bcrypt.hash(password, salt);
+
+//   // Create user
+//   const user = await User.create({
+//     name,
+//     email,
+//     password: hashedPassword,
+//   });
+
+//   if (user) {
+//     res.status(201).json({
+//       _id: user.id,
+//       name: user.lasttname,
+//       email: user.email,
+//       token: generateToken(user._id),
+//     });
+//   } else {
+//     res.status(400);
+//     throw new Error("Invalid user data");
+//   }
+// });
+// // test until here
 
 // @desc    Authenticate a user
 // @route   POST /api/users/login
