@@ -1,5 +1,4 @@
 import { useState, forwardRef } from "react";
-import axios from "src/utils/axios2";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
@@ -176,8 +175,8 @@ const applyPagination = (users, page, limit) => {
 };
 
 const Results = (props) => {
-  const { users, getUsers } = props;
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const { users } = props;
+  const [selectedItems, setSelectedUsers] = useState([]);
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
@@ -224,13 +223,11 @@ const Results = (props) => {
   };
 
   const handleSelectAllUsers = (event) => {
-    console.log(selectedUsers);
-    setSelectedUsers(event.target.checked ? users.map((user) => user._id) : []);
+    setSelectedUsers(event.target.checked ? users.map((user) => user.id) : []);
   };
 
   const handleSelectOneUser = (_event, userId) => {
-    console.log(selectedUsers);
-    if (!selectedUsers.includes(userId)) {
+    if (!selectedItems.includes(userId)) {
       setSelectedUsers((prevSelected) => [...prevSelected, userId]);
     } else {
       setSelectedUsers((prevSelected) =>
@@ -249,11 +246,10 @@ const Results = (props) => {
 
   const filteredUsers = applyFilters(users, query, filters);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
-  const selectedBulkActions = selectedUsers.length > 0;
+  const selectedBulkActions = selectedItems.length > 0;
   const selectedSomeUsers =
-    selectedUsers.length > 0 && selectedUsers.length < users.length;
-  const selectedAllUsers = selectedUsers.length === users.length;
-  const selectedMultiple = selectedUsers.length > 1;
+    selectedItems.length > 0 && selectedItems.length < users.length;
+  const selectedAllUsers = selectedItems.length === users.length;
 
   const [toggleView, setToggleView] = useState("table_view");
 
@@ -269,52 +265,19 @@ const Results = (props) => {
 
   const closeConfirmDelete = () => {
     setOpenConfirmDelete(false);
-    setSelectedUsers([]);
   };
 
-  const handleDeleteCompleted = async () => {
+  const handleDeleteCompleted = () => {
     setOpenConfirmDelete(false);
 
-    const usersToDelete = { _id: [...selectedUsers] };
-    console.log(usersToDelete);
-    try {
-      console.log("attempt");
-      const response = await axios.delete("/api/users/delete", {
-        data: usersToDelete,
-      });
-      console.log(response);
-      if (response.data.deletedCount > 0) {
-        enqueueSnackbar(t("Successfully deleted."), {
-          variant: "success",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
-        getUsers();
-        setSelectedUsers([]);
-      } else {
-        enqueueSnackbar(t("An error occured, please try deleting again."), {
-          variant: "error",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-      enqueueSnackbar(t("An error occured, please try deleting again."), {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right",
-        },
-        TransitionComponent: Zoom,
-      });
-    }
+    enqueueSnackbar(t("The user account has been removed"), {
+      variant: "success",
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+      TransitionComponent: Zoom,
+    });
   };
 
   return (
@@ -403,18 +366,14 @@ const Results = (props) => {
                   </TableHead>
                   <TableBody>
                     {paginatedUsers.map((user) => {
-                      const isUserSelected = selectedUsers.includes(user._id);
+                      const isUserSelected = selectedItems.includes(user.id);
                       return (
-                        <TableRow
-                          hover
-                          key={user._id}
-                          selected={isUserSelected}
-                        >
+                        <TableRow hover key={user.id} selected={isUserSelected}>
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isUserSelected}
                               onChange={(event) =>
-                                handleSelectOneUser(event, user._id)
+                                handleSelectOneUser(event, user.id)
                               }
                               value={isUserSelected}
                             />
@@ -456,10 +415,7 @@ const Results = (props) => {
                               </Tooltip>
                               <Tooltip title={t("Delete")} arrow>
                                 <IconButton
-                                  onClick={() => {
-                                    handleConfirmDelete();
-                                    setSelectedUsers([user._id]);
-                                  }}
+                                  onClick={handleConfirmDelete}
                                   color="error"
                                 >
                                   <DeleteTwoToneIcon fontSize="small" />
@@ -516,13 +472,7 @@ const Results = (props) => {
             }}
             variant="h3"
           >
-            {t(
-              `Are you sure you want to permanently delete ${
-                selectedMultiple || selectedAllUsers
-                  ? "these user accounts"
-                  : "this user account"
-              }`
-            )}
+            {t("Are you sure you want to permanently delete this user account")}
             ?
           </Typography>
 

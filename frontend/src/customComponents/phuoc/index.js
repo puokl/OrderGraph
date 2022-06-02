@@ -13,7 +13,7 @@ import PageTitleWrapper from "src/components/PageTitleWrapper";
 import Results from "./userTable/Results";
 import PageHeader from "./userTable/PageHeader";
 
-function TestUsers() {
+function PhuocUsers() {
   const isMountedRef = useRefMounted();
   const [users, setUsers] = useState([]);
 
@@ -29,7 +29,8 @@ function TestUsers() {
 
   useEffect(() => {
     getUsers();
-  }, [isMountedRef]);
+    console.log(process.env.REACT_APP_BASE_URL);
+  }, []);
 
   return (
     <div
@@ -48,7 +49,7 @@ function TestUsers() {
           <title>Users - Management</title>
         </Helmet>
         <PageTitleWrapper>
-          <PageHeader getUsers={getUsers} />
+          <PageHeader />
         </PageTitleWrapper>
 
         <Grid
@@ -62,7 +63,7 @@ function TestUsers() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <Results users={users} getUsers={getUsers} />
+            <Results users={users} />
           </Grid>
         </Grid>
       </div>
@@ -75,4 +76,4 @@ function TestUsers() {
   );
 }
 
-export default TestUsers;
+export default PhuocUsers;

@@ -1,11 +1,10 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/material/styles";
-// import wait from "src/utils/wait";
+import wait from "src/utils/wait";
 import useAuth from "src/hooks/useAuth";
-import axios from "src/utils/axios2";
 
 import {
   Grid,
@@ -74,17 +73,11 @@ const roles = [
   { label: "Worker", value: "worker" },
 ];
 
-function PageHeader(props) {
-  const { getUsers } = props;
+function PageHeader() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
-  const inputFirstName = useRef();
-  const inputLastName = useRef();
-  const inputEmail = useRef();
-  const inputPassword = useRef();
-  const inputRole = useRef();
 
   const [publicProfile, setPublicProfile] = useState({
     public: true,
@@ -105,49 +98,15 @@ function PageHeader(props) {
     setOpen(false);
   };
 
-  const handleCreateUserSuccess = async (e) => {
-    e.preventDefault();
-    const userToCreate = {
-      firstname: inputFirstName.current.value,
-      lastname: inputLastName.current.value,
-      email: inputEmail.current.value,
-      password: inputPassword.current.value,
-      role: inputRole.current.value.toLowerCase(),
-      organization: user.organization,
-    };
-    try {
-      const response = await axios.post("/api/users/register", userToCreate);
-      if (response.status === 201) {
-        enqueueSnackbar(t("The user account was created successfully"), {
-          variant: "success",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
-        getUsers();
-      } else {
-        enqueueSnackbar(t("An error occured, please try again."), {
-          variant: "error",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-      enqueueSnackbar(t("An error occured, please try again."), {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right",
-        },
-        TransitionComponent: Zoom,
-      });
-    }
+  const handleCreateUserSuccess = () => {
+    enqueueSnackbar(t("The user account was created successfully"), {
+      variant: "success",
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+      TransitionComponent: Zoom,
+    });
 
     setOpen(false);
   };
@@ -201,17 +160,20 @@ function PageHeader(props) {
         <Formik
           initialValues={{
             email: "",
-            firstname: "",
-            lastname: "",
+            username: "",
+            first_name: "",
+            last_name: "",
             password: "",
-            role: "",
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            firstname: Yup.string()
+            username: Yup.string()
+              .max(255)
+              .required(t("The username field is required")),
+            first_name: Yup.string()
               .max(255)
               .required(t("The first name field is required")),
-            lastname: Yup.string()
+            last_name: Yup.string()
               .max(255)
               .required(t("The last name field is required")),
             email: Yup.string()
@@ -221,21 +183,35 @@ function PageHeader(props) {
             password: Yup.string()
               .max(255)
               .required(t("The password field is required")),
-            role: Yup.string()
-              .oneOf(["admin", "worker"])
-              .required(t("The role field is required")),
           })}
-          onSubmit={handleCreateUserSuccess}
+          onSubmit={async (
+            _values,
+            { resetForm, setErrors, setStatus, setSubmitting }
+          ) => {
+            try {
+              await wait(1000);
+              resetForm();
+              setStatus({ success: true });
+              setSubmitting(false);
+              handleCreateUserSuccess();
+            } catch (err) {
+              console.error(err);
+              setStatus({ success: false });
+              setErrors({ submit: err.message });
+              setSubmitting(false);
+            }
+          }}
         >
           {({
             errors,
             handleBlur,
             handleChange,
+            handleSubmit,
             isSubmitting,
             touched,
             values,
           }) => (
-            <form onSubmit={handleCreateUserSuccess}>
+            <form onSubmit={handleSubmit}>
               <DialogContent
                 dividers
                 sx={{
@@ -245,32 +221,45 @@ function PageHeader(props) {
                 <Grid container spacing={3}>
                   <Grid item xs={12} lg={7}>
                     <Grid container spacing={3}>
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12}>
                         <TextField
-                          error={Boolean(touched.firstname && errors.firstname)}
+                          error={Boolean(touched.username && errors.username)}
                           fullWidth
-                          helperText={touched.firstname && errors.firstname}
-                          label={t("First name")}
-                          name="firstname"
+                          helperText={touched.username && errors.username}
+                          label={t("Username")}
+                          name="username"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          value={values.firstname}
+                          value={values.username}
                           variant="outlined"
-                          inputRef={inputFirstName}
                         />
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <TextField
-                          error={Boolean(touched.lastname && errors.lastname)}
+                          error={Boolean(
+                            touched.first_name && errors.first_name
+                          )}
                           fullWidth
-                          helperText={touched.lastname && errors.lastname}
-                          label={t("Last name")}
-                          name="lastname"
+                          helperText={touched.first_name && errors.first_name}
+                          label={t("First name")}
+                          name="first_name"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          value={values.lastname}
+                          value={values.first_name}
                           variant="outlined"
-                          inputRef={inputLastName}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <TextField
+                          error={Boolean(touched.last_name && errors.last_name)}
+                          fullWidth
+                          helperText={touched.last_name && errors.last_name}
+                          label={t("Last name")}
+                          name="last_name"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values.last_name}
+                          variant="outlined"
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -285,7 +274,6 @@ function PageHeader(props) {
                           type="email"
                           value={values.email}
                           variant="outlined"
-                          inputRef={inputEmail}
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -301,7 +289,6 @@ function PageHeader(props) {
                           type="password"
                           value={values.password}
                           variant="outlined"
-                          inputRef={inputPassword}
                         />
                       </Grid>
                       <Grid item xs={12} md={6}>
@@ -311,17 +298,9 @@ function PageHeader(props) {
                           getOptionLabel={(option) => option.label}
                           renderInput={(params) => (
                             <TextField
-                              error={Boolean(touched.role && errors.role)}
-                              helperText={touched.role && errors.role}
-                              value={values.role}
-                              name="role"
                               fullWidth
                               {...params}
                               label={t("User role")}
-                              variant="outlined"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              inputRef={inputRole}
                             />
                           )}
                         />
