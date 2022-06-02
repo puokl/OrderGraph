@@ -65,7 +65,7 @@ function BulkActions({ handleConfirmDelete }) {
             variant="contained"
             onClick={handleConfirmDelete}
           >
-            {t("Delete")}
+            {t("Delete selected")}
           </ButtonError>
         </Box>
         <IconButton

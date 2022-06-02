@@ -18,31 +18,30 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         default: "Last Name"
     },
-
     email: {
-        type: String,
-        required: [true, "Please add an email"],
-        max: 50,
-        unique: true
+      type: String,
+      required: [true, "Please add an email"],
+      max: 50,
+      unique: true,
     },
-     role: {
-        type: String,
-        required: [true, "Please add a role"],
-        min: 3,
-        max: 20,
-        enum: ["worker", "admin"],
-        default: "worker",
-        trim: true,
-    
+    role: {
+      type: String,
+      required: [true, "Please add a role"],
+      min: 3,
+      max: 20,
+      enum: ["worker", "admin"],
+      default: "worker",
+      trim: true,
     },
     password: {
       type: String,
-      required: [true, 'Please add a password'],
+      required: [true, "Please add a password"],
     },
     organization: {
       type: String,
     },
-  
-},{timestamps:true});
+  },
+  { timestamps: true }
+);
 
-module.exports= mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);

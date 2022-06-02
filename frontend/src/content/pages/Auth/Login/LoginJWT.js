@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-
+import { useRef } from "react";
 import { Formik } from "formik";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -22,6 +22,32 @@ const LoginJWT = () => {
   const { login } = useAuth();
   const isMountedRef = useRefMounted();
   const { t } = useTranslation();
+  const inputEmail = useRef();
+  const inputPassword = useRef();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await login(
+        inputEmail.current.value,
+        inputPassword.current.value
+      );
+      console.log(response);
+      if (response.status === 200) {
+        if (isMountedRef.current) {
+          setStatus({ success: true });
+          setSubmitting(false);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      if (isMountedRef.current) {
+        setStatus({ success: false });
+        setErrors({ submit: err.message });
+        setSubmitting(false);
+      }
+    }
+  };
 
   return (
     <Formik
@@ -39,39 +65,18 @@ const LoginJWT = () => {
         password: Yup.string()
           .max(255)
           .required(t("The password field is required")),
-        terms: Yup.boolean().oneOf(
-          [true],
-          t("You must agree to our terms and conditions")
-        ),
       })}
-      onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-        try {
-          await login(values.email, values.password);
-
-          if (isMountedRef.current) {
-            setStatus({ success: true });
-            setSubmitting(false);
-          }
-        } catch (err) {
-          console.error(err);
-          if (isMountedRef.current) {
-            setStatus({ success: false });
-            setErrors({ submit: err.message });
-            setSubmitting(false);
-          }
-        }
-      }}
+      onSubmit={handleLogin}
     >
       {({
         errors,
         handleBlur,
         handleChange,
-        handleSubmit,
         isSubmitting,
         touched,
         values,
       }) => (
-        <form noValidate onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleLogin}>
           <TextField
             error={Boolean(touched.email && errors.email)}
             fullWidth
@@ -85,6 +90,7 @@ const LoginJWT = () => {
             type="email"
             value={values.email}
             variant="outlined"
+            inputRef={inputEmail}
           />
           <TextField
             error={Boolean(touched.password && errors.password)}
@@ -98,33 +104,13 @@ const LoginJWT = () => {
             type="password"
             value={values.password}
             variant="outlined"
+            inputRef={inputPassword}
           />
           <Box
             alignItems="center"
             display="flex"
             justifyContent="space-between"
           >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={values.terms}
-                  name="terms"
-                  color="primary"
-                  onChange={handleChange}
-                />
-              }
-              label={
-                <>
-                  <Typography variant="body2">
-                    {t("I accept the")}{" "}
-                    <Link component="a" href="#">
-                      {t("terms and conditions")}
-                    </Link>
-                    .
-                  </Typography>
-                </>
-              }
-            />
             <Link component={RouterLink} to="/account/recover-password">
               <b>{t("Lost password?")}</b>
             </Link>

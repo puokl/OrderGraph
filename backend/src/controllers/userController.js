@@ -11,11 +11,10 @@ const generateToken = (id) => {
 };
 
 // @desc    Register new user
-// @route   POST /api/users
+// @route   POST /api/users/register
 // @access  Public
-
 const registerUser = asyncHandler(async (req, res) => {
-  const { firstname, lastname, email, password, role } = req.body;
+  const { firstname, lastname, email, password, role, organization } = req.body;
   if (!firstname || !lastname || !email || !password) {
     res.status(400);
     throw new Error("Please add all fields");
@@ -39,17 +38,21 @@ const registerUser = asyncHandler(async (req, res) => {
     lastname,
     email,
     role,
+    organization,
     password: hashedPassword,
   });
 
   if (user) {
     res.status(201).json({
-      _id: user.id,
-      firstname: user.firstname,
-      lastname: user.lasttname,
-      email: user.email,
-      role: user.role,
-      token: generateToken(user._id),
+      user: {
+        _id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        role: user.role,
+        organization: user.organization,
+      },
+      accessToken: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -57,11 +60,12 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 // // delete after test
 // const registerUser = asyncHandler(async (req, res) => {
-//   const { name, email, password} = req.body;
-//   if (!name || !email || !password) {
+//   const { firstname, lastname, email, password, role, organization } = req.body;
+//   if (!firstname || !lastname || !email || !password) {
+//     // const { name, email, password} = req.body;
+//     // if (!name || !email || !password) {
 //     res.status(400);
 //     throw new Error("Please add all fields");
 //   }
@@ -80,16 +84,22 @@ const registerUser = asyncHandler(async (req, res) => {
 
 //   // Create user
 //   const user = await User.create({
-//     name,
+//     firstname,
+//     lastname,
 //     email,
+//     role,
+//     organization,
 //     password: hashedPassword,
 //   });
 
 //   if (user) {
 //     res.status(201).json({
 //       _id: user.id,
-//       name: user.lasttname,
+//       firstname: user.firstname,
+//       lastname: user.lastname,
 //       email: user.email,
+//       role: user.role,
+//       organization: user.organization,
 //       token: generateToken(user._id),
 //     });
 //   } else {
@@ -97,22 +107,28 @@ const registerUser = asyncHandler(async (req, res) => {
 //     throw new Error("Invalid user data");
 //   }
 // });
-// // test until here
+// test until here
 
 // @desc    Authenticate a user
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  // console.log(req);
   // check for user email
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
+      user: {
+        _id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        role: user.role,
+        organization: user.organization,
+      },
+      accessToken: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -147,12 +163,11 @@ const testUser = asyncHandler(async (req, res) => {
   res.status(200).json(bob);
 });
 
-
 // @desc    Update user data
 // @route   PUT /api/users/test
 // @access  Private
 const updateUser = async (req, res) => {
-  const { email, firstname, lastname} = req.body
+  const { email, firstname, lastname } = req.body;
   // if (!email || !name || !lastName) {
   //   res.status(400)
   //   throw new Error("Please add all fields")
@@ -165,42 +180,35 @@ const updateUser = async (req, res) => {
   // user.lastname = lastname
 
   // await user.save()
-const user = await User.findByIdAndUpdate(req.params.id, {
-        $set: req.body,
-      });
+  const user = await User.findByIdAndUpdate(req.params.id, {
+    $set: req.body,
+  });
 
-      res.status(200).json("Account has been updated");
-
-  
-
-}
+  res.status(200).json("Account has been updated");
+};
 
 // @desc    Delete user data
 // @route   DELETE /api/users/test
 // @access  Private
 const deleteUser = asyncHandler(async (req, res) => {
-   const userToDelete = req.body._id;
+  console.log(req.body);
+  const userToDelete = req.body._id;
   try {
-     const deleteUsers = await User.deleteMany(
-    {_id: {
-       $in: [...userToDelete]
-     }
-    },
-    
-  ).then(function(err, result) {
+    const deleteUsers = await User.deleteMany({
+      _id: {
+        $in: [...userToDelete],
+      },
+    }).then(function (err, result) {
       if (err) {
-        res.send(err)
+        res.send(err);
       } else {
-        res.send(result)
+        res.send(result);
       }
-    })
-      
+    });
   } catch (error) {
     console.log(error);
   }
- 
 });
-
 
 // router.delete("/:id", async (req, res) => {
 //   if (req.bosy.userId === req.params.id || req.body.isAdmin) {
@@ -221,5 +229,5 @@ module.exports = {
   testUser,
   getUsers,
   deleteUser,
-  updateUser
+  updateUser,
 };
