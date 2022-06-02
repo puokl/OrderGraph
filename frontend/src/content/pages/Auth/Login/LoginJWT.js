@@ -91,6 +91,7 @@ const LoginJWT = () => {
             value={values.email}
             variant="outlined"
             inputRef={inputEmail}
+            sx={{width: 'fitContent'}}
           />
           <TextField
             error={Boolean(touched.password && errors.password)}

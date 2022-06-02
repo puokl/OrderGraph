@@ -75,11 +75,11 @@ export const AuthProvider = (props) => {
       try {
         const accessToken = window.localStorage.getItem("accessToken");
 
-        if (accessToken && verify(accessToken, JWT_SECRET)) {
+        if (accessToken) {
           setSession(accessToken);
 
-          const response = await axios.get("/api/account/personal");
-          const { user } = response.data;
+          const response = await axios.get("/api/users/me");
+          const user = response.data;
 
           dispatch({
             type: "INITIALIZE",

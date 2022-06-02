@@ -1,4 +1,4 @@
-export const JWT_SECRET = 'jwt-secret-key';
+export const JWT_SECRET = 'secret';
 export const JWT_EXPIRES_IN = 3600 * 24 * 2;
 
 export const sign = (payload, privateKey, header) => {
