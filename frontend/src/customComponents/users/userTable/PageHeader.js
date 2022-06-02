@@ -116,7 +116,7 @@ function PageHeader(props) {
       organization: user.organization,
     };
     try {
-      const response = await axios.post("/api/users", userToCreate);
+      const response = await axios.post("/api/users/register", userToCreate);
       if (response.status === 201) {
         enqueueSnackbar(t("The user account was created successfully"), {
           variant: "success",

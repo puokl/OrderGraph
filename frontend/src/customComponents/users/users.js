@@ -29,7 +29,6 @@ function TestUsers() {
 
   useEffect(() => {
     getUsers();
-    console.log(process.env.REACT_APP_BASE_URL);
   }, [isMountedRef]);
 
   return (
