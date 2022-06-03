@@ -6,25 +6,21 @@ import {
   Card,
   Dialog,
   CardHeader,
-  FormControl,
   Grid,
   IconButton,
-  InputAdornment,
-  InputLabel,
   lighten,
-  MenuItem,
-  Select,
   Slide,
   styled,
   TextField,
   Divider,
 } from "@mui/material";
-import { forwardRef, useState } from "react";
+import { forwardRef, useState, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
+import axios from "src/utils/axios";
 
 const handleQueryChange = (event) => {
   event.persist();
@@ -235,6 +231,18 @@ function AddClient() {
     },
   ];
 
+  const getClient = useCallback(async () => {
+    try {
+      const response = await axios.get("/api/clients");
+      console.log(response);
+      setClients(response.data.clients);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  getClient();
+
   // define states and styles
   return (
     <>
@@ -307,6 +315,7 @@ function AddClient() {
                     fullWidth
                     variant="outlined"
                     lable="Client Name"
+                    id="clientName"
                   />
                 </Box>
               </Grid>
@@ -553,82 +562,6 @@ function AddClient() {
         </Grid>
       </Grid>
     </>
-
-    /*     <div>
-      <Helmet>
-        <title>Add new Client</title>
-      </Helmet>
-      <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper>
-      <Grid
-        sx={{
-          px: 4,
-        }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={4}
-      >
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title="Client Details" />
-            <CardContent>
-              <Grid item xs={12} sm={12}>
-                <TextField fullWidth label="Client type" id="clientType" />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="clientName"
-                  label="Client Name"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} lg={6}>
-                <TextField
-                  fullWidth
-                  id="E-Mail"
-                  label="E-Mail"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} lg={6}>
-                <TextField
-                  id="phoneNumber"
-                  label="Phone Number"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} lg={6}>
-                <TextField
-                  fullWidth
-                  id="vatId"
-                  label="Vat Id"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} lg={12}>
-                <TextField
-                  fullWidth
-                  label="Shipping Adress"
-                  id="billingAdress"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} lg={12}>
-                <TextField
-                  fullWidth
-                  label="Additional Information"
-                  id="shippingAdress"
-                />
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </div> */
   );
 }
 
