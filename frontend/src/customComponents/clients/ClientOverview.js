@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ClientsTable from "./ClientsTable";
+import './ClientOverview.css'
 import PropTypes from "prop-types";
 import {
   Grid,
