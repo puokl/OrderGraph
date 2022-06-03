@@ -143,8 +143,8 @@ mock.onGet("/api/clients").reply(() => {
 });
 
 mock.onGet("/api/client").reply((config) => {
-  const { clientId } = config.params;
-  const client = clients.find((_client) => _client.id === clientId);
+  const { clientID } = config.params;
+  const client = clients.find((_client) => _client.id === clientID);
 
   return [200, { client }];
 });

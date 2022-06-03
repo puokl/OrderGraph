@@ -6,21 +6,25 @@ import {
   Card,
   Dialog,
   CardHeader,
+  FormControl,
   Grid,
   IconButton,
+  InputAdornment,
+  InputLabel,
   lighten,
+  MenuItem,
+  Select,
   Slide,
   styled,
   TextField,
   Divider,
 } from "@mui/material";
-import { forwardRef, useState, useCallback } from "react";
+import { forwardRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
-import axios from "src/utils/axios";
 
 const handleQueryChange = (event) => {
   event.persist();
@@ -29,70 +33,70 @@ const handleQueryChange = (event) => {
 
 const DialogWrapper = styled(Dialog)(
   () => `
-      .MuiDialog-paper {
-        overflow: visible;
-      }
-`
+        .MuiDialog-paper {
+          overflow: visible;
+        }
+  `
 );
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
-      background-color: ${theme.colors.error.lighter};
-      color: ${theme.colors.error.main};
-      width: ${theme.spacing(12)};
-      height: ${theme.spacing(12)};
-
-      .MuiSvgIcon-root {
-        font-size: ${theme.typography.pxToRem(45)};
-      }
-`
+        background-color: ${theme.colors.error.lighter};
+        color: ${theme.colors.error.main};
+        width: ${theme.spacing(12)};
+        height: ${theme.spacing(12)};
+  
+        .MuiSvgIcon-root {
+          font-size: ${theme.typography.pxToRem(45)};
+        }
+  `
 );
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
-
-  position: relative;
-  overflow: visible;
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: inherit;
-    z-index: 1;
-    transition: ${theme.transitions.create(["box-shadow"])};
-  }
-      
-    &.Mui-selected::after {
-      box-shadow: 0 0 0 3px ${theme.colors.primary.main};
+  
+    position: relative;
+    overflow: visible;
+  
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border-radius: inherit;
+      z-index: 1;
+      transition: ${theme.transitions.create(["box-shadow"])};
     }
-  `
+        
+      &.Mui-selected::after {
+        box-shadow: 0 0 0 3px ${theme.colors.primary.main};
+      }
+    `
 );
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
-     background: ${theme.colors.error.main};
-     color: ${theme.palette.error.contrastText};
-
-     &:hover {
-        background: ${theme.colors.error.dark};
-     }
-    `
+       background: ${theme.colors.error.main};
+       color: ${theme.palette.error.contrastText};
+  
+       &:hover {
+          background: ${theme.colors.error.dark};
+       }
+      `
 );
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
-     background: ${theme.colors.error.lighter};
-     color: ${theme.colors.error.main};
-     padding: ${theme.spacing(0.75)};
-
-     &:hover {
-      background: ${lighten(theme.colors.error.lighter, 0.4)};
-     }
-`
+       background: ${theme.colors.error.lighter};
+       color: ${theme.colors.error.main};
+       padding: ${theme.spacing(0.75)};
+  
+       &:hover {
+        background: ${lighten(theme.colors.error.lighter, 0.4)};
+       }
+  `
 );
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -196,13 +200,12 @@ const handleLimitChange = (event) => {
   setLimit(parseInt(event.target.value));
 };
 
-function AddClient() {
+function AddSupplier() {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
-  const [showContact, setShowContact] = useState(false);
   const navigate = useNavigate();
-  const navigateToClientOverview = () => {
-    navigate("/clients/overview");
+  const navigateToSupplierOverview = () => {
+    navigate("/suppliers/overview");
   };
 
   const projectTags = [{ title: "Person" }, { title: "Company" }];
@@ -231,18 +234,6 @@ function AddClient() {
     },
   ];
 
-  const getClient = useCallback(async () => {
-    try {
-      const response = await axios.get("/api/clients");
-      console.log(response);
-      setClients(response.data.clients);
-    } catch (err) {
-      console.error(err);
-    }
-  });
-
-  getClient();
-
   // define states and styles
   return (
     <>
@@ -269,7 +260,7 @@ function AddClient() {
               mb: 3,
             }}
           >
-            <CardHeader title="Client Details" />
+            <CardHeader title="Supplier Details" />
             <Grid container spacing={1}>
               {/* Client Type */}
               <Grid item xs={12}>
@@ -280,7 +271,6 @@ function AddClient() {
                       m: 0,
                     }}
                     limitTags={2}
-                    onInputChange={() => setShowContact(!showContact)}
                     options={projectTags}
                     getOptionLabel={(option) => option.title}
                     renderInput={(params) => (
@@ -303,19 +293,18 @@ function AddClient() {
                       m: 0,
                     }}
                     /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
                     /*                     onChange={handleQueryChange} */
                     placeholder={t("Client Name...")}
                     /*                     value={query} */
                     fullWidth
                     variant="outlined"
                     lable="Client Name"
-                    id="clientName"
                   />
                 </Box>
               </Grid>
@@ -327,12 +316,12 @@ function AddClient() {
                       m: 0,
                     }}
                     /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
                     /*                     onChange={handleQueryChange} */
                     placeholder={t("E-Mail...")}
                     /*                     value={query} */
@@ -351,12 +340,12 @@ function AddClient() {
                       m: 0,
                     }}
                     /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
                     /*                     onChange={handleQueryChange} */
                     placeholder={t("Phone Number...")}
                     /*                     value={query} */
@@ -432,107 +421,105 @@ function AddClient() {
               </Grid>
               {/* Divider, New Grid, Card, only shows visible if Project Tags = Company  */}
 
-              {showContact ? (
-                <>
-                  <CardHeader title="Contact Person" />
-                  <Grid
-                    sx={{
-                      px: 1,
-                    }}
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="stretch"
-                    spacing={1}
-                  >
-                    {/* Company Name Contact Person */}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <Box p={1}>
-                        <TextField
-                          sx={{
-                            m: 0,
-                          }}
-                          /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
-                          /*                     onChange={handleQueryChange} */
-                          placeholder={t("Name...")}
-                          /*                     value={query} */
-                          fullWidth
-                          variant="outlined"
-                          lable="Name"
-                        />
-                      </Box>
-                    </Grid>
-                    {/* Role */}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <Box p={1}>
-                        <Autocomplete
-                          multiple
-                          sx={{
-                            m: 0,
-                          }}
-                          limitTags={2}
-                          options={roleTags}
-                          getOptionLabel={(option) => option.title}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              fullWidth
-                              variant="outlined"
-                              label={t("Role")}
-                              placeholder={t("Role...")}
-                            />
-                          )}
-                        />
-                      </Box>
-                    </Grid>
-                    {/* Phone  Number */}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <Box p={1}>
-                        <TextField
-                          sx={{
-                            m: 0,
-                          }}
-                          /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
-                          /*                     onChange={handleQueryChange} */
-                          placeholder={t("Phone Number...")}
-                          /*                     value={query} */
-                          fullWidth
-                          variant="outlined"
-                          lable="Phone Number"
-                          id="PhoneNumber"
-                        />
-                      </Box>
-                    </Grid>
-                    {/* E-Mail */}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <Box p={1}>
-                        <TextField
-                          sx={{
-                            m: 0,
-                          }}
-                          placeholder={t("E-Mail...")}
-                          fullWidth
-                          variant="outlined"
-                          lable="E-Mail"
-                          id="E-Mail"
-                        />
-                      </Box>
-                    </Grid>
+              <>
+                <CardHeader title="Contact Person" />
+                <Grid
+                  sx={{
+                    px: 1,
+                  }}
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="stretch"
+                  spacing={1}
+                >
+                  {/* Company Name Contact Person */}
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box p={1}>
+                      <TextField
+                        sx={{
+                          m: 0,
+                        }}
+                        /*                     InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
+                        /*                     onChange={handleQueryChange} */
+                        placeholder={t("Name...")}
+                        /*                     value={query} */
+                        fullWidth
+                        variant="outlined"
+                        lable="Name"
+                      />
+                    </Box>
                   </Grid>
-                </>
-              ) : null}
+                  {/* Role */}
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box p={1}>
+                      <Autocomplete
+                        multiple
+                        sx={{
+                          m: 0,
+                        }}
+                        limitTags={2}
+                        options={roleTags}
+                        getOptionLabel={(option) => option.title}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            fullWidth
+                            variant="outlined"
+                            label={t("Role")}
+                            placeholder={t("Role...")}
+                          />
+                        )}
+                      />
+                    </Box>
+                  </Grid>
+                  {/* Phone  Number */}
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box p={1}>
+                      <TextField
+                        sx={{
+                          m: 0,
+                        }}
+                        /*                     InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchTwoToneIcon />
+                          </InputAdornment>
+                        ),
+                      }} */
+                        /*                     onChange={handleQueryChange} */
+                        placeholder={t("Phone Number...")}
+                        /*                     value={query} */
+                        fullWidth
+                        variant="outlined"
+                        lable="Phone Number"
+                        id="PhoneNumber"
+                      />
+                    </Box>
+                  </Grid>
+                  {/* E-Mail */}
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box p={1}>
+                      <TextField
+                        sx={{
+                          m: 0,
+                        }}
+                        placeholder={t("E-Mail...")}
+                        fullWidth
+                        variant="outlined"
+                        lable="E-Mail"
+                        id="E-Mail"
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </>
               <Button
                 sx={{
                   mt: { lg: 2, md: 0 },
@@ -541,7 +528,7 @@ function AddClient() {
                 /*           onClick={handleCreateEvent} */
                 variant="outlined"
                 color="primary"
-                onClick={navigateToClientOverview}
+                onClick={navigateToSupplierOverview}
               >
                 Cancel
               </Button>
@@ -565,4 +552,4 @@ function AddClient() {
   );
 }
 
-export default AddClient;
+export default AddSupplier;

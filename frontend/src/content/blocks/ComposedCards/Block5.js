@@ -1,5 +1,3 @@
-// jsx-a11y/label-has-for
-
 import {
   Box,
   Card,
@@ -12,17 +10,17 @@ import {
   Badge,
   Divider,
   Button,
-  styled
-} from '@mui/material';
-import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
-import useAuth from 'src/hooks/useAuth';
+  styled,
+} from "@mui/material";
+import AddCircleTwoToneIcon from "@mui/icons-material/AddCircleTwoTone";
+import useAuth from "src/hooks/useAuth";
 
-import { formatDistance, subHours, subMinutes } from 'date-fns';
-import { useTranslation } from 'react-i18next';
-import Scrollbar from 'src/components/Scrollbar';
-import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone';
-import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
-import ScheduleTwoToneIcon from '@mui/icons-material/ScheduleTwoTone';
+import { formatDistance, subHours, subMinutes } from "date-fns";
+import { useTranslation } from "react-i18next";
+import Scrollbar from "src/components/Scrollbar";
+import AttachFileTwoToneIcon from "@mui/icons-material/AttachFileTwoTone";
+import SendTwoToneIcon from "@mui/icons-material/SendTwoTone";
+import ScheduleTwoToneIcon from "@mui/icons-material/ScheduleTwoTone";
 
 const DividerWrapper = styled(Divider)(
   ({ theme }) => `
@@ -79,14 +77,14 @@ function Block5() {
         <Box>
           <Typography
             sx={{
-              pb: 1
+              pb: 1,
             }}
             variant="caption"
             fontWeight="bold"
           >
-            {t('Messenger')}
+            {t("Messenger")}
           </Typography>
-          <Typography variant="h4">{t('Talking to Kate')}</Typography>
+          <Typography variant="h4">{t("Talking to Kate")}</Typography>
         </Box>
         <IconButton color="primary">
           <AddCircleTwoToneIcon />
@@ -95,7 +93,7 @@ function Block5() {
       <Divider />
       <Box
         sx={{
-          height: 487
+          height: 487,
         }}
       >
         <Scrollbar>
@@ -110,7 +108,7 @@ function Block5() {
                 variant="rounded"
                 sx={{
                   width: 50,
-                  height: 50
+                  height: 50,
                 }}
                 alt="Zain Baptista"
                 src="/static/images/avatars/1.jpg"
@@ -129,18 +127,18 @@ function Block5() {
                   variant="subtitle1"
                   sx={{
                     pt: 1,
-                    display: 'flex',
-                    alignItems: 'center'
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
                   <ScheduleTwoToneIcon
                     sx={{
-                      mr: 0.5
+                      mr: 0.5,
                     }}
                     fontSize="small"
                   />
                   {formatDistance(subHours(new Date(), 115), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
@@ -167,18 +165,18 @@ function Block5() {
                   variant="subtitle1"
                   sx={{
                     pt: 1,
-                    display: 'flex',
-                    alignItems: 'center'
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
                   <ScheduleTwoToneIcon
                     sx={{
-                      mr: 0.5
+                      mr: 0.5,
                     }}
                     fontSize="small"
                   />
                   {formatDistance(subHours(new Date(), 125), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
@@ -186,7 +184,7 @@ function Block5() {
                 variant="rounded"
                 sx={{
                   width: 50,
-                  height: 50
+                  height: 50,
                 }}
                 alt={user.name}
                 src={user.avatar}
@@ -209,7 +207,7 @@ function Block5() {
                 <CardWrapperPrimary>Hey! Are you there?</CardWrapperPrimary>
                 <CardWrapperPrimary
                   sx={{
-                    mt: 2
+                    mt: 2,
                   }}
                 >
                   Heeeelloooo????
@@ -218,18 +216,18 @@ function Block5() {
                   variant="subtitle1"
                   sx={{
                     pt: 1,
-                    display: 'flex',
-                    alignItems: 'center'
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
                   <ScheduleTwoToneIcon
                     sx={{
-                      mr: 0.5
+                      mr: 0.5,
                     }}
                     fontSize="small"
                   />
                   {formatDistance(subHours(new Date(), 60), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
@@ -237,7 +235,7 @@ function Block5() {
                 variant="rounded"
                 sx={{
                   width: 50,
-                  height: 50
+                  height: 50,
                 }}
                 alt={user.name}
                 src={user.avatar}
@@ -253,7 +251,7 @@ function Block5() {
                 variant="rounded"
                 sx={{
                   width: 50,
-                  height: 50
+                  height: 50,
                 }}
                 alt="Zain Baptista"
                 src="/static/images/avatars/1.jpg"
@@ -268,7 +266,7 @@ function Block5() {
                 <CardWrapperSecondary>Hey there!</CardWrapperSecondary>
                 <CardWrapperSecondary
                   sx={{
-                    mt: 1
+                    mt: 1,
                   }}
                 >
                   How are you? Is it ok if I call you?
@@ -277,18 +275,18 @@ function Block5() {
                   variant="subtitle1"
                   sx={{
                     pt: 1,
-                    display: 'flex',
-                    alignItems: 'center'
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
                   <ScheduleTwoToneIcon
                     sx={{
-                      mr: 0.5
+                      mr: 0.5,
                     }}
                     fontSize="small"
                   />
                   {formatDistance(subMinutes(new Date(), 6), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
@@ -312,7 +310,7 @@ function Block5() {
                 </CardWrapperPrimary>
                 <CardWrapperPrimary
                   sx={{
-                    mt: 1
+                    mt: 1,
                   }}
                 >
                   Can you confirm?
@@ -321,18 +319,18 @@ function Block5() {
                   variant="subtitle1"
                   sx={{
                     pt: 1,
-                    display: 'flex',
-                    alignItems: 'center'
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
                   <ScheduleTwoToneIcon
                     sx={{
-                      mr: 0.5
+                      mr: 0.5,
                     }}
                     fontSize="small"
                   />
                   {formatDistance(subMinutes(new Date(), 8), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
@@ -340,7 +338,7 @@ function Block5() {
                 variant="rounded"
                 sx={{
                   width: 50,
-                  height: 50
+                  height: 50,
                 }}
                 alt={user.name}
                 src={user.avatar}
@@ -353,9 +351,9 @@ function Block5() {
       <CardWrapper
         sx={{
           p: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <Box>
@@ -363,18 +361,18 @@ function Block5() {
             variant="outlined"
             color="secondary"
             sx={{
-              mr: 1
+              mr: 1,
             }}
             size="small"
           >
-            {t('Create Post')}
+            {t("Create Post")}
           </Button>
           <Button variant="outlined" color="secondary" size="small">
-            {t('Event')}
+            {t("Event")}
           </Button>
         </Box>
         <Typography variant="subtitle2">
-          {t('Posting as')}{' '}
+          {t("Posting as")}{" "}
           <Typography component="span" color="text.primary">
             <b>Emma Taylor</b>
           </Typography>
@@ -387,16 +385,16 @@ function Block5() {
         <Box
           sx={{
             flex: 1,
-            mr: 2
+            mr: 2,
           }}
         >
           <TextField
             hiddenLabel
             fullWidth
-            placeholder={t('Write here your message...')}
+            placeholder={t("Write here your message...")}
           />
         </Box>
-        <Tooltip arrow placement="top" title={t('Attach a file')}>
+        <Tooltip arrow placement="top" title={t("Attach a file")}>
           <label htmlFor="messenger-upload-file">
             <IconButton color="primary" component="span">
               <AttachFileTwoToneIcon />
@@ -407,13 +405,13 @@ function Block5() {
         <Badge
           color="warning"
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left'
+            vertical: "bottom",
+            horizontal: "left",
           }}
           variant="dot"
         >
           <Button variant="contained" startIcon={<SendTwoToneIcon />}>
-            {t('Send')}
+            {t("Send")}
           </Button>
         </Badge>
       </Box>

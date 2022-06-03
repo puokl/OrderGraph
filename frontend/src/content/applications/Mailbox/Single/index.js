@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { format, formatDistance } from 'date-fns';
+import { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { format, formatDistance } from "date-fns";
 import {
   Avatar,
   Box,
@@ -16,19 +16,19 @@ import {
   Button,
   TextField,
   lighten,
-  styled
-} from '@mui/material';
-import { useDispatch, useSelector } from 'src/store';
-import { getMail } from 'src/slices/mailbox';
-import useAuth from 'src/hooks/useAuth';
-import { useTranslation } from 'react-i18next';
-import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
-import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import MarkEmailReadTwoToneIcon from '@mui/icons-material/MarkEmailReadTwoTone';
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone';
-import ReplyTwoToneIcon from '@mui/icons-material/ReplyTwoTone';
+  styled,
+} from "@mui/material";
+import { useDispatch, useSelector } from "src/store";
+import { getMail } from "src/slices/mailbox";
+import useAuth from "src/hooks/useAuth";
+import { useTranslation } from "react-i18next";
+import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
+import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveTwoTone";
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import MarkEmailReadTwoToneIcon from "@mui/icons-material/MarkEmailReadTwoTone";
+import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
+import AttachFileTwoToneIcon from "@mui/icons-material/AttachFileTwoTone";
+import ReplyTwoToneIcon from "@mui/icons-material/ReplyTwoTone";
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -49,8 +49,8 @@ const DividerWrapper = styled(Divider)(
 `
 );
 
-const Input = styled('input')({
-  display: 'none'
+const Input = styled("input")({
+  display: "none",
 });
 
 const BoxContent = styled(Box)(
@@ -97,7 +97,7 @@ function MailboxSingle() {
     if (categoryTag) {
       return navigate(
         `/${
-          location.pathname.split('/')[1]
+          location.pathname.split("/")[1]
         }/applications/mailbox/${categoryTag}`
       );
     }
@@ -105,13 +105,13 @@ function MailboxSingle() {
     if (labelTag) {
       return navigate(
         `/${
-          location.pathname.split('/')[1]
+          location.pathname.split("/")[1]
         }/applications/mailbox/tag/${labelTag}`
       );
     }
 
     return navigate(
-      `/${location.pathname.split('/')[1]}/applications/mailbox/inbox`
+      `/${location.pathname.split("/")[1]}/applications/mailbox/inbox`
     );
   };
 
@@ -131,15 +131,15 @@ function MailboxSingle() {
         justifyContent="space-between"
         px={3}
         sx={{
-          pt: { lg: 3 }
+          pt: { lg: 3 },
         }}
         pb={3}
       >
-        <Tooltip arrow placement="top" title={t('Go back')}>
+        <Tooltip arrow placement="top" title={t("Go back")}>
           <IconButton
             color="primary"
             sx={{
-              p: 1
+              p: 1,
             }}
             onClick={handleBack}
           >
@@ -148,32 +148,32 @@ function MailboxSingle() {
         </Tooltip>
 
         <Box>
-          <Tooltip arrow placement="top" title={t('Archive')}>
+          <Tooltip arrow placement="top" title={t("Archive")}>
             <IconButton
               color="primary"
               sx={{
                 ml: 1,
-                p: 1
+                p: 1,
               }}
             >
               <ArchiveTwoToneIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip arrow placement="top" title={t('Delete')}>
+          <Tooltip arrow placement="top" title={t("Delete")}>
             <IconButton
               color="primary"
               sx={{
-                p: 1
+                p: 1,
               }}
             >
               <DeleteTwoToneIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip arrow placement="top" title={t('Mark as read')}>
+          <Tooltip arrow placement="top" title={t("Mark as read")}>
             <IconButton
               color="primary"
               sx={{
-                p: 1
+                p: 1,
               }}
             >
               <MarkEmailReadTwoToneIcon />
@@ -185,7 +185,7 @@ function MailboxSingle() {
             ref={moreRef}
             sx={{
               ml: 1,
-              p: 1
+              p: 1,
             }}
           >
             <MoreVertTwoToneIcon />
@@ -196,7 +196,7 @@ function MailboxSingle() {
       <Typography
         sx={{
           py: 4,
-          px: 10
+          px: 10,
         }}
         variant="h3"
       >
@@ -211,13 +211,13 @@ function MailboxSingle() {
         <Box display="flex" alignItems="center">
           <Avatar
             sx={{
-              mr: 2
+              mr: 2,
             }}
             src={mailbox.from.avatar}
           />
           <Box>
             <Typography variant="h4" gutterBottom>
-              {mailbox.from.email}{' '}
+              {mailbox.from.email}{" "}
               <Typography
                 component="span"
                 variant="h5"
@@ -228,7 +228,7 @@ function MailboxSingle() {
               </Typography>
             </Typography>
             <Typography variant="h5" color="text.secondary" fontWeight="normal">
-              {t('to')}{' '}
+              {t("to")}{" "}
               {mailbox.to.map((to) => (
                 <span key={to.name}>
                   {to.name} ({to.email})
@@ -239,11 +239,11 @@ function MailboxSingle() {
         </Box>
         <Box>
           <Typography align="right" variant="subtitle2" color="text.primary">
-            {format(mailbox.date, 'MMMM dd yyyy, h:mm:ss a')}
+            {format(mailbox.date, "MMMM dd yyyy, h:mm:ss a")}
           </Typography>
           <Typography align="right" variant="subtitle1">
             {formatDistance(mailbox.date, new Date(), {
-              addSuffix: true
+              addSuffix: true,
             })}
           </Typography>
         </Box>
@@ -258,7 +258,7 @@ function MailboxSingle() {
           <Card>
             <Box px={3} pt={2}>
               <Typography component="span" variant="subtitle1">
-                {t('Sending to')}:{' '}
+                {t("Sending to")}:{" "}
               </Typography>
               <Typography
                 component="span"
@@ -266,7 +266,7 @@ function MailboxSingle() {
                 color="text.primary"
                 fontWeight="bold"
               >
-                {mailbox.from.email}{' '}
+                {mailbox.from.email}{" "}
                 <Typography
                   component="span"
                   variant="h5"
@@ -278,14 +278,14 @@ function MailboxSingle() {
               </Typography>
               <TextField
                 sx={{
-                  mt: 2
+                  mt: 2,
                 }}
                 fullWidth
                 multiline
                 minRows={4}
                 name="mail_reply"
                 variant="outlined"
-                placeholder={t('Write your reply here...')}
+                placeholder={t("Write your reply here...")}
               />
             </Box>
             <Box
@@ -298,13 +298,13 @@ function MailboxSingle() {
             >
               <Box display="flex" alignItems="center">
                 <Button startIcon={<ReplyTwoToneIcon />} variant="contained">
-                  {t('Reply')}
+                  {t("Reply")}
                 </Button>
                 <DividerWrapper orientation="vertical" flexItem />
-                <Tooltip arrow placement="top" title={t('Insert an emoji')}>
+                <Tooltip arrow placement="top" title={t("Insert an emoji")}>
                   <IconButton
                     sx={{
-                      p: 1
+                      p: 1,
                     }}
                     color="primary"
                   >
@@ -316,7 +316,7 @@ function MailboxSingle() {
                   id="messenger-upload-file"
                   type="file"
                 />
-                <Tooltip arrow placement="top" title={t('Attach a file')}>
+                <Tooltip arrow placement="top" title={t("Attach a file")}>
                   <label htmlFor="messenger-upload-file">
                     <IconButton color="primary" component="span">
                       <AttachFileTwoToneIcon />
@@ -324,10 +324,10 @@ function MailboxSingle() {
                   </label>
                 </Tooltip>
               </Box>
-              <Tooltip arrow placement="top" title={t('Delete draft')}>
+              <Tooltip arrow placement="top" title={t("Delete draft")}>
                 <IconButtonError
                   sx={{
-                    p: 1
+                    p: 1,
                   }}
                 >
                   <DeleteTwoToneIcon />
@@ -345,50 +345,50 @@ function MailboxSingle() {
         open={onMenuOpen}
         onClose={closeMenu}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
+          vertical: "top",
+          horizontal: "center",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
+          vertical: "top",
+          horizontal: "center",
         }}
       >
         <List
           sx={{
-            p: 1
+            p: 1,
           }}
           component="nav"
         >
           <ListItem button>
             <ListItemText
               primaryTypographyProps={{
-                noWrap: true
+                noWrap: true,
               }}
-              primary={t('Mark as read')}
+              primary={t("Mark as read")}
             />
           </ListItem>
           <ListItem button>
             <ListItemText
               primaryTypographyProps={{
-                noWrap: true
+                noWrap: true,
               }}
-              primary={t('Mark as important')}
+              primary={t("Mark as important")}
             />
           </ListItem>
           <ListItem button>
             <ListItemText
               primaryTypographyProps={{
-                noWrap: true
+                noWrap: true,
               }}
-              primary={t('Show similar emails')}
+              primary={t("Show similar emails")}
             />
           </ListItem>
           <ListItem button>
             <ListItemText
               primaryTypographyProps={{
-                noWrap: true
+                noWrap: true,
               }}
-              primary={t('Forward as attachment')}
+              primary={t("Forward as attachment")}
             />
           </ListItem>
         </List>
