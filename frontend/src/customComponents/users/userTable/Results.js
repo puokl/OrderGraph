@@ -451,7 +451,10 @@ const Results = (props) => {
                                   }/management/users/single/${user.id}`}
                                   color="primary"
                                 >
-                                  <EditTwoToneIcon fontSize="small" />
+                                  <EditTwoToneIcon
+                                    fontSize="small"
+                                    color="primary"
+                                  />
                                 </IconButton>
                               </Tooltip>
                               <Tooltip title={t("Delete")} arrow>

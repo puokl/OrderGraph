@@ -222,6 +222,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 //     return res.status(403).json("You can delete only your account!");
 //   }
 // });
+
 module.exports = {
   registerUser,
   loginUser,
