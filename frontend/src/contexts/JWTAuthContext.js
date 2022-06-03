@@ -1,6 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
 import axios from "src/utils/axios2";
-import { verify, JWT_SECRET } from "src/utils/jwt";
 import PropTypes from "prop-types";
 
 const initialAuthState = {
@@ -12,10 +11,10 @@ const initialAuthState = {
 const setSession = (accessToken) => {
   if (accessToken) {
     localStorage.setItem("accessToken", accessToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    axios.defaults.headers.authorization = `Bearer ${accessToken}`;
   } else {
     localStorage.removeItem("accessToken");
-    delete axios.defaults.headers.common.Authorization;
+    delete axios.defaults.headers.authorization;
   }
 };
 
