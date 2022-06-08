@@ -25,6 +25,11 @@ import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
 import axios from "src/utils/axios";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import ClientDetails from "./formComponents/ClientDetails";
+import BillingAdress from "./formComponents/BillingAdress";
+import ShippingAdress from "./formComponents/ShippingAdress";
+import Financials from "./formComponents/Financials";
+import ContactPerson from "./formComponents/ContactPerson";
 
 const handleQueryChange = (event) => {
   event.persist();
@@ -33,70 +38,70 @@ const handleQueryChange = (event) => {
 
 const DialogWrapper = styled(Dialog)(
   () => `
-      .MuiDialog-paper {
-        overflow: visible;
-      }
-`
+        .MuiDialog-paper {
+          overflow: visible;
+        }
+  `
 );
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
-      background-color: ${theme.colors.error.lighter};
-      color: ${theme.colors.error.main};
-      width: ${theme.spacing(12)};
-      height: ${theme.spacing(12)};
-
-      .MuiSvgIcon-root {
-        font-size: ${theme.typography.pxToRem(45)};
-      }
-`
+        background-color: ${theme.colors.error.lighter};
+        color: ${theme.colors.error.main};
+        width: ${theme.spacing(12)};
+        height: ${theme.spacing(12)};
+  
+        .MuiSvgIcon-root {
+          font-size: ${theme.typography.pxToRem(45)};
+        }
+  `
 );
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
-
-  position: relative;
-  overflow: visible;
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: inherit;
-    z-index: 1;
-    transition: ${theme.transitions.create(["box-shadow"])};
-  }
-      
-    &.Mui-selected::after {
-      box-shadow: 0 0 0 3px ${theme.colors.primary.main};
+  
+    position: relative;
+    overflow: visible;
+  
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border-radius: inherit;
+      z-index: 1;
+      transition: ${theme.transitions.create(["box-shadow"])};
     }
-  `
+        
+      &.Mui-selected::after {
+        box-shadow: 0 0 0 3px ${theme.colors.primary.main};
+      }
+    `
 );
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
-     background: ${theme.colors.error.main};
-     color: ${theme.palette.error.contrastText};
-
-     &:hover {
-        background: ${theme.colors.error.dark};
-     }
-    `
+       background: ${theme.colors.error.main};
+       color: ${theme.palette.error.contrastText};
+  
+       &:hover {
+          background: ${theme.colors.error.dark};
+       }
+      `
 );
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
-     background: ${theme.colors.error.lighter};
-     color: ${theme.colors.error.main};
-     padding: ${theme.spacing(0.75)};
-
-     &:hover {
-      background: ${lighten(theme.colors.error.lighter, 0.4)};
-     }
-`
+       background: ${theme.colors.error.lighter};
+       color: ${theme.colors.error.main};
+       padding: ${theme.spacing(0.75)};
+  
+       &:hover {
+        background: ${lighten(theme.colors.error.lighter, 0.4)};
+       }
+  `
 );
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -200,7 +205,7 @@ const handleLimitChange = (event) => {
   setLimit(parseInt(event.target.value));
 };
 
-function AddClient() {
+function AddNewClient() {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [showContact, setShowContact] = useState(false);
@@ -317,16 +322,7 @@ function AddClient() {
                     sx={{
                       m: 0,
                     }}
-                    /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
-                    /*                     onChange={handleQueryChange} */
                     placeholder={t("Client Name...")}
-                    /*                     value={query} */
                     fullWidth
                     variant="outlined"
                     label="Client Name"
@@ -341,16 +337,7 @@ function AddClient() {
                     sx={{
                       m: 0,
                     }}
-                    /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
-                    /*                     onChange={handleQueryChange} */
                     placeholder={t("E-Mail...")}
-                    /*                     value={query} */
                     fullWidth
                     variant="outlined"
                     label="E-Mail"
@@ -365,16 +352,7 @@ function AddClient() {
                     sx={{
                       m: 0,
                     }}
-                    /*                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchTwoToneIcon />
-                        </InputAdornment>
-                      ),
-                    }} */
-                    /*                     onChange={handleQueryChange} */
                     placeholder={t("Phone Number...")}
-                    /*                     value={query} */
                     fullWidth
                     variant="outlined"
                     label="Phone Number"
@@ -765,23 +743,6 @@ function AddClient() {
                             <AddOutlinedIcon color="primary" />
                           </IconButton>
                         </Button>
-                        {/*                         <Button
-                          variant="outlined"
-                          sx={{
-                            width: "585px",
-                            height: "54px",
-                            border: "2px dashed",
-                          }}
-                        >
-                          <Typography
-                            sx={{
-                              backgroundColor: "black",
-                              borderRadius: "100%",
-                            }}
-                          >
-                            +
-                          </Typography>
-                        </Button> */}
                       </Box>
                     </Grid>
                   </Grid>
@@ -817,4 +778,4 @@ function AddClient() {
   );
 }
 
-export default AddClient;
+export default AddNewClient;

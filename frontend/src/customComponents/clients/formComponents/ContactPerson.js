@@ -1,0 +1,108 @@
+import { Autocomplete, Box, CardHeader, Grid, TextField } from "@mui/material";
+import React, { forwardRef, useState, useCallback } from "react";
+
+function ContactPerson() {
+  return (
+    <div>
+      <CardHeader title="Contact Person" sx={{ pl: 3 }} />
+      <Grid
+        sx={{
+          px: 1,
+        }}
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="stretch"
+        spacing={1}
+      >
+        {/* Company Name Contact Person */}
+        <Grid item xs={12} sm={12} md={12}>
+          <Box p={1}>
+            <TextField
+              sx={{
+                m: 0,
+              }}
+              placeholder={t("Name...")}
+              fullWidth
+              variant="outlined"
+              label="Name"
+              id="contactName"
+            />
+          </Box>
+        </Grid>
+        {/* Role */}
+        <Grid item xs={12} sm={6} md={6}>
+          <Box p={1}>
+            <Autocomplete
+              multiple
+              sx={{
+                m: 0,
+              }}
+              limitTags={2}
+              options={roleTags}
+              getOptionLabel={(option) => option.title}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  variant="outlined"
+                  label={t("Role")}
+                  placeholder={t("Role...")}
+                  id="contactRole"
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        {/* Department */}
+        <Grid item xs={12} sm={6} md={6}>
+          <Box p={1}>
+            <TextField
+              sx={{
+                m: 0,
+              }}
+              placeholder="Department ..."
+              fullWidth
+              variant="outlined"
+              label="Department"
+              id="contactDepartment"
+            />
+          </Box>
+        </Grid>
+
+        {/* Phone  Number */}
+        <Grid item xs={12} sm={6} md={6}>
+          <Box p={1}>
+            <TextField
+              sx={{
+                m: 0,
+              }}
+              placeholder="Phone Number ..."
+              fullWidth
+              variant="outlined"
+              label="Phone Number"
+              id="contactPhoneNumber"
+            />
+          </Box>
+        </Grid>
+        {/* E-Mail */}
+        <Grid item xs={12} sm={6} md={6}>
+          <Box p={1}>
+            <TextField
+              sx={{
+                m: 0,
+              }}
+              placeholder="E-Mail ..."
+              fullWidth
+              variant="outlined"
+              label="E-Mail"
+              id="contactE-Mail"
+            />
+          </Box>
+        </Grid>
+      </Grid>
+    </div>
+  );
+}
+
+export default ContactPerson;
