@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 const initialAuthState = {
   isAuthenticated: false,
   isInitialized: false,
+  hasOrg: false,
   user: null,
 };
 
@@ -20,21 +21,23 @@ const setSession = (accessToken) => {
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, user } = action.payload;
+    const { isAuthenticated, user, hasOrg } = action.payload;
 
     return {
       ...state,
       isAuthenticated,
       isInitialized: true,
+      hasOrg,
       user,
     };
   },
   LOGIN: (state, action) => {
-    const { user } = action.payload;
+    const { user, hasOrg } = action.payload;
 
     return {
       ...state,
       isAuthenticated: true,
+      hasOrg,
       user,
     };
   },
@@ -49,6 +52,7 @@ const handlers = {
     return {
       ...state,
       isAuthenticated: true,
+      hasOrg: false,
       user,
     };
   },
@@ -80,13 +84,26 @@ export const AuthProvider = (props) => {
           const response = await axios.get("/api/users/me");
           const user = response.data;
 
-          dispatch({
-            type: "INITIALIZE",
-            payload: {
-              isAuthenticated: true,
-              user,
-            },
-          });
+          if (user.organization === "") {
+            dispatch({
+              type: "INITIALIZE",
+              payload: {
+                isAuthenticated: true,
+                hasOrg: false,
+                user,
+              },
+            });
+            console.log();
+          } else {
+            dispatch({
+              type: "INITIALIZE",
+              payload: {
+                isAuthenticated: true,
+                hasOrg: true,
+                user,
+              },
+            });
+          }
         } else {
           dispatch({
             type: "INITIALIZE",
@@ -121,12 +138,24 @@ export const AuthProvider = (props) => {
     const user = response.data.user;
 
     setSession(accessToken);
-    dispatch({
-      type: "LOGIN",
-      payload: {
-        user,
-      },
-    });
+    if (user.organization === "") {
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          hasOrg: false,
+          user,
+        },
+      });
+      console.log("false");
+    } else {
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          hasOrg: true,
+          user,
+        },
+      });
+    }
 
     return response.data;
   };
@@ -148,6 +177,7 @@ export const AuthProvider = (props) => {
     dispatch({
       type: "REGISTER",
       payload: {
+        hasOrg: false,
         user,
       },
     });
