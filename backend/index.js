@@ -1,56 +1,67 @@
+const path = require("path");
 const colors = require("colors");
 const dotenv = require("dotenv");
-const port = process.env.PORT || 8000;
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const errorHandler = require("./src/middleware/errorHandler");
+const corsOptions = require("./src/utils/cors");
 
 // express
 const express = require("express");
 const app = express();
+
+// load env vars
+dotenv.config({ path: "./src/config/config.env" });
 
 // database
 const connectDB = require("./src/config/db");
 const cors = require("cors");
 
 // routers
-const userRouter = require("./src/routes/userRoutes");
+const authRouter = require("./src/routes/authRoutes");
 const organizationRouter = require("./src/routes/organizationRoutes");
-const orderRouter = require("./src/routes/orderRoute")
+const orderRouter = require("./src/routes/orderRoutes");
+const userRouter = require("./src/routes/userRoutes");
 
-dotenv.config();
+// cookie parser
+app.use(cookieParser());
 
+// body parser
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: false }));
 
-// morgan
-app.use(morgan('dev'));
+// dev logging middleware
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
-// // Cors
-const corsOptions = {
-  origin: (origin, callback) => {
-    callback(null, true);
-  },
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  allowedHeaders: [
-    "Access-Control-Allow-Origin",
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "Authorization",
-  ],
-  credentials: true,
-};
-
+// cors
 app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
-// // end Cors
 
-app.use("/api/users", userRouter);
-app.use("/api/organization", organizationRouter);
-app.use("/api/order", orderRouter)
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/organization", organizationRouter);
+app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/user", userRouter);
+
+app.use(errorHandler);
 
 connectDB();
 
-app.listen(port, () => {
-  console.log(`Backend server is running on port ${port}`);
+const PORT = process.env.PORT || 8000;
+
+const server = app.listen(
+  PORT,
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow
+  )
+);
+
+// handle unhandled promise rejections
+process.on("unhandledRejection", (err, promise) => {
+  console.log(`Èrror: ${err.message}`.red);
+
+  //close server and exit process
+  server.close(() => process.exit(1));
 });

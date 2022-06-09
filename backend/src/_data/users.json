@@ -1,0 +1,79 @@
+[
+  {
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john@gmail.com",
+    "role": "admin",
+    "password": "123456"
+  },
+  {
+    "firstname": "Jane",
+    "lastname": "Doe",
+    "email": "jane@gmail.com",
+    "role": "admin",
+    "password": "123456"
+  },
+  {
+    "firstname": "Bob",
+    "lastname": "Doe",
+    "email": "bob@gmail.com",
+    "role": "admin",
+    "password": "123456"
+  },
+  {
+    "firstname": "Bart",
+    "lastname": "Simpson",
+    "email": "bart@gmail.com",
+    "role": "worker",
+    "password": "123456"
+  },
+  {
+    "firstname": "Maggie",
+    "lastname": "Simpson",
+    "email": "maggie@gmail.com",
+    "role": "worker",
+    "password": "123456"
+  },
+  {
+    "firstname": "Marge",
+    "lastname": "Simpson",
+    "email": "marge@gmail.com",
+    "role": "worker",
+    "password": "123456"
+  },
+  {
+    "firstname": "Homer",
+    "lastname": "Simpson",
+    "email": "homer@gmail.com",
+    "role": "worker",
+    "password": "123456"
+  },
+  {
+    "firstname": "Lisa",
+    "lastname": "Simpson",
+    "email": "lisa@gmail.com",
+    "role": "worker",
+    "password": "123456"
+  },
+  {
+    "firstname": "Cart",
+    "lastname": "Doe",
+    "email": "cart@gmail.com",
+    "role": "worker",
+    "password": "123456"
+  },
+  {
+    "firstname": "Kenny",
+    "lastname": "Doe",
+    "email": "kenny@gmail.com",
+    "role": "worker",
+    "password": "123456"
+  },
+  {
+    "firstname": "kyle",
+    "lastname": "Doe",
+    "email": "kyle@gmail.com",
+    "role": "worker",
+    "password": "123456"
+  }
+]
