@@ -28,7 +28,6 @@ app.use(cookieParser());
 
 // body parser
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: false }));
 
 // dev logging middleware
@@ -36,15 +35,17 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// cors
+// enable cors
 app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 
+// mount routers
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/organization", organizationRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/user", userRouter);
 
+// mongoose error handler
 app.use(errorHandler);
 
 connectDB();

@@ -6,19 +6,17 @@ const UserSchema = new mongoose.Schema(
   {
     firstname: {
       type: String,
-      required: [true, "Please add a name"],
       min: 3,
       max: 20,
       trim: true,
-      default: "First Name",
+      default: "",
     },
     lastname: {
       type: String,
-      required: [true, "Please add a lastname"],
       min: 3,
       max: 20,
       trim: true,
-      default: "Last Name",
+      default: "",
     },
     email: {
       type: String,
@@ -34,7 +32,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add a role"],
       enum: ["worker", "admin"],
-      default: "worker",
+      default: "admin",
       trim: true,
     },
     password: {

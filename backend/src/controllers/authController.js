@@ -8,7 +8,7 @@ const User = require("../models/User");
 // @access  Public
 const register = asyncHandler(async (req, res, next) => {
   const { firstname, lastname, email, password, role, organization } = req.body;
-  if (!firstname || !lastname || !email || !password) {
+  if (!email || !password) {
     return next(new ErrorResponse("Please add all fields", 400));
   }
 

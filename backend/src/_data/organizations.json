@@ -1,0 +1,16 @@
+[
+  {
+    "name": "org",
+    "email": "org@gmail.com",
+    "phone": "+49 123456",
+    "website": "org.com",
+    "size": "1-5",
+    "financials": {},
+    "address": {
+      "streetAddress": "street",
+      "zip": "nl543",
+      "city": "berlin",
+      "country": "germany"
+    }
+  }
+]

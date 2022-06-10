@@ -19,8 +19,8 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   res
     .status(statusCode)
-    .cookie("token", token, options) // to send the cookie = res.cookie(). it takes the key(name we assign), value( the cookie itself) and options
-    .json({ success: true, token, data: user });
+    .cookie("accessToken", token, options) // to send the cookie = res.cookie(). it takes the key(name we assign), value( the cookie itself) and options
+    .json({ success: true, accessToken: token, data: user });
 };
 
 module.exports = sendTokenResponse;
