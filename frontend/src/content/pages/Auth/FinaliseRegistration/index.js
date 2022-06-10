@@ -1,4 +1,4 @@
-import { useState, Children } from "react";
+import { useState, Children, useEffect } from "react";
 import {
   Typography,
   Container,
@@ -16,8 +16,13 @@ import {
   Avatar,
   IconButton,
   Autocomplete,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  selectClasses,
 } from "@mui/material";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, useFormikContext } from "formik";
 import { CheckboxWithLabel, TextField } from "formik-mui";
 import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
@@ -72,12 +77,12 @@ const sizes = [
   { label: "50+", value: "50+" },
 ];
 
-function FinaliseRegisterWizard() {
+function FinaliseRegisterWizard(props) {
   const { t } = useTranslation();
   const [openAlert, setOpenAlert] = useState(true);
   const navigate = useNavigate();
-
-  const { logout } = useAuth();
+  const [selectedSize, setSelectedSize] = useState("");
+  const { user, logout } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -86,6 +91,10 @@ function FinaliseRegisterWizard() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleSizeSelect = (e) => {
+    setSelectedSize(e.target.value);
   };
 
   return (
@@ -124,21 +133,33 @@ function FinaliseRegisterWizard() {
             </Box>
 
             <FormikStepper
+              // enableReinitialize={true}
               initialValues={{
                 organization_name: "",
                 website: "",
                 phone: "",
                 email: "",
-                company_size: "",
-                address: "",
-                zip_code: "",
-                city: "",
-                country: "",
+                organization_size: selectedSize,
+                address: {
+                  streetAddress: "",
+                  zip_code: "",
+                  city: "",
+                  country: "",
+                },
+
                 additional: "",
+                firstname: "",
+                lastname: "",
+                rep_email: user.email,
+                rep_phone: "",
               }}
-              onSubmit={async () => {
-                await sleep(3000);
+              onSubmit={async (values) => {
+                values.organization_size = selectedSize;
+                console.log("values", values);
               }}
+              selectedSize={selectedSize}
+              validateOnBlur={false}
+              validateOnChange={false}
             >
               <FormikStep
                 validationSchema={Yup.object().shape({
@@ -146,7 +167,6 @@ function FinaliseRegisterWizard() {
                     .max(255)
                     .required(t("The Organization name field is required")),
                   website: Yup.string()
-                    .url(t("The website provided should be a valid url"))
                     .max(255)
                     .required(t("The website field is required")),
                   phone: Yup.string()
@@ -158,9 +178,13 @@ function FinaliseRegisterWizard() {
                     )
                     .max(255)
                     .required(t("The email field is required")),
-                  organization_size: Yup.array()
-                    .oneOf(["1-5", "6-10", "11-20", "21-50", "50+"])
-                    .required(t("The organization size field is required")),
+                  organization_size: Yup.mixed().oneOf([
+                    "1-5",
+                    "6-10",
+                    "11-20",
+                    "21-50",
+                    "50+",
+                  ]),
                 })}
                 label={t("Organization Details")}
               >
@@ -206,41 +230,47 @@ function FinaliseRegisterWizard() {
                       />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                      <Autocomplete
-                        disablePortal
-                        options={sizes}
-                        getOptionLabel={(option) => option.label}
-                        renderInput={(params) => (
-                          <Field
-                            name="rganization_size"
-                            component={TextField}
-                            fullWidth
-                            {...params}
-                            label={t("Organization size")}
-                          />
-                        )}
-                      />
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">
+                          Organization Size
+                        </InputLabel>
+                        <Field
+                          component={Select}
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          label="organization_size"
+                          name="organization_size"
+                          value={selectedSize}
+                          onChange={handleSizeSelect}
+                        >
+                          {sizes.map((item) => (
+                            <MenuItem key={item.label} value={item.value}>
+                              {item.label}
+                            </MenuItem>
+                          ))}
+                        </Field>
+                      </FormControl>
                     </Grid>
                   </Grid>
                 </Box>
               </FormikStep>
               <FormikStep
                 validationSchema={Yup.object().shape({
-                  address: Yup.string()
-                    .max(55)
-                    .required(t("The address field is required")),
-                  zip_code: Yup.string()
-                    .max(255)
-                    .required(t("The zip code field is required")),
-                  city: Yup.string()
-                    .max(255)
-                    .required(t("The city field is required")),
-                  country: Yup.string()
-                    .max(255)
-                    .required(t("The country field is required")),
-                  additional: Yup.string()
-                    .max(255)
-                    .required(t("The country field is required")),
+                  address: Yup.object({
+                    streetAddress: Yup.string()
+                      .max(55)
+                      .required(t("The address field is required")),
+                    zip_code: Yup.string()
+                      .max(255)
+                      .required(t("The zip code field is required")),
+                    city: Yup.string()
+                      .max(255)
+                      .required(t("The city field is required")),
+                    country: Yup.string()
+                      .max(255)
+                      .required(t("The country field is required")),
+                  }),
+                  additional: Yup.string().max(255),
                 })}
                 label={t("Addresses")}
               >
@@ -252,7 +282,7 @@ function FinaliseRegisterWizard() {
                     <Grid item xs={12} md={6}>
                       <Field
                         fullWidth
-                        name="address"
+                        name="address.streetAddress"
                         component={TextField}
                         label={t("Address")}
                       />
@@ -260,7 +290,7 @@ function FinaliseRegisterWizard() {
                     <Grid item xs={12} md={6}>
                       <Field
                         fullWidth
-                        name="zip_code"
+                        name="address.zip_code"
                         component={TextField}
                         label={t("Zip Code")}
                       />
@@ -268,7 +298,7 @@ function FinaliseRegisterWizard() {
                     <Grid item xs={12} md={6}>
                       <Field
                         fullWidth
-                        name="city"
+                        name="address.city"
                         component={TextField}
                         label={t("City")}
                       />
@@ -276,7 +306,7 @@ function FinaliseRegisterWizard() {
                     <Grid item xs={12} md={6}>
                       <Field
                         fullWidth
-                        name="country"
+                        name="address.country"
                         component={TextField}
                         label={t("Country")}
                       />
@@ -294,15 +324,18 @@ function FinaliseRegisterWizard() {
               </FormikStep>
               <FormikStep
                 validationSchema={Yup.object().shape({
-                  company_size: Yup.string()
+                  firstname: Yup.string()
                     .max(55)
                     .required(t("The first name field is required")),
-                  company_name: Yup.string()
+                  lastname: Yup.string()
                     .max(255)
-                    .required(t("The first name field is required")),
-                  company_role: Yup.string()
+                    .required(t("The last name field is required")),
+                  rep_email: Yup.string()
+                    .email(t("Must be a valid email"))
+                    .max(255),
+                  rep_phone: Yup.string()
                     .max(255)
-                    .required(t("The first name field is required")),
+                    .required(t("The phone field is required")),
                 })}
                 label={t("Representative")}
               >
@@ -311,26 +344,36 @@ function FinaliseRegisterWizard() {
                     <Grid item xs={12} md={6}>
                       <Field
                         fullWidth
-                        name="company_name"
+                        name="firstname"
                         component={TextField}
-                        label={t("Company name")}
+                        label={t("First Name")}
                       />
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Field
                         fullWidth
-                        name="company_size"
-                        type="number"
+                        name="lastname"
                         component={TextField}
-                        label={t("Company size")}
+                        label={t("Last Name")}
                       />
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Field
                         fullWidth
-                        name="company_role"
+                        name="rep_email"
                         component={TextField}
-                        label={t("Company role")}
+                        label={t("Email")}
+                        value={user.email}
+                        disabled={true}
+                        sx={{ color: "black" }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Field
+                        fullWidth
+                        name="rep_phone"
+                        component={TextField}
+                        label={t("Phone")}
                       />
                     </Grid>
                   </Grid>
@@ -375,11 +418,7 @@ function FinaliseRegisterWizard() {
                       )}
                     </Typography>
 
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      href="/account/login-basic"
-                    >
+                    <Button fullWidth variant="contained" href="/login">
                       Continue to sign in
                     </Button>
                   </Container>
@@ -397,56 +436,65 @@ export function FormikStep({ children }) {
   return <>{children}</>;
 }
 
-export function FormikStepper({ children, ...props }) {
+export function FormikStepper({ children, selectedSize, ...props }) {
   const childrenArray = Children.toArray(children);
   const [step, setStep] = useState(0);
   const currentChild = childrenArray[step];
   const [completed, setCompleted] = useState(false);
+  const [notFilled, setNotFilled] = useState(false);
   const { t } = useTranslation();
 
   function isLastStep() {
     return step === childrenArray.length - 2;
   }
 
-  return (
-    <>
-      <Formik
-        {...props}
-        validationSchema={currentChild.props.validationSchema}
-        onSubmit={async (values, helpers) => {
-          if (isLastStep()) {
-            await props.onSubmit(values, helpers);
-            setCompleted(true);
-            setStep((s) => s + 1);
-          } else {
-            setStep((s) => s + 1);
-            helpers.setTouched({});
-          }
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form autoComplete="off">
-            <Stepper alternativeLabel activeStep={step}>
-              {childrenArray.map((child, index) => (
-                <Step
-                  key={child.props.label}
-                  completed={step > index || completed}
-                >
-                  <StepLabel>{child.props.label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
+  // function handleSubmit() {
+  //   return true;
+  // }
 
-            {currentChild}
-            {!completed ? (
-              <BoxActions
-                p={4}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
+  const onSubmit = async (values, helpers) => {
+    console.log(values);
+
+    if (isLastStep()) {
+      await props.onSubmit(values, helpers);
+      setCompleted(true);
+      // Formik.setSubmitting(false); //// Important
+      setStep((s) => s + 1);
+    } else {
+      setStep((s) => s + 1);
+      // helpers.setTouched(false);
+    }
+  };
+
+  return (
+    <Formik
+      {...props}
+      validationSchema={currentChild.props.validationSchema}
+      onSubmit={onSubmit}
+    >
+      {(props) => (
+        <Form autoComplete="off ">
+          <Stepper alternativeLabel activeStep={step}>
+            {childrenArray.map((child, index) => (
+              <Step
+                key={child.props.label}
+                completed={step > index || completed}
               >
+                <StepLabel>{child.props.label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {currentChild}
+          {!completed ? (
+            <BoxActions
+              p={4}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              {step > 0 ? (
                 <Button
-                  disabled={isSubmitting || step === 0}
+                  disabled={props.isSubmitting || step === 0}
                   variant="outlined"
                   color="primary"
                   type="button"
@@ -454,29 +502,30 @@ export function FormikStepper({ children, ...props }) {
                 >
                   {t("Previous")}
                 </Button>
+              ) : null}
 
-                <Button
-                  startIcon={
-                    isSubmitting ? <CircularProgress size="1rem" /> : null
-                  }
-                  disabled={isSubmitting}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  onClick={() => setStep((s) => s + 1)}
-                >
-                  {isSubmitting
-                    ? t("Submitting")
-                    : isLastStep()
-                    ? t("Complete registration")
-                    : t("Next step")}
-                </Button>
-              </BoxActions>
-            ) : null}
-          </Form>
-        )}
-      </Formik>
-    </>
+              <Button
+                startIcon={
+                  props.isSubmitting ? <CircularProgress size="1rem" /> : null
+                }
+                disabled={props.isSubmitting}
+                variant="contained"
+                color="primary"
+                type="submit"
+                sx={{ ml: "auto" }}
+                // onClick={() => setStep((s) => s + 1)}
+              >
+                {props.isSubmitting
+                  ? t("Submitting")
+                  : isLastStep()
+                  ? t("Complete registration")
+                  : t("Next step")}
+              </Button>
+            </BoxActions>
+          ) : null}
+        </Form>
+      )}
+    </Formik>
   );
 }
 
