@@ -1,16 +1,15 @@
 import { Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 function Financials() {
+  const [showContact, setShowContact] = useState(false);
   return (
     <div>
       {/* Financials */}
 
       <CardHeader title="Financials" sx={{ pl: 3 }} />
       <Grid
-        sx={{
-          px: 1,
-        }}
         container
         direction="row"
         justifyContent="center"

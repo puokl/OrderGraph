@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import ShoppingBagTwoToneIcon from "@mui/icons-material/ShoppingBagTwoTone";
 import { useTranslation } from "react-i18next";
-import { ArrowForwardTwoTone } from "@mui/icons-material";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeaderClientDetails from "./PageHeaderClientDetails";
 import { Helmet } from "react-helmet-async";
@@ -17,7 +16,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import axios from "src/utils/axios";
 
-function ClientDetails() {
+function ClientPagePerson() {
   const { t } = useTranslation();
   const [clients, setClients] = useState([]);
   const { clientID } = useParams();
@@ -88,7 +87,7 @@ function ClientDetails() {
                 p={2}
               >
                 <Typography variant="h5" fontWeight="normal">
-                  Name : test
+                  Name : {res.data.client.clientName}
                 </Typography>
 
                 <Typography
@@ -269,4 +268,4 @@ function ClientDetails() {
   );
 }
 
-export default ClientDetails;
+export default ClientPagePerson;

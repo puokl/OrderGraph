@@ -5,7 +5,7 @@ function BillingAdress() {
   return (
     <div>
       <CardHeader title="Billing Adress" sx={{ pl: 3 }} />
-      <Grid container spacing={1} sx={{ px: 1 }}>
+      <Grid container spacing={1}>
         {/* Billing Adress */}
         {/* Adresse */}
 
@@ -15,7 +15,7 @@ function BillingAdress() {
               sx={{
                 m: 0,
               }}
-              placeholder={t("Adress ...")}
+              placeholder="Adress ..."
               fullWidth
               variant="outlined"
               label="Adress"
@@ -32,7 +32,7 @@ function BillingAdress() {
               sx={{
                 m: 0,
               }}
-              placeholder={t("Zip...")}
+              placeholder="Zip..."
               fullWidth
               variant="outlined"
               label="Zip"
@@ -49,7 +49,7 @@ function BillingAdress() {
               sx={{
                 m: 0,
               }}
-              placeholder={t("City...")}
+              placeholder="City..."
               fullWidth
               variant="outlined"
               label="City"
@@ -66,7 +66,7 @@ function BillingAdress() {
               sx={{
                 m: 0,
               }}
-              placeholder={t("State...")}
+              placeholder="State..."
               fullWidth
               variant="outlined"
               label="State"
@@ -83,7 +83,7 @@ function BillingAdress() {
               sx={{
                 m: 0,
               }}
-              placeholder={t("Additional Information...")}
+              placeholder="Additional Information..."
               fullWidth
               variant="outlined"
               label="Additional Information"

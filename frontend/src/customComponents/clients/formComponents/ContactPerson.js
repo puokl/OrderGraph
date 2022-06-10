@@ -1,14 +1,23 @@
 import { Autocomplete, Box, CardHeader, Grid, TextField } from "@mui/material";
-import React, { forwardRef, useState, useCallback } from "react";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-function ContactPerson() {
+function ContactPerson({ handleAddContact }) {
+  const { t } = useTranslation();
+  const [showContact, setShowContact] = useState(false);
+  const [contactPerson, setContactPerson] = useState([]);
+
+  const projectTags = [{ title: "Person" }, { title: "Company" }];
+  const roleTags = [
+    { title: "CEO" },
+    { title: "Management" },
+    { title: "Worker" },
+  ];
+
   return (
     <div>
       <CardHeader title="Contact Person" sx={{ pl: 3 }} />
       <Grid
-        sx={{
-          px: 1,
-        }}
         container
         direction="row"
         justifyContent="center"
@@ -22,7 +31,7 @@ function ContactPerson() {
               sx={{
                 m: 0,
               }}
-              placeholder={t("Name...")}
+              placeholder="Name..."
               fullWidth
               variant="outlined"
               label="Name"
@@ -46,8 +55,8 @@ function ContactPerson() {
                   {...params}
                   fullWidth
                   variant="outlined"
-                  label={t("Role")}
-                  placeholder={t("Role...")}
+                  label="Role"
+                  placeholder="Role..."
                   id="contactRole"
                 />
               )}
@@ -69,7 +78,6 @@ function ContactPerson() {
             />
           </Box>
         </Grid>
-
         {/* Phone  Number */}
         <Grid item xs={12} sm={6} md={6}>
           <Box p={1}>

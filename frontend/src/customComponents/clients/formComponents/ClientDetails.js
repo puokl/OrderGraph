@@ -1,7 +1,11 @@
 import { Autocomplete, Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
-function ClientDetails() {
+function ClientDetails({ handleShowContact }) {
+  const { t } = useTranslation();
+  const projectTags = [{ title: "Person" }, { title: "Company" }];
+
   return (
     <div>
       <CardHeader title="Client Details" />
@@ -10,14 +14,21 @@ function ClientDetails() {
         <Grid item xs={12} sm={6} md={6}>
           <Box p={1}>
             <Autocomplete
-              /* multiple */
               sx={{
                 m: 0,
               }}
               limitTags={2}
-              onInputChange={(e) => handleShowContact(e)}
+              onChange={(event, value) => {
+                console.log(value.title);
+                if (value.title === "Company") handleShowContact(true);
+                else if (value.title === "Person") handleShowContact(false);
+                else handleShowContact(null);
+              }}
               options={projectTags}
               getOptionLabel={(option) => option.title}
+              isOptionEqualToValue={(option, value) =>
+                option.title === value.title
+              }
               renderInput={(params) => (
                 <TextField
                   {...params}
