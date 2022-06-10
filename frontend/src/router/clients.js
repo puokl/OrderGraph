@@ -13,10 +13,10 @@ const Loader = (Component) => (props) =>
 // Clients
 
 const AddClient = Loader(
-  lazy(() => import("src/customComponents/clients/createNewClients"))
+  lazy(() => import("src/customComponents/clients/addClient"))
 );
 const ClientDetails = Loader(
-  lazy(() => import("src/customComponents/clients/clientDetails"))
+  lazy(() => import("src/customComponents/clients/ClientPage"))
 );
 
 const ClientOverview = Loader(
