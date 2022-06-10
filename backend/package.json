@@ -20,6 +20,7 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.4",
+    "mongoose-sequence": "^5.3.1",
     "morgan": "^1.10.0"
   },
   "proxy": "http://localhost:8000"

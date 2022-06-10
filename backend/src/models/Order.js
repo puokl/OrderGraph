@@ -1,4 +1,39 @@
 const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
+
+const itemSchema = new mongoose.Schema({
+  id: Number,
+  item: {
+    itemName: String,
+    itemSize: String,
+    itemDescription: String,
+  },
+  measurementUnits: {
+    type: String,
+  },
+  quantity: {
+    type: String,
+  },
+  unityPriceNoVAT: {
+    type: String,
+  },
+});
+
+const taskSchema = new mongoose.Schema({
+  startDate: {},
+  finished: {
+    type: Boolean,
+    default: false,
+  },
+  halted: {
+    type: Boolean,
+    default: false,
+  },
+  haltReason: {
+    type: String,
+  },
+  subTasks: [],
+});
 
 const OrderSchema = new mongoose.Schema(
   {
@@ -25,10 +60,12 @@ const OrderSchema = new mongoose.Schema(
     startDate: {},
 
     documents: [],
-    items: [],
-    tasks: [],
+    items: [itemSchema],
+    tasks: [taskSchema],
   },
   { timestamps: true }
 );
+
+itemSchema.plugin;
 
 module.exports = mongoose.model("Order", OrderSchema);
