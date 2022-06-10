@@ -4,7 +4,7 @@ const colors = require("colors");
 const dotenv = require("dotenv");
 
 // load env vars
-dotenv.config({ path: "./src/config/config.env" });
+dotenv.config();
 
 // load models
 const User = require("./src/models/User");
@@ -21,10 +21,15 @@ const users = JSON.parse(
   fs.readFileSync(`${__dirname}/src/_data/users.json`, "utf-8")
 );
 
+const organizations = JSON.parse(
+  fs.readFileSync(`${__dirname}/src/_data/organizations.json`, "utf-8")
+);
+
 // import into DB
 const importData = async () => {
   try {
     await User.create(users);
+    await Organization.create(organizations);
 
     console.log("Data Imported...".green.inverse);
     process.exit();
@@ -37,6 +42,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await User.deleteMany();
+    await Organization.create(organizations);
 
     console.log("Data Destroyed...".red.inverse);
     process.exit();

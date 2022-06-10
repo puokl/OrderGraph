@@ -1,31 +1,34 @@
 const mongoose = require("mongoose");
 
-const OrderSchema = new mongoose.Schema({
-    orderName: {
-        type: String,
-        required: [true, "Please add a orderName"],
+const OrderSchema = new mongoose.Schema(
+  {
+    orderDetails: {
+      type: String,
     },
+    company: {
+      type: mongoose.Types.ObjectId,
+      ref: "Organization",
+      required: [true, "Please provide an organization"],
+    },
+    client: {},
     status: {
-        type: String,
-        required: [true, "Please add a status"],
-        min: 3,
-        max: 20,
-        enum: ["new", "in_progress", "finished"],
-        default: "new",
-        trim: true,
+      type: String,
+      required: [true, "Please add a status"],
+      enum: ["upcoming", "active", "canceled", "halted", "finished"],
+      default: "new",
+      trim: true,
     },
-    createdByUser: {
-      type: mongoose.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Please provide user'],
+    draft: {
+      type: Boolean,
+      default: false,
     },
-    createdByOrganization: {
-      type: mongoose.Types.ObjectId,
-      ref: 'Organization',
-      required: [true, 'Please provide user'],
-    },
-    
-},{timestamps:true});
+    startDate: {},
 
-module.exports= mongoose.model("Order", OrderSchema);
+    documents: [],
+    items: [],
+    tasks: [],
+  },
+  { timestamps: true }
+);
 
+module.exports = mongoose.model("Order", OrderSchema);

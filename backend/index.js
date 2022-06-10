@@ -1,4 +1,3 @@
-const path = require("path");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
@@ -11,7 +10,7 @@ const express = require("express");
 const app = express();
 
 // load env vars
-dotenv.config({ path: "./src/config/config.env" });
+dotenv.config();
 
 // database
 const connectDB = require("./src/config/db");
