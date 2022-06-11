@@ -21,7 +21,6 @@ const OrganizationSchema = new mongoose.Schema(
     },
     orgSize: {
       type: String,
-      required: [true, "Please add a company size"],
       enum: ["1-5", "6-10", "11-20", "21-50", "50+"],
       default: "1-5",
     },
@@ -38,6 +37,12 @@ const OrganizationSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
       required: true,
+    },
+    phone: {
+      type: String,
+    },
+    additional: {
+      type: String,
     },
   },
   { timestamps: true }

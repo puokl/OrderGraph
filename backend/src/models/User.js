@@ -43,6 +43,10 @@ const UserSchema = new mongoose.Schema(
     },
     organization: {
       type: String,
+      default: "",
+    },
+    phone: {
+      type: String,
     },
   },
   { timestamps: true }

@@ -23,7 +23,7 @@ function RegisterJWT() {
     <Formik
       initialValues={{
         email: "",
-        name: "",
+
         password: "",
         terms: false,
         submit: null,
@@ -33,7 +33,7 @@ function RegisterJWT() {
           .email(t("The email provided should be a valid email address"))
           .max(255)
           .required(t("The email field is required")),
-        name: Yup.string().max(255).required(t("The name field is required")),
+
         password: Yup.string()
           .min(8)
           .max(255)
@@ -45,7 +45,7 @@ function RegisterJWT() {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          await register(values.email, values.name, values.password);
+          await register(values.email, values.password);
 
           if (isMountedRef.current) {
             setStatus({ success: true });
@@ -69,18 +69,6 @@ function RegisterJWT() {
         values,
       }) => (
         <form noValidate onSubmit={handleSubmit}>
-          <TextField
-            error={Boolean(touched.name && errors.name)}
-            fullWidth
-            margin="normal"
-            helperText={touched.name && errors.name}
-            label={t("Name")}
-            name="name"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.name}
-            variant="outlined"
-          />
           <TextField
             error={Boolean(touched.email && errors.email)}
             fullWidth

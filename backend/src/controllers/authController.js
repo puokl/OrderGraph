@@ -79,17 +79,19 @@ const getUsers = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Update user data
-// @route   PUT /api/v1/auth/test
+// @route   PUT /api/v1/auth/update/:userId
 // @access  Private
 const updateUser = asyncHandler(async (req, res, next) => {
+  console.log(req.headers);
   // only allowed to change firstname, lastname and email
   const fieldsToUpdate = {
-    email: req.body.email,
     firstname: req.body.firstname,
     lastname: req.body.lastname,
+    organization: req.body.organization,
+    phone: req.body.phone,
   };
 
-  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+  const user = await User.findByIdAndUpdate(req.params.userId, fieldsToUpdate, {
     new: true,
     runValidators: true,
   });

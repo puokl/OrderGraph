@@ -81,8 +81,8 @@ export const AuthProvider = (props) => {
         if (accessToken) {
           setSession(accessToken);
 
-          const response = await axios.get("/api/users/me");
-          const user = response.data;
+          const response = await axios.get("/api/v1/auth/me");
+          const user = response.data.data;
 
           if (user.organization === "") {
             dispatch({
@@ -129,13 +129,13 @@ export const AuthProvider = (props) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post("/api/users/login", {
+    const response = await axios.post("/api/v1/auth/login", {
       email,
       password,
     });
     console.log(response);
     const accessToken = response.data.accessToken;
-    const user = response.data.user;
+    const user = response.data.data;
 
     setSession(accessToken);
     if (user.organization === "") {
@@ -165,15 +165,16 @@ export const AuthProvider = (props) => {
     dispatch({ type: "LOGOUT" });
   };
 
-  const register = async (email, name, password) => {
-    const response = await axios.post("/api/users/register", {
+  const register = async (email, password) => {
+    const response = await axios.post("/api/v1/auth/register", {
       email,
-      name,
       password,
     });
-    const { accessToken, user } = response.data;
+    const accessToken = response.data.accessToken;
+    const user = response.data.data;
+    setSession(accessToken);
 
-    window.localStorage.setItem("accessToken", accessToken);
+    // window.localStorage.setItem("accessToken", accessToken);
     dispatch({
       type: "REGISTER",
       payload: {

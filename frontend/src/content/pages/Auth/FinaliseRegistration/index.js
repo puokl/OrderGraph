@@ -22,7 +22,7 @@ import {
   InputLabel,
   selectClasses,
 } from "@mui/material";
-import { Field, Form, Formik, useFormikContext } from "formik";
+import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, TextField } from "formik-mui";
 import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
@@ -36,6 +36,8 @@ import Logo from "src/components/LogoSign";
 
 import useAuth from "src/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+
+import axios from "src/utils/axios2";
 
 const MainContent = styled(Box)(
   () => `
@@ -135,14 +137,14 @@ function FinaliseRegisterWizard(props) {
             <FormikStepper
               // enableReinitialize={true}
               initialValues={{
-                organization_name: "",
+                orgName: "",
                 website: "",
                 phone: "",
                 email: "",
-                organization_size: selectedSize,
+                orgSize: selectedSize,
                 address: {
                   streetAddress: "",
-                  zip_code: "",
+                  zip: "",
                   city: "",
                   country: "",
                 },
@@ -154,7 +156,7 @@ function FinaliseRegisterWizard(props) {
                 rep_phone: "",
               }}
               onSubmit={async (values) => {
-                values.organization_size = selectedSize;
+                values.orgSize = selectedSize;
                 console.log("values", values);
               }}
               selectedSize={selectedSize}
@@ -163,7 +165,7 @@ function FinaliseRegisterWizard(props) {
             >
               <FormikStep
                 validationSchema={Yup.object().shape({
-                  organization_name: Yup.string()
+                  orgName: Yup.string()
                     .max(255)
                     .required(t("The Organization name field is required")),
                   website: Yup.string()
@@ -178,7 +180,7 @@ function FinaliseRegisterWizard(props) {
                     )
                     .max(255)
                     .required(t("The email field is required")),
-                  organization_size: Yup.mixed().oneOf([
+                  orgSize: Yup.mixed().oneOf([
                     "1-5",
                     "6-10",
                     "11-20",
@@ -196,7 +198,7 @@ function FinaliseRegisterWizard(props) {
                     <Grid item xs={24} md={12}>
                       <Field
                         fullWidth
-                        name="organization_name"
+                        name="orgName"
                         component={TextField}
                         label={t("Organization name")}
                         placeholder={t("Name...")}
@@ -238,8 +240,8 @@ function FinaliseRegisterWizard(props) {
                           component={Select}
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          label="organization_size"
-                          name="organization_size"
+                          label="orgSize"
+                          name="orgSize"
                           value={selectedSize}
                           onChange={handleSizeSelect}
                         >
@@ -260,7 +262,7 @@ function FinaliseRegisterWizard(props) {
                     streetAddress: Yup.string()
                       .max(55)
                       .required(t("The address field is required")),
-                    zip_code: Yup.string()
+                    zip: Yup.string()
                       .max(255)
                       .required(t("The zip code field is required")),
                     city: Yup.string()
@@ -290,7 +292,7 @@ function FinaliseRegisterWizard(props) {
                     <Grid item xs={12} md={6}>
                       <Field
                         fullWidth
-                        name="address.zip_code"
+                        name="address.zip"
                         component={TextField}
                         label={t("Zip Code")}
                       />
@@ -418,8 +420,8 @@ function FinaliseRegisterWizard(props) {
                       )}
                     </Typography>
 
-                    <Button fullWidth variant="contained" href="/login">
-                      Continue to sign in
+                    <Button fullWidth variant="contained" href="/dashboard">
+                      Continue to dashboard
                     </Button>
                   </Container>
                 </Box>
@@ -443,6 +445,7 @@ export function FormikStepper({ children, selectedSize, ...props }) {
   const [completed, setCompleted] = useState(false);
   const [notFilled, setNotFilled] = useState(false);
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   function isLastStep() {
     return step === childrenArray.length - 2;
@@ -457,9 +460,25 @@ export function FormikStepper({ children, selectedSize, ...props }) {
 
     if (isLastStep()) {
       await props.onSubmit(values, helpers);
-      setCompleted(true);
+      const response = await axios.post(
+        "api/v1/organization/neworganization/" + user._id,
+        values
+      );
+      console.log(response);
+      if (response.data.success) {
+        const res2 = await axios.put("/api/v1/auth/update/" + user._id, {
+          organization: response.data.data._id,
+          firstname: values.firstname,
+          lastname: values.lastname,
+          phone: values.rep_phone,
+        });
+        if (res2.data.success) {
+          setCompleted(true);
+          setStep((s) => s + 1);
+        }
+      }
+
       // Formik.setSubmitting(false); //// Important
-      setStep((s) => s + 1);
     } else {
       setStep((s) => s + 1);
       // helpers.setTouched(false);
