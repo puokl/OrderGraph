@@ -101,7 +101,6 @@ function Status500() {
                   )}
                 </Typography>
                 <LoadingButton
-                  // eslint-disable-next-line react/jsx-no-bind
                   onClick={handleClick}
                   loading={pending}
                   variant="outlined"

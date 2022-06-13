@@ -1,24 +1,25 @@
-import { mock } from 'src/utils/axios';
-import wait from 'src/utils/wait';
-import { sign, decode, JWT_SECRET, JWT_EXPIRES_IN } from 'src/utils/jwt';
-import randomId from 'src/utils/randomId';
+import { mock } from "src/utils/axios";
+import wait from "src/utils/wait";
+import { sign, decode, JWT_SECRET, JWT_EXPIRES_IN } from "src/utils/jwt";
+import randomId from "src/utils/randomId";
 
 const users = [
   {
-    id: '1',
-    avatar: '/static/images/avatars/3.jpg',
-    location: 'San Francisco, USA',
-    username: 'admin',
-    email: 'demo@example.com',
-    name: 'Randy Smith',
-    jobtitle: 'Lead Developer',
-    password: 'TokyoPass1@',
-    role: 'admin',
-    posts: '27'
-  }
+    id: "1",
+    avatar: "/static/images/avatars/3.jpg",
+    location: "San Francisco, USA",
+    username: "admin",
+    email: "demo@example.com",
+    name: "Randy Smith",
+    jobtitle: "Lead Developer",
+    password: "TokyoPass1@",
+    role: "admin",
+    posts: "27",
+    organization: "testOrg",
+  },
 ];
 
-mock.onPost('/api/account/login').reply(async (config) => {
+mock.onPost("/api/account/login").reply(async (config) => {
   await wait(1000);
 
   try {
@@ -29,12 +30,12 @@ mock.onPost('/api/account/login').reply(async (config) => {
     if (!user || user.password !== password) {
       return [
         400,
-        { message: 'Verify that your email and password are correct' }
+        { message: "Verify that your email and password are correct" },
       ];
     }
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN
+      expiresIn: JWT_EXPIRES_IN,
     });
 
     return [
@@ -50,17 +51,18 @@ mock.onPost('/api/account/login').reply(async (config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
+          posts: user.posts,
+          organization: user.organization,
+        },
+      },
     ];
   } catch (err) {
-    console.error('Error: ', err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error("Error: ", err);
+    return [500, { message: "Encountered a server error" }];
   }
 });
 
-mock.onPost('/api/account/register').reply(async (config) => {
+mock.onPost("/api/account/register").reply(async (config) => {
   await wait(1000);
 
   try {
@@ -69,26 +71,26 @@ mock.onPost('/api/account/register').reply(async (config) => {
     let user = users.find((_user) => _user.email === email);
 
     if (user) {
-      return [400, { message: 'This user already exists' }];
+      return [400, { message: "This user already exists" }];
     }
 
     user = {
       id: randomId(),
       avatar: null,
-      jobtitle: 'Lead Developer',
+      jobtitle: "Lead Developer",
       email,
       username: null,
       name,
       password,
       location: null,
-      role: 'admin',
-      posts: '56'
+      role: "admin",
+      posts: "56",
     };
 
     users.push(user);
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN
+      expiresIn: JWT_EXPIRES_IN,
     });
 
     return [
@@ -104,30 +106,30 @@ mock.onPost('/api/account/register').reply(async (config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
+          posts: user.posts,
+        },
+      },
     ];
   } catch (err) {
-    console.error('Error: ', err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error("Error: ", err);
+    return [500, { message: "Encountered a server error" }];
   }
 });
 
-mock.onGet('/api/account/personal').reply((config) => {
+mock.onGet("/api/account/personal").reply((config) => {
   try {
     const { Authorization } = config.headers;
 
     if (!Authorization) {
-      return [401, { message: 'Auth token is missing' }];
+      return [401, { message: "Auth token is missing" }];
     }
 
-    const accessToken = Authorization.split(' ')[1];
+    const accessToken = Authorization.split(" ")[1];
     const { userId } = decode(accessToken);
     const user = users.find((_user) => _user.id === userId);
 
     if (!user) {
-      return [401, { message: 'Invalid auth token' }];
+      return [401, { message: "Invalid auth token" }];
     }
 
     return [
@@ -142,12 +144,12 @@ mock.onGet('/api/account/personal').reply((config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
+          posts: user.posts,
+        },
+      },
     ];
   } catch (err) {
-    console.error('Error: ', err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error("Error: ", err);
+    return [500, { message: "Encountered a server error" }];
   }
 });

@@ -1,0 +1,86 @@
+[
+  {
+    "name": "organization 1",
+    "email": "org1@gmail.com",
+    "phone": "+49 123456789",
+    "website": "org1.com",
+    "size": "1-5",
+    "financials": {},
+    "address": {
+      "streetAddress": "street1",
+      "zip": "nl543",
+      "city": "berlin",
+      "country": "germany"
+    }
+  },
+  {
+    "name": "organization 2",
+    "email": "org2@gmail.com",
+    "phone": "+49 123456789",
+    "website": "org2.com",
+    "size": "1-5",
+    "financials": {},
+    "address": {
+      "streetAddress": "street2",
+      "zip": "nl543",
+      "city": "berlin",
+      "country": "germany"
+    }
+  },
+  {
+    "name": "organization 3",
+    "email": "org3@gmail.com",
+    "phone": "+49 123456789",
+    "website": "org3.com",
+    "size": "1-5",
+    "financials": {},
+    "address": {
+      "streetAddress": "street3",
+      "zip": "nl543",
+      "city": "berlin",
+      "country": "germany"
+    }
+  },
+  {
+    "name": "organization 4",
+    "email": "org4@gmail.com",
+    "phone": "+49 123456789",
+    "website": "org4.com",
+    "size": "1-5",
+    "financials": {},
+    "address": {
+      "streetAddress": "street4",
+      "zip": "nl543",
+      "city": "berlin",
+      "country": "germany"
+    }
+  },
+  {
+    "name": "organization 5",
+    "email": "org5@gmail.com",
+    "phone": "+49 123456789",
+    "website": "org5.com",
+    "size": "1-5",
+    "financials": {},
+    "address": {
+      "streetAddress": "street5",
+      "zip": "nl543",
+      "city": "berlin",
+      "country": "germany"
+    }
+  },
+  {
+    "name": "organization 6",
+    "email": "org6@gmail.com",
+    "phone": "+49 123456789",
+    "website": "org6.com",
+    "size": "1-5",
+    "financials": {},
+    "address": {
+      "streetAddress": "street6",
+      "zip": "nl543",
+      "city": "berlin",
+      "country": "germany"
+    }
+  }
+]

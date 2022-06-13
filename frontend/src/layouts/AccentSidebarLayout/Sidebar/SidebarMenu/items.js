@@ -25,7 +25,7 @@ const menuItems = [
         link: "/orders",
         items: [
           {
-            name: "Overview",
+            name: "Order Overview",
             link: "orders/overview",
             badgeTooltip: "An overview of your orders",
           },

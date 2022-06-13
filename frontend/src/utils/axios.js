@@ -1,14 +1,11 @@
-import axios from 'axios';
-import AxiosMockAdapter from 'axios-mock-adapter';
+import axios from "axios";
+import AxiosMockAdapter from "axios-mock-adapter";
 
-const axiosInt = axios.create();
+export const axiosInt = axios.create();
 
 axiosInt.interceptors.response.use(
   (response) => response,
-  (error) =>
-    Promise.reject(
-      (error.response && error.response.data) || 'There is an error!'
-    )
+  (error) => Promise.reject(error)
 );
 
 export const mock = new AxiosMockAdapter(axiosInt, { delayResponse: 0 });

@@ -26,6 +26,10 @@ const usersRoutes = [
     path: "/test",
     element: <TestUsers />,
   },
+  {
+    path: "/test/:clientId",
+    element: <TestUsers />,
+  },
 ];
 
 export default usersRoutes;

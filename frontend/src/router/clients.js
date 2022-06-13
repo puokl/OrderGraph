@@ -12,14 +12,34 @@ const Loader = (Component) => (props) =>
 
 // Clients
 
-const Calendar = Loader(
-  lazy(() => import("src/content/applications/Calendar"))
+const AddClient = Loader(
+  lazy(() => import("src/customComponents/clients/addClient"))
+);
+const ClientDetails = Loader(
+  lazy(() => import("src/customComponents/clients/ClientPage"))
+);
+
+const ClientOverview = Loader(
+  lazy(() => import("src/customComponents/clients/ClientOverview"))
 );
 
 const clientsRoutes = [
   {
-    path: "/",
-    element: <Calendar />,
+    path: "add",
+    element: <AddClient />,
+  },
+  {
+    path: "/details",
+    element: <ClientDetails />,
+  },
+  {
+    path: "/overview",
+    element: <ClientOverview />,
+  },
+
+  {
+    path: "/details/:clientID",
+    element: <ClientDetails />,
   },
 ];
 
