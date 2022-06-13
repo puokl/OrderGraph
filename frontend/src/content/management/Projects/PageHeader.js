@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
@@ -7,15 +6,6 @@ import { styled } from "@mui/material/styles";
 import wait from "src/utils/wait";
 import ReactQuill from "react-quill";
 // import 'react-quill/dist/quill.snow.css';
-=======
-import { useState } from 'react';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import wait from 'src/utils/wait';
-import ReactQuill from 'react-quill';
->>>>>>> 10b69d12e8f2f322d2b625c21aaec653a57d7348
 
 import {
   Grid,
