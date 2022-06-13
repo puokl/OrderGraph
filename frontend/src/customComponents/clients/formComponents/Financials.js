@@ -28,6 +28,7 @@ function Financials() {
               variant="outlined"
               label="Registration Number"
               id="registrationNumber"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -40,6 +41,7 @@ function Financials() {
               label="Fiscal Number"
               placeholder="Fiscal Number ..."
               id="fiscalNumber"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -55,6 +57,7 @@ function Financials() {
               variant="outlined"
               label="IBAN"
               id="IBAN"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -70,6 +73,7 @@ function Financials() {
               variant="outlined"
               label="Bank Name"
               id="bankName"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>

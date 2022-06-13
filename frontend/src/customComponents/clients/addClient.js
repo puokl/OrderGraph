@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -28,7 +28,11 @@ function AddClient() {
   const [showContact, setShowContact] = useState(false);
   const [showShipping, setShowShipping] = useState(true);
   const [contactPersonNo, setContactPersonNo] = useState(1);
-
+  const [formData, setFormData] = useState("");
+  const updateFields = (fieldName, fieldValue) => {
+    console.log(fieldName, fieldValue);
+    setFormData({ ...formData, fieldValue });
+  };
   const navigate = useNavigate();
   const navigateToClientOverview = () => {
     navigate("/clients/overview");
@@ -46,6 +50,14 @@ function AddClient() {
   const handleAddContact = () => {
     console.log("twest:", contactPersonNo);
     setContactPersonNo(contactPersonNo + 1);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (clientName) {
+      console.log(clientName);
+    }
   };
 
   const roleTags = [
@@ -119,9 +131,12 @@ function AddClient() {
 
   getClient(); */
 
-  let test = [];
+  /* CREATE NEW FIELDS FOR EACH CONTACT PERSON */
+  let ContactPersonList = [];
   for (let i = 0; i < contactPersonNo; i++) {
-    test.push(<ContactPerson id={i} />);
+    ContactPersonList.push(
+      <ContactPerson updateFields={updateFields} id={i} />
+    );
   }
   return (
     <>
@@ -131,100 +146,105 @@ function AddClient() {
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
-      <Grid
-        sx={{
-          px: 4,
-        }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={4}
-      >
-        <Grid item xs={12}>
-          <Card
-            sx={{
-              p: 1,
-              mb: 3,
-            }}
-          >
-            <ClientDetails handleShowContact={handleShowContact} />
-            <BillingAdress />
+      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <Grid
+          sx={{
+            px: 4,
+          }}
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <Card
+              sx={{
+                p: 1,
+                mb: 3,
+              }}
+            >
+              <ClientDetails
+                handleShowContact={handleShowContact}
+                updateFields={updateFields}
+              />
+              <BillingAdress updateFields={updateFields} />
 
-            <ShippingAdress />
+              <ShippingAdress updateFields={updateFields} />
 
-            {showContact ? (
-              <>
-                <Financials />
-                {test}
-                {/* Add Contact Person Start */}
-                <Grid
-                  container
-                  direction="row"
-                  spacing={1}
-                  sx={{ justifyContent: "flex-start" }}
-                >
+              {showContact ? (
+                <>
+                  <Financials updateFields={updateFields} />
+                  {ContactPersonList}
+                  {/* Add Contact Person Start */}
                   <Grid
-                    item
-                    xs={12}
-                    sm={12}
-                    md={6}
-                    lg={6}
-                    sx={{ py: 2, px: 2, mt: 2, ml: 1 }}
+                    container
+                    direction="row"
+                    spacing={1}
+                    sx={{ justifyContent: "flex-start" }}
                   >
-                    <Tooltip
-                      arrow
-                      title={t("Click to add a new Contact Person")}
+                    <Grid
+                      item
+                      xs={12}
+                      sm={12}
+                      md={6}
+                      lg={6}
+                      sx={{ py: 2, px: 2, mt: 2, ml: 1 }}
                     >
-                      <CardAddAction>
-                        <CardActionArea
-                          sx={{
-                            px: 1,
-                          }}
-                          onClick={handleAddContact}
-                        >
-                          <CardContent>
-                            <AvatarAddWrapper>
-                              <AddTwoToneIcon fontSize="medium" />
-                            </AvatarAddWrapper>
-                          </CardContent>
-                        </CardActionArea>
-                      </CardAddAction>
-                    </Tooltip>
+                      <Tooltip
+                        arrow
+                        title={t("Click to add a new Contact Person")}
+                      >
+                        <CardAddAction>
+                          <CardActionArea
+                            sx={{
+                              px: 1,
+                            }}
+                            onClick={handleAddContact}
+                          >
+                            <CardContent>
+                              <AvatarAddWrapper>
+                                <AddTwoToneIcon fontSize="medium" />
+                              </AvatarAddWrapper>
+                            </CardContent>
+                          </CardActionArea>
+                        </CardAddAction>
+                      </Tooltip>
+                    </Grid>
                   </Grid>
-                </Grid>
-                ;{/* Add Contact Person End */}
-              </>
-            ) : null}
+                  ;{/* Add Contact Person End */}
+                </>
+              ) : null}
 
-            <Button
-              sx={{
-                mt: { lg: 2, md: 0 },
-                ml: { lg: 2 },
-                mb: { lg: 2 },
-              }}
-              variant="outlined"
-              color="primary"
-              onClick={navigateToClientOverview}
-            >
-              Cancel
-            </Button>
+              <Button
+                sx={{
+                  mt: { lg: 2, md: 0 },
+                  ml: { lg: 2 },
+                  mb: { lg: 2 },
+                }}
+                variant="outlined"
+                color="primary"
+                onClick={navigateToClientOverview}
+              >
+                Cancel
+              </Button>
 
-            <Button
-              sx={{
-                mt: { lg: 2, md: 0 },
-                ml: { lg: 110 },
-                mb: { lg: 2 },
-                px: { lg: 4 },
-              }}
-              variant="contained"
-              color="primary"
-            >
-              Save
-            </Button>
-          </Card>
+              <Button
+                sx={{
+                  mt: { lg: 2, md: 0 },
+                  ml: { lg: 110 },
+                  mb: { lg: 2 },
+                  px: { lg: 4 },
+                }}
+                variant="contained"
+                color="primary"
+              >
+                Save
+              </Button>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
+      </form>
     </>
   );
 }

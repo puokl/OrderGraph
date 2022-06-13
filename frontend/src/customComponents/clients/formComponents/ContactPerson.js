@@ -2,7 +2,7 @@ import { Autocomplete, Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-function ContactPerson({ handleAddContact }) {
+function ContactPerson({ updateFields }) {
   const { t } = useTranslation();
   const [showContact, setShowContact] = useState(false);
   const [contactPerson, setContactPerson] = useState([]);
@@ -36,6 +36,7 @@ function ContactPerson({ handleAddContact }) {
               variant="outlined"
               label="Name"
               id="contactName"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -58,6 +59,7 @@ function ContactPerson({ handleAddContact }) {
                   label="Role"
                   placeholder="Role..."
                   id="contactRole"
+                  onChange={(e) => updateFields(e.target.id, e.target.value)}
                 />
               )}
             />
@@ -75,6 +77,7 @@ function ContactPerson({ handleAddContact }) {
               variant="outlined"
               label="Department"
               id="contactDepartment"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -90,6 +93,7 @@ function ContactPerson({ handleAddContact }) {
               variant="outlined"
               label="Phone Number"
               id="contactPhoneNumber"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -105,6 +109,7 @@ function ContactPerson({ handleAddContact }) {
               variant="outlined"
               label="E-Mail"
               id="contactE-Mail"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>

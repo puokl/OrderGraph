@@ -2,7 +2,7 @@ import { Autocomplete, Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-function ClientDetails({ handleShowContact }) {
+function ClientDetails({ handleShowContact, updateFields }) {
   const { t } = useTranslation();
   const projectTags = [{ title: "Person" }, { title: "Company" }];
 
@@ -37,6 +37,8 @@ function ClientDetails({ handleShowContact }) {
                   label={t("Client type")}
                   placeholder={t("Select client type...")}
                   id="clientType"
+                  /*onChange={(e) => updateFields(e.target.id, e.target.value)} 
+                    LINE ABOVE COMMENTED OUT: ANOTHER ONCHANGE IS DEFINED IN AUTOCOMPLETE */
                 />
               )}
             />
@@ -54,6 +56,7 @@ function ClientDetails({ handleShowContact }) {
               variant="outlined"
               label="Client Name"
               id="clientName"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -69,6 +72,7 @@ function ClientDetails({ handleShowContact }) {
               variant="outlined"
               label="E-Mail"
               id="clientE-Mail"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -84,6 +88,7 @@ function ClientDetails({ handleShowContact }) {
               variant="outlined"
               label="Phone Number"
               id="clientPhoneNumber"
+              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>

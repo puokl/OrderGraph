@@ -45,6 +45,7 @@ function ShippingAdress() {
                   variant="outlined"
                   label="Adress"
                   id="SaAdress"
+                  onChange={(e) => updateFields(e.target.id, e.target.value)}
                 />
               </Box>
             </Grid>
@@ -62,6 +63,7 @@ function ShippingAdress() {
                   variant="outlined"
                   label="Zip"
                   id="SaZip"
+                  onChange={(e) => updateFields(e.target.id, e.target.value)}
                 />
               </Box>
             </Grid>
@@ -79,6 +81,7 @@ function ShippingAdress() {
                   variant="outlined"
                   label="City"
                   id="SaCity"
+                  onChange={(e) => updateFields(e.target.id, e.target.value)}
                 />
               </Box>
             </Grid>
@@ -96,6 +99,7 @@ function ShippingAdress() {
                   variant="outlined"
                   label="State"
                   id="SaState"
+                  onChange={(e) => updateFields(e.target.id, e.target.value)}
                 />
               </Box>
             </Grid>
@@ -115,6 +119,7 @@ function ShippingAdress() {
                   id="SaAdditionalInformation"
                   multiline={true}
                   rows={3}
+                  onChange={(e) => updateFields(e.target.id, e.target.value)}
                 />
               </Box>
             </Grid>
