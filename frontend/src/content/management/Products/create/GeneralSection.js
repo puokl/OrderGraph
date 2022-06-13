@@ -4,10 +4,17 @@ import {
   Box,
   Card,
   Grid,
+<<<<<<< HEAD
   styled,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ReactQuill from "react-quill";
+=======
+  styled
+} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import ReactQuill from 'react-quill';
+>>>>>>> 10b69d12e8f2f322d2b625c21aaec653a57d7348
 // import 'react-quill/dist/quill.snow.css';
 
 const EditorWrapper = styled(Box)(
