@@ -201,23 +201,14 @@ function PageHeader(props) {
         <Formik
           initialValues={{
             email: "",
-<<<<<<< HEAD
-            first_name: "",
-            last_name: "",
-=======
             firstname: "",
             lastname: "",
->>>>>>> dev
             password: "",
             role: "",
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-<<<<<<< HEAD
-            first_name: Yup.string()
-=======
             firstname: Yup.string()
->>>>>>> dev
               .max(255)
               .required(t("The first name field is required")),
             lastname: Yup.string()
@@ -254,23 +245,6 @@ function PageHeader(props) {
                 <Grid container spacing={3}>
                   <Grid item xs={12} lg={7}>
                     <Grid container spacing={3}>
-<<<<<<< HEAD
-                      <Grid item xs={12}>
-                        <TextField
-                          error={Boolean(touched.email && errors.email)}
-                          fullWidth
-                          helperText={touched.email && errors.email}
-                          label={t("Email address")}
-                          name="email"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          type="email"
-                          value={values.email}
-                          variant="outlined"
-                        />
-                      </Grid>
-=======
->>>>>>> dev
                       <Grid item xs={12} md={6}>
                         <TextField
                           error={Boolean(touched.firstname && errors.firstname)}
@@ -301,8 +275,6 @@ function PageHeader(props) {
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
-<<<<<<< HEAD
-=======
                           error={Boolean(touched.email && errors.email)}
                           fullWidth
                           helperText={touched.email && errors.email}
@@ -318,7 +290,6 @@ function PageHeader(props) {
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
->>>>>>> dev
                           error={Boolean(touched.password && errors.password)}
                           fullWidth
                           margin="normal"
