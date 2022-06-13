@@ -1,4 +1,4 @@
-export const JWT_SECRET = 'jwt-secret-key';
+export const JWT_SECRET = "secret";
 export const JWT_EXPIRES_IN = 3600 * 24 * 2;
 
 export const sign = (payload, privateKey, header) => {
@@ -13,20 +13,20 @@ export const sign = (payload, privateKey, header) => {
           item.charCodeAt(0) ^ privateKey[key % privateKey.length].charCodeAt(0)
         )
       )
-      .join('')
+      .join("")
   );
 
   return `${encodedHeader}.${encodedPayload}.${signature}`;
 };
 
 export const decode = (token) => {
-  const [encodedHeader, encodedPayload, signature] = token.split('.');
+  const [encodedHeader, encodedPayload, signature] = token.split(".");
   const header = JSON.parse(atob(encodedHeader));
   const payload = JSON.parse(atob(encodedPayload));
   const now = new Date();
 
   if (now < header.expiresIn) {
-    throw new Error('Expired token');
+    throw new Error("Expired token");
   }
 
   const verifiedSignature = btoa(
@@ -36,24 +36,24 @@ export const decode = (token) => {
           item.charCodeAt(0) ^ JWT_SECRET[key % JWT_SECRET.length].charCodeAt(0)
         )
       )
-      .join('')
+      .join("")
   );
 
   if (verifiedSignature !== signature) {
-    throw new Error('Invalid signature');
+    throw new Error("Invalid signature");
   }
 
   return payload;
 };
 
 export const verify = (token, privateKey) => {
-  const [encodedHeader, encodedPayload, signature] = token.split('.');
+  const [encodedHeader, encodedPayload, signature] = token.split(".");
   const header = JSON.parse(atob(encodedHeader));
   const payload = JSON.parse(atob(encodedPayload));
   const now = new Date();
 
   if (now < header.expiresIn) {
-    throw new Error('The token is expired!');
+    throw new Error("The token is expired!");
   }
 
   const verifiedSignature = btoa(
@@ -63,11 +63,11 @@ export const verify = (token, privateKey) => {
           item.charCodeAt(0) ^ privateKey[key % privateKey.length].charCodeAt(0)
         )
       )
-      .join('')
+      .join("")
   );
 
   if (verifiedSignature !== signature) {
-    throw new Error('The signature is invalid!');
+    throw new Error("The signature is invalid!");
   }
 
   return payload;

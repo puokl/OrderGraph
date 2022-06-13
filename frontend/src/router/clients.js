@@ -13,7 +13,14 @@ const Loader = (Component) => (props) =>
 // Clients
 
 const AddClient = Loader(
-  lazy(() => import("src/customComponents/clients/createNewClients"))
+  lazy(() => import("src/customComponents/clients/addClient"))
+);
+const ClientDetails = Loader(
+  lazy(() => import("src/customComponents/clients/ClientPage"))
+);
+
+const ClientOverview = Loader(
+  lazy(() => import("src/customComponents/clients/ClientOverview"))
 );
 
 const clientsRoutes = [
@@ -22,8 +29,17 @@ const clientsRoutes = [
     element: <AddClient />,
   },
   {
-    path: ":id",
-    element: <></>,
+    path: "/details",
+    element: <ClientDetails />,
+  },
+  {
+    path: "/overview",
+    element: <ClientOverview />,
+  },
+
+  {
+    path: "/details/:clientID",
+    element: <ClientDetails />,
   },
 ];
 

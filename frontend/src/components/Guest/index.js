@@ -6,7 +6,7 @@ const Guest = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
-    return <Navigate to="/accent-sidebar/dashboards/reports" />;
+    return <Navigate to="/dashboard" />;
   }
 
   return <>{children}</>;

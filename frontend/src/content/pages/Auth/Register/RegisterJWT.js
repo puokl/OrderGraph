@@ -1,5 +1,5 @@
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import * as Yup from "yup";
+import { Formik } from "formik";
 import {
   Button,
   Checkbox,
@@ -8,11 +8,11 @@ import {
   Typography,
   FormControlLabel,
   Link,
-  CircularProgress
-} from '@mui/material';
-import useAuth from 'src/hooks/useAuth';
-import useRefMounted from 'src/hooks/useRefMounted';
-import { useTranslation } from 'react-i18next';
+  CircularProgress,
+} from "@mui/material";
+import useAuth from "src/hooks/useAuth";
+import useRefMounted from "src/hooks/useRefMounted";
+import { useTranslation } from "react-i18next";
 
 function RegisterJWT() {
   const { register } = useAuth();
@@ -22,30 +22,30 @@ function RegisterJWT() {
   return (
     <Formik
       initialValues={{
-        email: '',
-        name: '',
-        password: '',
+        email: "",
+
+        password: "",
         terms: false,
-        submit: null
+        submit: null,
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
-          .email(t('The email provided should be a valid email address'))
+          .email(t("The email provided should be a valid email address"))
           .max(255)
-          .required(t('The email field is required')),
-        name: Yup.string().max(255).required(t('The name field is required')),
+          .required(t("The email field is required")),
+
         password: Yup.string()
           .min(8)
           .max(255)
-          .required(t('The password field is required')),
+          .required(t("The password field is required")),
         terms: Yup.boolean().oneOf(
           [true],
-          t('You must agree to our terms and conditions')
-        )
+          t("You must agree to our terms and conditions")
+        ),
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          await register(values.email, values.name, values.password);
+          await register(values.email, values.password);
 
           if (isMountedRef.current) {
             setStatus({ success: true });
@@ -66,27 +66,15 @@ function RegisterJWT() {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
       }) => (
         <form noValidate onSubmit={handleSubmit}>
-          <TextField
-            error={Boolean(touched.name && errors.name)}
-            fullWidth
-            margin="normal"
-            helperText={touched.name && errors.name}
-            label={t('Name')}
-            name="name"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.name}
-            variant="outlined"
-          />
           <TextField
             error={Boolean(touched.email && errors.email)}
             fullWidth
             margin="normal"
             helperText={touched.email && errors.email}
-            label={t('Email address')}
+            label={t("Email address")}
             name="email"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -99,7 +87,7 @@ function RegisterJWT() {
             fullWidth
             margin="normal"
             helperText={touched.password && errors.password}
-            label={t('Password')}
+            label={t("Password")}
             name="password"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -119,9 +107,9 @@ function RegisterJWT() {
             label={
               <>
                 <Typography variant="body2">
-                  {t('I accept the')}{' '}
+                  {t("I accept the")}{" "}
                   <Link component="a" href="#">
-                    {t('terms and conditions')}
+                    {t("terms and conditions")}
                   </Link>
                   .
                 </Typography>
@@ -133,7 +121,7 @@ function RegisterJWT() {
           )}
           <Button
             sx={{
-              mt: 3
+              mt: 3,
             }}
             color="primary"
             startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
@@ -143,7 +131,7 @@ function RegisterJWT() {
             size="large"
             variant="contained"
           >
-            {t('Create your account')}
+            {t("Create your account")}
           </Button>
         </form>
       )}

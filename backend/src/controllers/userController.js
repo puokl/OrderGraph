@@ -1,106 +1,73 @@
-const jwt = require("jsonwebtoken")
-const bcrypt = require("bcryptjs")
-const asyncHandler = require("express-async-handler")
-const User = require("../models/User")
+const ErrorResponse = require("../utils/errorResponse");
+const asyncHandler = require("../middleware/asyncHandler");
+const User = require("../models/User");
 
+// @desc      Get all users
+// @route     GET /api/v1/users
+// @access    Private/Admin
+const getUsers = asyncHandler(async (req, res, next) => {
+  // res.status(200).json(res.advancedResults);
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
 
-// generate JWT
-const generateToken = (id) =>{
-    return jwt.sign({id}, `${process.env.JWT_SECRET}`, {
-        expiresIn: "1d"
-    })
-}
+// @desc      Get single user
+// @route     GET /api/v1/users/:id
+// @access    Private/Admin
+const getUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
 
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
 
-// @desc    Register new user
-// @route   POST /api/users
-// @access  Public
-const registerUser = asyncHandler(async (req, res) => {
-    const {name, email, password} = req.body
-        if (!name || !email || !password) {
-            res.status(400)
-            throw new Error("Please add all fields")
-        }
+// @desc      Create user
+// @route     POST /api/v1/users
+// @access    Private/Admin
+const createUser = asyncHandler(async (req, res, next) => {
+  const user = await User.create(req.body);
 
-    // check if user exists
-    const userExists = await User.findOne({email})
+  res.status(201).json({
+    success: true,
+    data: user,
+  });
+});
 
-    if (userExists) {
-        res.status(400)
-        throw new Error("User already exists")
-    }
+// @desc      Update user
+// @route     PUT /api/v1/users/:id
+// @access    Private/Admin
+const updateUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-    // hash password
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
 
-    // Create user
-    const user = await User.create({
-        name, email, password: hashedPassword
-    })
+// @desc      Delete user
+// @route     DELETE /api/v1/users/:id
+// @access    Private/Admin
+const deleteUser = asyncHandler(async (req, res, next) => {
+  await User.findByIdAndDelete(req.params.id);
 
-    if (user) {
-        res.status(201).json({
-            _id:user.id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user._id)
-        })
-    } else {
-        res.status(400)
-        throw new Error("Invalid user data")
-    }
-    
-})
-
-
-// @desc    Authenticate a user
-// @route   POST /api/users/login
-// @access  Public
-const loginUser = asyncHandler(async (req, res) => {
-    const {email, password} = req.body
-    // check for user email
-    const user = await User.findOne({email})
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-        res.json({
-            _id: user.id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user._id)
-        })
-    } else {
-        res.status(400)
-        throw new Error("Invalid credentials")
-    }
-})
-
-
-
-// @desc    Get user data
-// @route   GET /api/users/me
-// @access  Private
-const getUser = asyncHandler(async (req, res) => {
-    res.status(200).json(req.user)
-})
-
-
-
-// @desc    Get user data
-// @route   GET /api/users/test
-// @access  Private
-const testUser = asyncHandler(async (req, res) => {
-const bob = {
-    id: 1,
-    name: "bob",
-    email: "bob@mail.com"
-}
-res.status(200).json(bob)
-})
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
 
 module.exports = {
-    registerUser,
-    loginUser,
-    getUser,
-    testUser
-}
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+};

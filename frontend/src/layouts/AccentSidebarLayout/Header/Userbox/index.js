@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
-import useAuth from 'src/hooks/useAuth';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { useRef, useState } from "react";
+import useAuth from "src/hooks/useAuth";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 import {
   Avatar,
@@ -12,14 +12,14 @@ import {
   ListItemText,
   Popover,
   Typography,
-  styled
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+  styled,
+} from "@mui/material";
+import { useTranslation } from "react-i18next";
+import InboxTwoToneIcon from "@mui/icons-material/InboxTwoTone";
+import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
+import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
+import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
+import AccountTreeTwoToneIcon from "@mui/icons-material/AccountTreeTwoTone";
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -78,7 +78,7 @@ function HeaderUserbox() {
     try {
       handleClose();
       await logout();
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -87,29 +87,29 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="primary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        {/* <Avatar variant="rounded" alt={user.firstname} src={user.avatar} /> */}
         <Box
           component="span"
           sx={{
-            display: { xs: 'none', md: 'inline-block' }
+            display: { xs: "none", md: "inline-block" },
           }}
         >
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              {user.jobtitle}
-            </UserBoxDescription>
+            <UserBoxLabel variant="body1">
+              {user.firstname + " " + user.lastname}
+            </UserBoxLabel>
+            <UserBoxDescription variant="body2">{user.role}</UserBoxDescription>
           </UserBoxText>
         </Box>
         <Box
           component="span"
           sx={{
-            display: { xs: 'none', sm: 'inline-block' }
+            display: { xs: "none", sm: "inline-block" },
           }}
         >
           <ExpandMoreTwoToneIcon
             sx={{
-              ml: 1
+              ml: 1,
             }}
           />
         </Box>
@@ -120,36 +120,36 @@ function HeaderUserbox() {
         onClose={handleClose}
         open={isOpen}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+          vertical: "top",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+          vertical: "top",
+          horizontal: "right",
         }}
       >
         <MenuUserBox
           sx={{
-            minWidth: 210
+            minWidth: 210,
           }}
           display="flex"
         >
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+          {/* <Avatar variant="rounded" alt={user.firstname} src={user.avatar} /> */}
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              {user.jobtitle}
-            </UserBoxDescription>
+            <UserBoxLabel variant="body1">
+              {user.firstname + " " + user.lastname}
+            </UserBoxLabel>
+            <UserBoxDescription variant="body2">{user.role}</UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider
           sx={{
-            mb: 0
+            mb: 0,
           }}
         />
         <List
           sx={{
-            p: 1
+            p: 1,
           }}
           component="nav"
         >
@@ -158,11 +158,11 @@ function HeaderUserbox() {
               handleClose();
             }}
             button
-            to={`/${location.pathname.split('/')[1]}/management/users/single/1`}
+            to={`/${location.pathname.split("/")[1]}/management/users/single/1`}
             component={NavLink}
           >
             <AccountBoxTwoToneIcon fontSize="small" />
-            <ListItemText primary={t('Profile')} />
+            <ListItemText primary={t("Profile")} />
           </ListItem>
           <ListItem
             button
@@ -173,7 +173,7 @@ function HeaderUserbox() {
             component={NavLink}
           >
             <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary={t('Inbox')} />
+            <ListItemText primary={t("Inbox")} />
           </ListItem>
           <ListItem
             button
@@ -184,7 +184,7 @@ function HeaderUserbox() {
             component={NavLink}
           >
             <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary={t('Projects')} />
+            <ListItemText primary={t("Projects")} />
           </ListItem>
         </List>
         <Divider />
@@ -192,10 +192,10 @@ function HeaderUserbox() {
           <Button color="primary" fullWidth onClick={handleLogout}>
             <LockOpenTwoToneIcon
               sx={{
-                mr: 1
+                mr: 1,
               }}
             />
-            {t('Sign out')}
+            {t("Sign out")}
           </Button>
         </Box>
       </Popover>

@@ -1,48 +1,50 @@
-import { createContext, useEffect, useReducer } from 'react';
-import axios from 'src/utils/axios';
-import { verify, JWT_SECRET } from 'src/utils/jwt';
-import PropTypes from 'prop-types';
+import { createContext, useEffect, useReducer } from "react";
+import axios from "src/utils/axios2";
+import PropTypes from "prop-types";
 
 const initialAuthState = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null
+  hasOrg: false,
+  user: null,
 };
 
 const setSession = (accessToken) => {
   if (accessToken) {
-    localStorage.setItem('accessToken', accessToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    localStorage.setItem("accessToken", accessToken);
+    axios.defaults.headers.authorization = `Bearer ${accessToken}`;
   } else {
-    localStorage.removeItem('accessToken');
-    delete axios.defaults.headers.common.Authorization;
+    localStorage.removeItem("accessToken");
+    delete axios.defaults.headers.authorization;
   }
 };
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, user } = action.payload;
+    const { isAuthenticated, user, hasOrg } = action.payload;
 
     return {
       ...state,
       isAuthenticated,
       isInitialized: true,
-      user
+      hasOrg,
+      user,
     };
   },
   LOGIN: (state, action) => {
-    const { user } = action.payload;
+    const { user, hasOrg } = action.payload;
 
     return {
       ...state,
       isAuthenticated: true,
-      user
+      hasOrg,
+      user,
     };
   },
   LOGOUT: (state) => ({
     ...state,
     isAuthenticated: false,
-    user: null
+    user: null,
   }),
   REGISTER: (state, action) => {
     const { user } = action.payload;
@@ -50,9 +52,10 @@ const handlers = {
     return {
       ...state,
       isAuthenticated: true,
-      user
+      hasOrg: false,
+      user,
     };
-  }
+  },
 };
 
 const reducer = (state, action) =>
@@ -60,10 +63,10 @@ const reducer = (state, action) =>
 
 const AuthContext = createContext({
   ...initialAuthState,
-  method: 'JWT',
+  method: "JWT",
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
-  register: () => Promise.resolve()
+  register: () => Promise.resolve(),
 });
 
 export const AuthProvider = (props) => {
@@ -73,38 +76,51 @@ export const AuthProvider = (props) => {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = window.localStorage.getItem('accessToken');
+        const accessToken = window.localStorage.getItem("accessToken");
 
-        if (accessToken && verify(accessToken, JWT_SECRET)) {
+        if (accessToken) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/personal');
-          const { user } = response.data;
+          const response = await axios.get("/api/v1/auth/me");
+          const user = response.data.data;
 
-          dispatch({
-            type: 'INITIALIZE',
-            payload: {
-              isAuthenticated: true,
-              user
-            }
-          });
+          if (user.organization === "") {
+            dispatch({
+              type: "INITIALIZE",
+              payload: {
+                isAuthenticated: true,
+                hasOrg: false,
+                user,
+              },
+            });
+            console.log();
+          } else {
+            dispatch({
+              type: "INITIALIZE",
+              payload: {
+                isAuthenticated: true,
+                hasOrg: true,
+                user,
+              },
+            });
+          }
         } else {
           dispatch({
-            type: 'INITIALIZE',
+            type: "INITIALIZE",
             payload: {
               isAuthenticated: false,
-              user: null
-            }
+              user: null,
+            },
           });
         }
       } catch (err) {
         console.error(err);
         dispatch({
-          type: 'INITIALIZE',
+          type: "INITIALIZE",
           payload: {
             isAuthenticated: false,
-            user: null
-          }
+            user: null,
+          },
         });
       }
     };
@@ -113,40 +129,58 @@ export const AuthProvider = (props) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
+    const response = await axios.post("/api/v1/auth/login", {
       email,
-      password
+      password,
     });
-    const { accessToken, user } = response.data;
+    console.log(response);
+    const accessToken = response.data.accessToken;
+    const user = response.data.data;
 
     setSession(accessToken);
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user
-      }
-    });
+    if (user.organization === "") {
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          hasOrg: false,
+          user,
+        },
+      });
+      console.log("false");
+    } else {
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          hasOrg: true,
+          user,
+        },
+      });
+    }
+
+    return response.data;
   };
 
   const logout = async () => {
     setSession(null);
-    dispatch({ type: 'LOGOUT' });
+    dispatch({ type: "LOGOUT" });
   };
 
-  const register = async (email, name, password) => {
-    const response = await axios.post('/api/account/register', {
+  const register = async (email, password) => {
+    const response = await axios.post("/api/v1/auth/register", {
       email,
-      name,
-      password
+      password,
     });
-    const { accessToken, user } = response.data;
+    const accessToken = response.data.accessToken;
+    const user = response.data.data;
+    setSession(accessToken);
 
-    window.localStorage.setItem('accessToken', accessToken);
+    // window.localStorage.setItem("accessToken", accessToken);
     dispatch({
-      type: 'REGISTER',
+      type: "REGISTER",
       payload: {
-        user
-      }
+        hasOrg: false,
+        user,
+      },
     });
   };
 
@@ -154,10 +188,10 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        method: 'JWT',
+        method: "JWT",
         login,
         logout,
-        register
+        register,
       }}
     >
       {children}
@@ -166,7 +200,7 @@ export const AuthProvider = (props) => {
 };
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default AuthContext;

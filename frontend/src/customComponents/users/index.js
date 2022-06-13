@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+// import axios from "src/utils/axios";
 import axios from "src/utils/axios";
 
 import { Helmet } from "react-helmet-async";
@@ -12,25 +13,52 @@ import PageTitleWrapper from "src/components/PageTitleWrapper";
 import Results from "./userTable/Results";
 import PageHeader from "./userTable/PageHeader";
 
+import { useParams } from "react-router-dom";
+
 function TestUsers() {
   const isMountedRef = useRefMounted();
   const [users, setUsers] = useState([]);
+  const { clientId } = useParams();
 
-  const getUsers = useCallback(async () => {
+  // const getUsers = async () => {
+  //   try {
+  //     const response = await axios.get("/api/users");
+  //     console.log(response);
+  //     setUsers(response.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  const getClients = async () => {
     try {
-      const response = await axios.get("/api/users");
+      const response = await axios.get("/api/client", {
+        params: {
+          clientId,
+        },
+      });
 
-      if (isMountedRef.current) {
-        setUsers(response.data.users);
-      }
+      console.log(response);
     } catch (err) {
       console.error(err);
     }
-  }, [isMountedRef]);
+  };
+
+  // const getUsers = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get("/api/users");
+
+  //     console.log(response);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }, [isMountedRef]);
 
   useEffect(() => {
-    getUsers();
-  }, [getUsers]);
+    // getUsers();
+    getClients();
+    console.log(process.env.REACT_APP_BASE_URL);
+  }, []);
 
   return (
     <div
