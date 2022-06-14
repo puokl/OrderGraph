@@ -269,8 +269,23 @@ function FinaliseRegisterWizard(props) {
                     country: Yup.string()
                       .max(255)
                       .required(t("The country field is required")),
+                    additional: Yup.string().max(255),
                   }),
-                  additional: Yup.string().max(255),
+                  worplaceAddress: Yup.object({
+                    streetAddress: Yup.string()
+                      .max(55)
+                      .required(t("The address field is required")),
+                    zip: Yup.string()
+                      .max(255)
+                      .required(t("The zip code field is required")),
+                    city: Yup.string()
+                      .max(255)
+                      .required(t("The city field is required")),
+                    country: Yup.string()
+                      .max(255)
+                      .required(t("The country field is required")),
+                    additional: Yup.string().max(255),
+                  }),
                 })}
                 label={t("Addresses")}
               >
@@ -315,6 +330,51 @@ function FinaliseRegisterWizard(props) {
                       <Field
                         fullWidth
                         name="additional"
+                        component={TextField}
+                        label={t("Additional Details")}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Typography variant="h4" sx={{ mb: 3 }}>
+                    {t("Workplace address")}
+                  </Typography>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                      <Field
+                        fullWidth
+                        name="workplaceAddress.streetAddress"
+                        component={TextField}
+                        label={t("Address")}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Field
+                        fullWidth
+                        name="workplaceAddress.zip"
+                        component={TextField}
+                        label={t("Zip Code")}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Field
+                        fullWidth
+                        name="workplaceAddress.city"
+                        component={TextField}
+                        label={t("City")}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Field
+                        fullWidth
+                        name="workplaceAddress.country"
+                        component={TextField}
+                        label={t("Country")}
+                      />
+                    </Grid>
+                    <Grid item xs={24} md={12}>
+                      <Field
+                        fullWidth
+                        name="workplaceAddress.additional"
                         component={TextField}
                         label={t("Additional Details")}
                       />
