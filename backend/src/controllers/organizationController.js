@@ -18,7 +18,7 @@ const registerOrganization = asyncHandler(async (req, res) => {
 
   // check if user has already a company value in db
 
-  res.status(200).json(organization);
+  res.status(200).json({ success: true, data: organization });
 });
 
 // @desc    Update organization

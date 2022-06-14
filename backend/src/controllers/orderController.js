@@ -4,7 +4,7 @@ const Order = require("../models/Order");
 // @desc    Create new order
 // @route   POST /api/v1/order/neworder/:orgId
 // @access  Private
-const newOrder = asyncHandler(async (req, res) => {
+const newOrder = asyncHandler(async (req, res, next) => {
   req.body.company = req.params.orgId;
 
   const order = await Order.create(req.body);
@@ -12,31 +12,57 @@ const newOrder = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get an order
-// @route   GET /api/order
+// @route   GET /api/v1/order/:ordId
 // @access  Private
-const getOrder = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
+const getOrder = asyncHandler(async (req, res, next) => {
+  const order = await Order.findById(req.params.ordId);
+  res.status(200).json({ success: true, data: order });
 });
 
 // @desc    Get ALL order
-// @route   GET /api/order
+// @route   GET /api/v1/order
 // @access  Private
-const getAllOrder = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
+const getAllOrder = asyncHandler(async (req, res, next) => {
+  const allOrder = await Order.find();
+  res.status(200).json({ success: true, data: allOrder });
 });
 
 // @desc    Update an order
-// @route   PUT /api/order
+// @route   PUT /api/v1/order/:ordId
 // @access  Private
-const updateOrder = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
+
+//dotnotation
+const updateOrder = asyncHandler(async (req, res, next) => {
+  let order = await Order.findById(req.params.ordId);
+
+  // dot notation is needed in order to update an embedded document
+  function convertToDotNotation(obj, newObj = {}, prefix = "") {
+    for (let key in obj) {
+      if (typeof obj[key] === "object") {
+        convertToDotNotation(obj[key], newObj, prefix + key + ".");
+      } else {
+        newObj[prefix + key] = obj[key];
+      }
+    }
+
+    return newObj;
+  }
+
+  const dotNotated = convertToDotNotation(req.body);
+
+  order = await Order.findByIdAndUpdate(req.params.ordId, dotNotated, {
+    new: true,
+  });
+
+  res.status(200).json({ success: true, data: order });
 });
 
-// @desc    Delete order
-// @route   DELETE /api/order
+// @desc    Delete single order
+// @route   DELETE /api/v1/order/:ordId
 // @access  Private
-const deleteOrder = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
+const deleteOrder = asyncHandler(async (req, res, next) => {
+  await Order.findByIdAndDelete(req.params.ordId);
+  res.status(200).json({ success: true, data: {} });
 });
 
 module.exports = { newOrder, getOrder, getAllOrder, updateOrder, deleteOrder };

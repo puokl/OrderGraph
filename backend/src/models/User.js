@@ -44,6 +44,7 @@ const UserSchema = new mongoose.Schema(
     organization: {
       type: String,
     },
+    phone: String,
   },
   { timestamps: true }
 );

@@ -3,18 +3,19 @@ const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/User");
 
 // @desc      Get all users
-// @route     GET /api/v1/users
+// @route     GET /api/v1/user
 // @access    Private/Admin
 const getUsers = asyncHandler(async (req, res, next) => {
-  // res.status(200).json(res.advancedResults);
+  const allUsers = await User.find();
+
   res.status(200).json({
     success: true,
-    data: user,
+    data: allUsers,
   });
 });
 
 // @desc      Get single user
-// @route     GET /api/v1/users/:id
+// @route     GET /api/v1/user/:id
 // @access    Private/Admin
 const getUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id);
@@ -25,8 +26,23 @@ const getUser = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc      Get all users
+// @route     GET /api/v1/user/getUsersInOrg
+// @access    Private/Admin
+const getUsersInOrg = asyncHandler(async (req, res, next) => {
+  const orgUsers = await User.find();
+  const orgAdmin = req.user.organization;
+
+  const filteredUsers = orgUsers.filter((x) => x.organization === orgAdmin);
+  console.log(filteredUsers);
+  res.status(200).json({
+    success: true,
+    data: filteredUsers,
+  });
+});
+
 // @desc      Create user
-// @route     POST /api/v1/users
+// @route     POST /api/v1/user
 // @access    Private/Admin
 const createUser = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
@@ -38,7 +54,7 @@ const createUser = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Update user
-// @route     PUT /api/v1/users/:id
+// @route     PUT /api/v1/user/:id
 // @access    Private/Admin
 const updateUser = asyncHandler(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -53,7 +69,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Delete user
-// @route     DELETE /api/v1/users/:id
+// @route     DELETE /api/v1/user/:id
 // @access    Private/Admin
 const deleteUser = asyncHandler(async (req, res, next) => {
   await User.findByIdAndDelete(req.params.id);
@@ -70,4 +86,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  getUsersInOrg,
 };

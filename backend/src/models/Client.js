@@ -1,17 +1,27 @@
 const mongoose = require("mongoose");
 
-const OrganizationSchema = new mongoose.Schema(
+const contactSchema = new mongoose.Schema({
+  name: String,
+  role: String,
+  department: String,
+  phone: String,
+  email: {
+    type: String,
+    max: 50,
+    unique: true,
+    match: [
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      "Please add a valid email",
+    ],
+  },
+});
+
+const ClientSchema = new mongoose.Schema(
   {
-    orgName: {
-      type: String,
-      required: [true, "Please add a company name"],
-      min: 3,
-      max: 20,
-      trim: true,
-    },
+    type: { type: String },
+    name: { type: String },
     email: {
       type: String,
-      required: [true, "Please add an email"],
       max: 50,
       unique: true,
       match: [
@@ -19,16 +29,9 @@ const OrganizationSchema = new mongoose.Schema(
         "Please add a valid email",
       ],
     },
-    phone: {},
-    website: {
-      type: String,
-    },
-    orgSize: {
-      type: String,
-      required: [true, "Please add a company size"],
-      enum: ["1-5", "6-10", "11-20", "21-50", "50+"],
-      default: "1-5",
-    },
+    phone: { type: String },
+    website: { type: String },
+
     financials: {
       registrationNo: String,
       fiscalNo: String,
@@ -50,13 +53,9 @@ const OrganizationSchema = new mongoose.Schema(
       country: String,
       additionalDetails: String,
     },
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    contacts: [contactSchema],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Organization", OrganizationSchema);
+module.exports = mongoose.model("Client", ClientSchema);
