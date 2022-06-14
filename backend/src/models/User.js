@@ -55,11 +55,20 @@ const UserSchema = new mongoose.Schema(
 // encrypt password using bcrypt
 // since we are using save in forgotpassword, this middleware runs and generate error. we manage this with an if statement
 UserSchema.pre("save", async function (next) {
+  console.log(this);
   if (!this.isModified("password")) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  console.log(this);
+});
+
+UserSchema.pre("findOneAndUpdate", async function (next) {
+  if (this._update.password) {
+    const salt = await bcrypt.genSalt(10);
+    this._update.password = await bcrypt.hash(this._update.password, salt);
+  }
 });
 
 // sign JWT and return (thta's a method, not a middleware)

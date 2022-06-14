@@ -86,10 +86,6 @@ function CreateUser(props) {
   const { user } = useAuth();
   const [role, setRole] = useState("");
 
-  const [publicProfile, setPublicProfile] = useState({
-    public: true,
-  });
-
   const CustomSelect = ({
     field,
     form: { touched, errors },
@@ -169,13 +165,12 @@ function CreateUser(props) {
           ...(userToEdit.role !== values.role ? { role: values.role } : null),
           ...(values.password !== "" ? { password: values.password } : null),
         });
+        console.log(response);
       } else {
         response = await axios.post("/api/v1/user", {
           ...values,
-          role: values.role.toLowerCase(),
           organization: user.organization,
         });
-        console.log(response);
       }
 
       if (response.status === 201) {
@@ -271,7 +266,6 @@ function CreateUser(props) {
           touched,
           values,
           setFieldValue,
-          setValues,
         }) => (
           <form
             onSubmit={(e) => {
@@ -295,7 +289,6 @@ function CreateUser(props) {
                         onBlur={handleBlur}
                         onChange={(e) => {
                           setFieldValue("firstname", e.target.value);
-                          console.log(values.firstname);
                         }}
                         fullWidth
                         label={t("First name")}
@@ -314,7 +307,6 @@ function CreateUser(props) {
                         onBlur={handleBlur}
                         onChange={(e) => {
                           setFieldValue("lastname", e.target.value);
-                          console.log(values.lastname);
                         }}
                         value={values.lastname}
                         variant="outlined"
@@ -330,7 +322,6 @@ function CreateUser(props) {
                         onBlur={handleBlur}
                         onChange={(e) => {
                           setFieldValue("email", e.target.value);
-                          console.log(values.email);
                         }}
                         type="email"
                         value={values.email}
