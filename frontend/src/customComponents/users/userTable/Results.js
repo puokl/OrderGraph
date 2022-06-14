@@ -176,7 +176,7 @@ const applyPagination = (users, page, limit) => {
 };
 
 const Results = (props) => {
-  const { users, getUsers } = props;
+  const { users, getUsers, handleCreateUserOpen } = props;
   const [selectedUsers, setSelectedUsers] = useState([]);
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
@@ -279,7 +279,7 @@ const Results = (props) => {
     console.log(usersToDelete);
     try {
       console.log("attempt");
-      const response = await axios.delete("/api/users/delete", {
+      const response = await axios.delete("/api/v1/users/delete", {
         data: usersToDelete,
       });
       console.log(response);
@@ -445,10 +445,9 @@ const Results = (props) => {
                             <Typography noWrap>
                               <Tooltip title={t("Edit")} arrow>
                                 <IconButton
-                                  component={RouterLink}
-                                  to={`/${
-                                    location.pathname.split("/")[1]
-                                  }/management/users/single/${user.id}`}
+                                  onClick={() => {
+                                    handleCreateUserOpen(user);
+                                  }}
                                   color="primary"
                                 >
                                   <EditTwoToneIcon

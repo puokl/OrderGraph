@@ -16,6 +16,9 @@ const Users = Loader(lazy(() => import("src/customComponents/users/users.js")));
 const TestUsers = Loader(
   lazy(() => import("src/customComponents/users/index.js"))
 );
+const TestRegister = Loader(
+  lazy(() => import("src/content/pages/Auth/FinaliseRegistration/index"))
+);
 
 const usersRoutes = [
   {
@@ -25,6 +28,10 @@ const usersRoutes = [
   {
     path: "/test",
     element: <TestUsers />,
+  },
+  {
+    path: "/testregister",
+    element: <TestRegister />,
   },
   {
     path: "/test/:clientId",

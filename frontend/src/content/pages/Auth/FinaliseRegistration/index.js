@@ -160,8 +160,6 @@ function FinaliseRegisterWizard(props) {
                 console.log("values", values);
               }}
               selectedSize={selectedSize}
-              validateOnBlur={false}
-              validateOnChange={false}
             >
               <FormikStep
                 validationSchema={Yup.object().shape({

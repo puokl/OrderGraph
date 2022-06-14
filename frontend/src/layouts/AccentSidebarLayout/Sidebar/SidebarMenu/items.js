@@ -85,7 +85,7 @@ const menuItems = [
       {
         name: "Users",
         icon: AccountCircleTwoToneIcon,
-        link: "/users/test",
+        link: "/users",
       },
       {
         name: "Account",
