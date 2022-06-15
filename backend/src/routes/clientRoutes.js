@@ -13,10 +13,12 @@ const { protect, authorize } = require("../middleware/auth");
 // router.use(protect);
 // router.use(authorize("admin"));
 
+router
+  .route("/:clientId")
+  .get(getClient)
+  .put(updateClient)
+  .delete(deleteClient);
 router.post("/newclient", newClient);
-router.get("/:clientId", getClient);
 router.get("/", getAllClient);
-router.put("/:clientId", updateClient);
-router.delete("/", deleteClient);
 
 module.exports = router;

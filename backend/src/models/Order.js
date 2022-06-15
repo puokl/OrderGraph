@@ -37,6 +37,7 @@ const taskSchema = mongoose.Schema({
 
 const OrderSchema = new mongoose.Schema(
   {
+    id: Number,
     orderDetails: {
       type: String,
     },
@@ -50,7 +51,7 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add a status"],
       enum: ["upcoming", "active", "canceled", "halted", "finished"],
-      default: "new",
+      default: "upcoming",
       trim: true,
     },
     draft: {
