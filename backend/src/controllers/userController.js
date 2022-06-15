@@ -32,10 +32,15 @@ const getUser = asyncHandler(async (req, res, next) => {
 const getUsersInOrg = asyncHandler(async (req, res, next) => {
   const orgUsers = await User.find();
   const orgAdmin = req.user.organization;
+  // we are using email to filter
+  const currentUser = req.user.email;
 
-  const filteredUsers = orgUsers.filter((x) => x.organization === orgAdmin);
+  const filteredUsers = orgUsers.filter(
+    (x) => x.organization === orgAdmin && x.email !== currentUser
+  );
 
   res.status(200).json({
+    length: filteredUsers.length,
     success: true,
     data: filteredUsers,
   });
