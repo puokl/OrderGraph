@@ -1,0 +1,71 @@
+[
+  {
+    "orderDetails": "that's a new order",
+    "company": "_COMPANY ID",
+    "client": "_CLIENT MONGOID",
+    "status": "active",
+    "draft": false,
+    "startDate": "starting date",
+    "documents": [
+      {
+        "id": "autoincrement Id",
+        "documentName": "new document",
+        "url": "URL TO DUCMENT IN STORAGE AFTER UPLOAD"
+      },
+      {
+        "id": "autoincrement Id",
+        "documentName": "new document",
+        "url": "URL TO DUCMENT IN STORAGE AFTER UPLOAD"
+      }
+    ],
+    "items": [
+      {
+        "itemID": "AUTOINCREMENTED ID",
+        "item": { "itemName": "", "itemSize": "", "itemDescription": "" },
+        "measurementUnits": "",
+        "quantity": 0,
+        "unitPriceNoVAT": 0
+      },
+      {
+        "itemID": "AUTOINCREMENTED ID",
+        "item": { "itemName": "", "itemSize": "", "itemDescription": "" },
+        "measurementUnits": "",
+        "quantity": 0,
+        "unitPriceNoVAT": 0
+      }
+    ],
+    "tasks": [
+      {
+        "taskID": "AUTOINCREMENTED ID",
+        "startDate": "DATE AND TIME",
+        "finished": "BOOLEAN",
+        "halted": "BOOLEAN",
+        "haltReason": "",
+        "subtasks": [
+          {
+            "subtaskID": "AUTOINCREMENTED ID",
+            "description": "",
+            "timeEstimate": "",
+            "finished": "BOOLEAN"
+          }
+        ]
+      },
+      {
+        "taskID": "AUTOINCREMENTED ID",
+        "startDate": "DATE AND TIME",
+        "finished": "BOOLEAN",
+        "halted": "BOOLEAN",
+        "haltReason": "",
+        "subtasks": [
+          {
+            "subtaskID": "AUTOINCREMENTED ID",
+            "description": "",
+            "timeEstimate": "",
+            "finished": "BOOLEAN"
+          }
+        ]
+      }
+    ],
+    "invoice": "URL TO EITHER UPLOADED OR GENERATED INVOICE(AFTER IT HAS BEEN SAVED IN STORAGE)"
+  }
+]

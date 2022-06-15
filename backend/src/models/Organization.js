@@ -19,13 +19,21 @@ const OrganizationSchema = new mongoose.Schema(
         "Please add a valid email",
       ],
     },
+    phone: {},
+    website: {
+      type: String,
+    },
     orgSize: {
       type: String,
       enum: ["1-5", "6-10", "11-20", "21-50", "50+"],
       default: "1-5",
     },
-    website: {
-      type: String,
+    financials: {
+      registrationNo: String,
+      fiscalNo: String,
+      IBAN: String,
+      BIC: String,
+      bank: String,
     },
     address: {
       streetAddress: String,

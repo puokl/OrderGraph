@@ -5,6 +5,7 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  getUsersInOrg,
 } = require("../controllers/userController");
 
 const User = require("../models/User");
@@ -17,7 +18,7 @@ router.use(protect);
 router.use(authorize("admin"));
 
 router.route("/").get(getUsers).post(createUser);
-
 router.route("/:id").get(getUser).put(updateUser).delete(deleteUser);
+router.route("/get/UsersInOrg").get(getUsersInOrg);
 
 module.exports = router;
