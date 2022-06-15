@@ -88,8 +88,7 @@ function CreateUser(props) {
 
   const CustomSelect = ({
     field,
-    form: { touched, errors },
-    setFieldValue,
+    form: { touched, errors, setFieldValue },
     ...props
   }) => (
     <>
@@ -349,11 +348,7 @@ function CreateUser(props) {
                         <InputLabel id="demo-simple-select-label">
                           User role
                         </InputLabel>
-                        <Field
-                          name="role"
-                          component={CustomSelect}
-                          setFieldValue={setFieldValue}
-                        />
+                        <Field name="role" component={CustomSelect} />
                       </FormControl>
                     </Grid>
                   </Grid>

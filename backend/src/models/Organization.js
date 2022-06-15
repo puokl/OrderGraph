@@ -32,6 +32,14 @@ const OrganizationSchema = new mongoose.Schema(
       zip: String,
       city: String,
       country: String,
+      additional: String,
+    },
+    workplaceAddress: {
+      streetAddress: String,
+      zip: String,
+      city: String,
+      country: String,
+      additional: String,
     },
     user: {
       type: mongoose.Schema.ObjectId,
@@ -39,9 +47,6 @@ const OrganizationSchema = new mongoose.Schema(
       required: true,
     },
     phone: {
-      type: String,
-    },
-    additional: {
       type: String,
     },
   },

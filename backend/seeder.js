@@ -29,7 +29,7 @@ const organizations = JSON.parse(
 const importData = async () => {
   try {
     await User.create(users);
-    await Organization.create(organizations);
+    // await Organization.create(organizations);
 
     console.log("Data Imported...".green.inverse);
     process.exit();
@@ -42,7 +42,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await User.deleteMany();
-    await Organization.create(organizations);
+    // await Organization.create(organizations);
 
     console.log("Data Destroyed...".red.inverse);
     process.exit();
