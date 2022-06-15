@@ -6,15 +6,16 @@ const User = require("../models/User");
 // @route     GET /api/v1/users
 // @access    Private/Admin
 const getUsers = asyncHandler(async (req, res, next) => {
+  const allUsers = await User.find();
   // res.status(200).json(res.advancedResults);
   res.status(200).json({
     success: true,
-    data: user,
+    data: allUsers,
   });
 });
 
 // @desc      Get single user
-// @route     GET /api/v1/users/:id
+// @route     GET /api/v1/users/:idy
 // @access    Private/Admin
 const getUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id);
@@ -43,7 +44,6 @@ const createUser = asyncHandler(async (req, res, next) => {
 const updateUser = asyncHandler(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true,
   });
 
   res.status(200).json({
