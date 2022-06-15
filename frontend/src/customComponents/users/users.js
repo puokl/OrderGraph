@@ -29,7 +29,7 @@ function TestUsers() {
 
   const getUsers = async () => {
     try {
-      const response = await axios.get("/api/v1/user");
+      const response = await axios.get("/api/v1/user/get/UsersInOrg");
       console.log(response);
       setUsers(response.data.data);
     } catch (err) {

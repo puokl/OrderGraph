@@ -27,10 +27,11 @@ const getUser = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Get all users in org
-// @route     GET /api/v1/user/getUsersInOrg
+// @route     GET /api/v1/user/get/UsersInOrg
 // @access    Private/Admin
 const getUsersInOrg = asyncHandler(async (req, res, next) => {
   const orgUsers = await User.find();
+
   const orgAdmin = req.user.organization;
 
   const filteredUsers = orgUsers.filter((x) => x.organization === orgAdmin);
