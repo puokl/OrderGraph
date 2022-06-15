@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add a password"],
       minlength: 6,
-      //select: false, // when we get a user through the api is not going to show the password
+      select: false, // when we get a user through the api is not going to show the password
     },
     organization: {
       type: String,
