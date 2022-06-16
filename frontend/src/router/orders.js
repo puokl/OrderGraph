@@ -15,11 +15,16 @@ const Loader = (Component) => (props) =>
 const Calendar = Loader(
   lazy(() => import("src/content/applications/Calendar"))
 );
+const Gantt = Loader(lazy(() => import("src/customComponents/gantt/gantt")));
 
 const ordersRoutes = [
   {
     path: "/",
     element: <Calendar />,
+  },
+  {
+    path: "gantt",
+    element: <Gantt />,
   },
 ];
 
