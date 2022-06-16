@@ -1,20 +1,23 @@
 const mongoose = require("mongoose");
 
-const contactSchema = new mongoose.Schema({
-  name: String,
-  role: String,
-  department: String,
-  phone: String,
-  email: {
-    type: String,
-    max: 50,
-    unique: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please add a valid email",
-    ],
+const contactSchema = new mongoose.Schema(
+  {
+    name: String,
+    role: String,
+    department: String,
+    phone: String,
+    email: {
+      type: String,
+      max: 50,
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please add a valid email",
+      ],
+    },
   },
-});
+  { _id: false }
+);
 
 const ClientSchema = new mongoose.Schema(
   {

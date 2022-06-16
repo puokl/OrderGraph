@@ -8,6 +8,9 @@ dotenv.config();
 
 // load models
 const User = require("./src/models/User");
+const Organization = require("./src/models/Organization");
+const Client = require("./src/models/Client");
+const Order = require("./src/models/Order");
 
 // connect to DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -25,11 +28,21 @@ const organizations = JSON.parse(
   fs.readFileSync(`${__dirname}/src/_data/organizations.json`, "utf-8")
 );
 
+const clients = JSON.parse(
+  fs.readFileSync(`${__dirname}/src/_data/clients.json`, "utf-8")
+);
+
+const orders = JSON.parse(
+  fs.readFileSync(`${__dirname}/src/_data/orders.json`, "utf-8")
+);
+
 // import into DB
 const importData = async () => {
   try {
-    await User.create(users);
-    await Organization.create(organizations);
+    // await User.create(users);
+    // await Organization.create(organizations);
+    await Client.create(clients);
+    // await Order.create(orders);
 
     console.log("Data Imported...".green.inverse);
     process.exit();
@@ -41,8 +54,10 @@ const importData = async () => {
 // delete data
 const deleteData = async () => {
   try {
-    await User.deleteMany();
-    await Organization.create(organizations);
+    // await User.deleteMany();
+    // await Organization.deleteMany();
+    await Client.deleteMany();
+    // await Order.deleteMany();
 
     console.log("Data Destroyed...".red.inverse);
     process.exit();
