@@ -301,8 +301,8 @@ function FinaliseRegisterWizard(props) {
                       .required(t("The country field is required")),
                     additional: Yup.string().max(255),
                   }),
-                  worplaceAddress: Yup.object({
-                    streetAddress: Yup.string().max(55),
+                  workplaceAddress: Yup.object({
+                    streetAddress: Yup.string().max(255),
                     zip: Yup.string().max(255),
                     city: Yup.string().max(255),
                     country: Yup.string().max(255),
