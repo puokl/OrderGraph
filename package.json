@@ -22,8 +22,10 @@
   "dependencies": {
     "@mui/x-data-grid": "^5.12.0",
     "concurrently": "^7.2.1",
+    "formik": "^2.2.9",
     "mui": "^0.0.1",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "yup": "^0.32.11"
   },
   "proxy": "http://localhost:8000"
 }

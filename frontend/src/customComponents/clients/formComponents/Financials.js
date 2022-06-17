@@ -2,7 +2,20 @@ import { Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-function Financials() {
+function Financials({
+  handleShowContact,
+  updateFields,
+  touched,
+  handleBlur,
+  handleChange,
+  setFieldValue,
+  values,
+  errors,
+  name,
+  getIn,
+}) {
+  console.log(touched);
+  touched = { financials: {} };
   const [showContact, setShowContact] = useState(false);
   return (
     <div>
@@ -23,12 +36,29 @@ function Financials() {
               sx={{
                 m: 0,
               }}
+              error={Boolean(
+                getIn(touched, "financials.registrationNumber") &&
+                  getIn(errors, "financials.registrationNumber")
+              )}
+              helperText={
+                getIn(touched, "financials.registrationNumber") &&
+                getIn(errors, "financials.registrationNumber")
+              }
+              name="financials.registrationNumber"
+              onBlur={handleBlur}
+              value={values.financials.registrationNumber}
+              onChange={(e) => {
+                setFieldValue("financials.registrationNumber", e.target.value);
+                console.log(
+                  "Registration Number :",
+                  values.financials.registrationNumber
+                );
+              }}
               placeholder="Registration Number ..."
               fullWidth
               variant="outlined"
               label="Registration Number"
               id="registrationNumber"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -36,12 +66,26 @@ function Financials() {
         <Grid item xs={12} sm={6} md={6}>
           <Box p={1}>
             <TextField
+              error={Boolean(
+                getIn(touched, "financials.fiscalNumber") &&
+                  getIn(errors, "financials.fiscalNumber")
+              )}
+              helperText={
+                getIn(touched, "financials.fiscalNumber") &&
+                getIn(errors, "financials.fiscalNumber")
+              }
+              name="financials.fiscalNumber"
+              onBlur={handleBlur}
+              value={values.financials.fiscalNumber}
+              onChange={(e) => {
+                setFieldValue("financials.fiscalNumber", e.target.value);
+                console.log("Fiscal Number :", values.financials.fiscalNumber);
+              }}
               fullWidth
               variant="outlined"
               label="Fiscal Number"
               placeholder="Fiscal Number ..."
               id="fiscalNumber"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -52,12 +96,26 @@ function Financials() {
               sx={{
                 m: 0,
               }}
+              error={Boolean(
+                getIn(touched, "financials.IBAN") &&
+                  getIn(errors, "financials.IBAN")
+              )}
+              helperText={
+                getIn(touched, "financials.IBAN") &&
+                getIn(errors, "financials.IBAN")
+              }
+              name="financials.IBAN"
+              onBlur={handleBlur}
+              value={values.financials.IBAN}
+              onChange={(e) => {
+                setFieldValue("financials.IBAN", e.target.value);
+                console.log("IBAN :", values.financials.IBAN);
+              }}
               placeholder="IBAN ..."
               fullWidth
               variant="outlined"
               label="IBAN"
               id="IBAN"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -68,12 +126,26 @@ function Financials() {
               sx={{
                 m: 0,
               }}
+              error={Boolean(
+                getIn(touched, "financials.bankName") &&
+                  getIn(errors, "financials.bankName")
+              )}
+              helperText={
+                getIn(touched, "financials.bankName") &&
+                getIn(errors, "financials.bankName")
+              }
+              name="financials.bankName"
+              onBlur={handleBlur}
+              value={values.financials.bankName}
+              onChange={(e) => {
+                setFieldValue("financials.bankName", e.target.value);
+                console.log("Bank Name :", values.financials.bankName);
+              }}
               placeholder="Bank Name ..."
               fullWidth
               variant="outlined"
               label="Bank Name"
               id="bankName"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>

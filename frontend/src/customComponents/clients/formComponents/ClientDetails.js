@@ -1,8 +1,20 @@
 import { Autocomplete, Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import * as Yup from "yup";
+import { Formik, useField } from "formik";
 
-function ClientDetails({ handleShowContact, updateFields }) {
+function ClientDetails({
+  handleShowContact,
+  updateFields,
+  touched,
+  handleBlur,
+  handleChange,
+  setFieldValue,
+  values,
+  errors,
+  name,
+}) {
   const { t } = useTranslation();
   const projectTags = [{ title: "Person" }, { title: "Company" }];
 
@@ -37,6 +49,7 @@ function ClientDetails({ handleShowContact, updateFields }) {
                   label={t("Client type")}
                   placeholder={t("Select client type...")}
                   id="clientType"
+                  /*                   {...configTextfield} */
                   /*onChange={(e) => updateFields(e.target.id, e.target.value)} 
                     LINE ABOVE COMMENTED OUT: ANOTHER ONCHANGE IS DEFINED IN AUTOCOMPLETE */
                 />
@@ -51,12 +64,21 @@ function ClientDetails({ handleShowContact, updateFields }) {
               sx={{
                 m: 0,
               }}
+              error={Boolean(touched.clientName && errors.clientName)}
+              helperText={touched.clientName && errors.clientName}
+              onBlur={handleBlur}
               placeholder={t("Client Name...")}
               fullWidth
+              value={values.clientName}
               variant="outlined"
               label="Client Name"
               id="clientName"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
+              onChange={(e) => {
+                setFieldValue("clientName", e.target.value);
+                console.log("Client Name :", values.clientName);
+              }}
+              /*               {...configTextfield} */
+              /*               onChange={(e) => updateFields(e.target.id, e.target.value)} */
             />
           </Box>
         </Grid>
@@ -67,12 +89,19 @@ function ClientDetails({ handleShowContact, updateFields }) {
               sx={{
                 m: 0,
               }}
+              error={Boolean(touched.clientEMail && errors.clientEMail)}
+              helperText={touched.clientEMail && errors.clientEMail}
+              onBlur={handleBlur}
+              value={values.clientEMail}
               placeholder={t("E-Mail...")}
               fullWidth
               variant="outlined"
               label="E-Mail"
-              id="clientE-Mail"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
+              id="clientEMail"
+              onChange={(e) => {
+                setFieldValue("clientEMail", e.target.value);
+                console.log("Email :", values.clientEMail);
+              }}
             />
           </Box>
         </Grid>
@@ -83,12 +112,22 @@ function ClientDetails({ handleShowContact, updateFields }) {
               sx={{
                 m: 0,
               }}
+              error={Boolean(
+                touched.clientPhoneNumber && errors.clientPhoneNumber
+              )}
+              helperText={touched.clientPhoneNumber && errors.clientPhoneNumber}
+              onBlur={handleBlur}
+              value={values.clientPhoneNumber}
               placeholder={t("Phone Number...")}
               fullWidth
               variant="outlined"
               label="Phone Number"
               id="clientPhoneNumber"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
+              onChange={(e) => {
+                setFieldValue("clientPhoneNumber", e.target.value);
+                console.log("Phone :", values.clientPhoneNumber);
+              }}
+              /*               {...configTextfield} */
             />
           </Box>
         </Grid>

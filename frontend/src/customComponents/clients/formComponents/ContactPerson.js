@@ -1,8 +1,20 @@
 import { Autocomplete, Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Field } from "formik";
 
-function ContactPerson({ updateFields }) {
+function ContactPerson({
+  handleShowContact,
+  updateFields,
+  touched,
+  handleBlur,
+  handleChange,
+  setFieldValue,
+  values,
+  errors,
+  name,
+  params,
+}) {
   const { t } = useTranslation();
   const [showContact, setShowContact] = useState(false);
   const [contactPerson, setContactPerson] = useState([]);
@@ -31,12 +43,19 @@ function ContactPerson({ updateFields }) {
               sx={{
                 m: 0,
               }}
+              error={Boolean(touched.contactName && errors.contactName)}
+              helperText={touched.contactName && errors.contactName}
+              onBlur={handleBlur}
+              value={values.contactName}
+              onChange={(e) => {
+                setFieldValue("contactName", e.target.value);
+                console.log("Contact Person Name :", values.contactName);
+              }}
               placeholder="Name..."
               fullWidth
               variant="outlined"
               label="Name"
               id="contactName"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -54,12 +73,19 @@ function ContactPerson({ updateFields }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  error={Boolean(touched.contactRole && errors.contactRole)}
+                  helperText={touched.contactRole && errors.contactRole}
+                  onBlur={handleBlur}
+                  value={values.contactRole}
+                  onChange={(e) => {
+                    setFieldValue("contactRole", e.target.value);
+                    console.log("Contact Person Role :", values.contactRole);
+                  }}
                   fullWidth
                   variant="outlined"
                   label="Role"
                   placeholder="Role..."
                   id="contactRole"
-                  onChange={(e) => updateFields(e.target.id, e.target.value)}
                 />
               )}
             />
@@ -72,12 +98,25 @@ function ContactPerson({ updateFields }) {
               sx={{
                 m: 0,
               }}
+              {...params}
+              error={Boolean(
+                touched.contactDepartment && errors.contactDepartment
+              )}
+              helperText={touched.contactDepartment && errors.contactDepartment}
+              onBlur={handleBlur}
+              value={values.contactDepartment}
+              onChange={(e) => {
+                setFieldValue("contactDepartment", e.target.value);
+                console.log(
+                  "Contact Person Department :",
+                  values.contactDepartment
+                );
+              }}
               placeholder="Department ..."
               fullWidth
               variant="outlined"
               label="Department"
               id="contactDepartment"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -88,12 +127,26 @@ function ContactPerson({ updateFields }) {
               sx={{
                 m: 0,
               }}
+              error={Boolean(
+                touched.contactPhoneNumber && errors.contactPhoneNumber
+              )}
+              helperText={
+                touched.contactPhoneNumber && errors.contactPhoneNumber
+              }
+              onBlur={handleBlur}
+              value={values.contactPhoneNumber}
+              onChange={(e) => {
+                setFieldValue("contactPhoneNumber", e.target.value);
+                console.log(
+                  "Contact Person Phone :",
+                  values.contactPhoneNumber
+                );
+              }}
               placeholder="Phone Number ..."
               fullWidth
               variant="outlined"
               label="Phone Number"
               id="contactPhoneNumber"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
             />
           </Box>
         </Grid>
@@ -104,12 +157,19 @@ function ContactPerson({ updateFields }) {
               sx={{
                 m: 0,
               }}
+              error={Boolean(touched.contactEMail && errors.contactEMail)}
+              helperText={touched.contactEMail && errors.contactEMail}
+              onBlur={handleBlur}
+              value={values.contactEMail}
+              onChange={(e) => {
+                setFieldValue("contactEMail", e.target.value);
+                console.log("Contact Person Email :", values.contactEMail);
+              }}
               placeholder="E-Mail ..."
               fullWidth
               variant="outlined"
               label="E-Mail"
-              id="contactE-Mail"
-              onChange={(e) => updateFields(e.target.id, e.target.value)}
+              id="contactEMail"
             />
           </Box>
         </Grid>

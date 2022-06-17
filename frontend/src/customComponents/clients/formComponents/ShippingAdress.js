@@ -8,23 +8,47 @@ import {
 } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
 
-function ShippingAdress() {
+function ShippingAdress({
+  handleShowContact,
+  updateFields,
+  touched,
+  handleBlur,
+  handleChange,
+  setFieldValue,
+  values,
+  errors,
+  name,
+  SaSameAsBa,
+  setSaSameAsBa,
+  getIn,
+}) {
   const [showShipping, setShowShipping] = useState(true);
   const handleShowShipping = (e) => {
     setShowShipping(!showShipping);
-    console.log(e.target.checked);
+    /*     console.log(e.target.checked); */
+  };
+
+  const handleSameAsBilling = () => {
+    setSaSameAsBa(!SaSameAsBa);
   };
 
   return (
     <div>
       {/* Shipping Adresse */}
 
-      <CardHeader title="Shipping Adresse" sx={{ pl: 3 }} />
+      <CardHeader title="Shipping Address" sx={{ pl: 3 }} />
       <Grid container spacing={1}>
         <Grid item xs={12} sm={12} md={12}>
           <Box>
             <FormControlLabel
-              control={<Checkbox onChange={(e) => handleShowShipping(e)} />}
+              control={
+                <Checkbox
+                  onClick={() => {
+                    handleSameAsBilling();
+                    handleShowShipping();
+                  }}
+                />
+              }
               label="Same as headquarter"
               sx={{ pl: 2 }}
             />
@@ -40,12 +64,26 @@ function ShippingAdress() {
                   sx={{
                     m: 0,
                   }}
+                  error={Boolean(
+                    getIn(touched, "shippingAddress.Address") &&
+                      getIn(errors, "shippingAddress.Address")
+                  )}
+                  helperText={
+                    getIn(touched, "shippingAddress.Address") &&
+                    getIn(errors, "shippingAddress.Address")
+                  }
+                  name="shippingAddress.Address"
+                  onBlur={handleBlur}
+                  value={values.shippingAddress.Address}
+                  onChange={(e) => {
+                    setFieldValue("shippingAddress.Address", e.target.value);
+                    console.log("Sa Address :", values.shippingAddress.Address);
+                  }}
                   placeholder="Adress ..."
                   fullWidth
                   variant="outlined"
-                  label="Adress"
-                  id="SaAdress"
-                  onChange={(e) => updateFields(e.target.id, e.target.value)}
+                  label="Address"
+                  id="Address"
                 />
               </Box>
             </Grid>
@@ -58,12 +96,26 @@ function ShippingAdress() {
                   sx={{
                     m: 0,
                   }}
+                  error={Boolean(
+                    getIn(touched, "shippingAddress.Zip") &&
+                      getIn(errors, "shippingAddress.Zip")
+                  )}
+                  helperText={
+                    getIn(touched, "shippingAddress.Zip") &&
+                    getIn(errors, "shippingAddress.Zip")
+                  }
+                  name="shippingAddress.Zip"
+                  onBlur={handleBlur}
+                  value={values.shippingAddress.Zip}
+                  onChange={(e) => {
+                    setFieldValue("shippingAddress.Zip", e.target.value);
+                    console.log("Sa Zip :", values.shippingAddress.Zip);
+                  }}
                   placeholder="Zip..."
                   fullWidth
                   variant="outlined"
                   label="Zip"
-                  id="SaZip"
-                  onChange={(e) => updateFields(e.target.id, e.target.value)}
+                  id="Zip"
                 />
               </Box>
             </Grid>
@@ -76,12 +128,26 @@ function ShippingAdress() {
                   sx={{
                     m: 0,
                   }}
+                  error={Boolean(
+                    getIn(touched, "shippingAddress.City") &&
+                      getIn(errors, "shippingAddress.City")
+                  )}
+                  helperText={
+                    getIn(touched, "shippingAddress.City") &&
+                    getIn(errors, "shippingAddress.City")
+                  }
+                  name="shippingAddress.City"
+                  onBlur={handleBlur}
+                  value={values.shippingAddress.City}
+                  onChange={(e) => {
+                    setFieldValue("shippingAddress.City", e.target.value);
+                    console.log("Sa City :", values.shippingAddress.City);
+                  }}
                   placeholder="City..."
                   fullWidth
                   variant="outlined"
                   label="City"
-                  id="SaCity"
-                  onChange={(e) => updateFields(e.target.id, e.target.value)}
+                  id="City"
                 />
               </Box>
             </Grid>
@@ -94,12 +160,26 @@ function ShippingAdress() {
                   sx={{
                     m: 0,
                   }}
+                  error={Boolean(
+                    getIn(touched, "shippingAddress.State") &&
+                      getIn(errors, "shippingAddress.State")
+                  )}
+                  helperText={
+                    getIn(touched, "shippingAddress.State") &&
+                    getIn(errors, "shippingAddress.State")
+                  }
+                  name="shippingAddress.State"
+                  onBlur={handleBlur}
+                  value={values.shippingAddress.State}
+                  onChange={(e) => {
+                    setFieldValue("shippingAddress.State", e.target.value);
+                    console.log("Sa State :", values.shippingAddress.State);
+                  }}
                   placeholder="State..."
                   fullWidth
                   variant="outlined"
                   label="State"
-                  id="SaState"
-                  onChange={(e) => updateFields(e.target.id, e.target.value)}
+                  id="State"
                 />
               </Box>
             </Grid>
@@ -112,14 +192,34 @@ function ShippingAdress() {
                   sx={{
                     m: 0,
                   }}
+                  error={Boolean(
+                    getIn(touched, "shippingAddress.AdditionalInformation") &&
+                      getIn(errors, "shippingAddress.AdditionalInformation")
+                  )}
+                  helperText={
+                    getIn(touched, "shippingAddress.AdditionalInformation") &&
+                    getIn(errors, "shippingAddress.AdditionalInformation")
+                  }
+                  name="shippingAddress.AdditionalInformation"
+                  onBlur={handleBlur}
+                  value={values.shippingAddress.AdditionalInformation}
+                  onChange={(e) => {
+                    setFieldValue(
+                      "shippingAddress.AdditionalInformation",
+                      e.target.value
+                    );
+                    console.log(
+                      "Sa Additional Information :",
+                      values.shippingAddress.AdditionalInformation
+                    );
+                  }}
                   placeholder="Additional Information..."
                   fullWidth
                   variant="outlined"
                   label="Additional Information"
-                  id="SaAdditionalInformation"
+                  id="AdditionalInformation"
                   multiline={true}
                   rows={3}
-                  onChange={(e) => updateFields(e.target.id, e.target.value)}
                 />
               </Box>
             </Grid>
