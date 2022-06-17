@@ -21,6 +21,7 @@ import {
   MenuItem,
   InputLabel,
   selectClasses,
+  Divider,
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { CheckboxWithLabel, TextField } from "formik-mui";
@@ -85,6 +86,7 @@ function FinaliseRegisterWizard(props) {
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState("");
   const { user, logout } = useAuth();
+  const [sameAddress, setSameAddress] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -98,6 +100,44 @@ function FinaliseRegisterWizard(props) {
   const handleSizeSelect = (e) => {
     setSelectedSize(e.target.value);
   };
+
+  const handleAddressCheck = (e) => {
+    setSameAddress(!sameAddress);
+  };
+
+  const CustomSelect = ({
+    field,
+    form: { touched, errors, setFieldValue },
+    ...props
+  }) => (
+    <>
+      <Select
+        {...field}
+        {...props}
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        label={t("Organization Size")}
+        value={field.value}
+        onChange={(e) => {
+          handleSizeSelect(e);
+          setFieldValue("orgSize", e.target.value.toLowerCase());
+          console.log(field.value);
+          console.log(touched[field.name]);
+        }}
+      >
+        {sizes.map((item) => (
+          <MenuItem key={item.label} value={item.value}>
+            {item.label}
+          </MenuItem>
+        ))}
+      </Select>
+      {touched[field.name] && errors[field.name] && (
+        <div style={{ color: "#FF1943", fontWeight: "bold" }}>
+          {errors[field.name]}
+        </div>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -147,9 +187,16 @@ function FinaliseRegisterWizard(props) {
                   zip: "",
                   city: "",
                   country: "",
+                  additional: "",
                 },
-
-                additional: "",
+                workplaceAddress: {
+                  streetAddress: "",
+                  zip: "",
+                  city: "",
+                  country: "",
+                  additional: "",
+                },
+                sameAddress: false,
                 firstname: "",
                 lastname: "",
                 rep_email: user.email,
@@ -160,8 +207,7 @@ function FinaliseRegisterWizard(props) {
                 console.log("values", values);
               }}
               selectedSize={selectedSize}
-              validateOnBlur={false}
-              validateOnChange={false}
+              sameAddress={sameAddress}
             >
               <FormikStep
                 validationSchema={Yup.object().shape({
@@ -180,13 +226,9 @@ function FinaliseRegisterWizard(props) {
                     )
                     .max(255)
                     .required(t("The email field is required")),
-                  orgSize: Yup.mixed().oneOf([
-                    "1-5",
-                    "6-10",
-                    "11-20",
-                    "21-50",
-                    "50+",
-                  ]),
+                  orgSize: Yup.mixed()
+                    .oneOf(["1-5", "6-10", "11-20", "21-50", "50+"])
+                    .required(t("The size field is required")),
                 })}
                 label={t("Organization Details")}
               >
@@ -236,21 +278,7 @@ function FinaliseRegisterWizard(props) {
                         <InputLabel id="demo-simple-select-label">
                           Organization Size
                         </InputLabel>
-                        <Field
-                          component={Select}
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          label="orgSize"
-                          name="orgSize"
-                          value={selectedSize}
-                          onChange={handleSizeSelect}
-                        >
-                          {sizes.map((item) => (
-                            <MenuItem key={item.label} value={item.value}>
-                              {item.label}
-                            </MenuItem>
-                          ))}
-                        </Field>
+                        <Field name="orgSize" component={CustomSelect} />
                       </FormControl>
                     </Grid>
                   </Grid>
@@ -271,8 +299,16 @@ function FinaliseRegisterWizard(props) {
                     country: Yup.string()
                       .max(255)
                       .required(t("The country field is required")),
+                    additional: Yup.string().max(255),
                   }),
-                  additional: Yup.string().max(255),
+                  workplaceAddress: Yup.object({
+                    streetAddress: Yup.string().max(255),
+                    zip: Yup.string().max(255),
+                    city: Yup.string().max(255),
+                    country: Yup.string().max(255),
+                    additional: Yup.string().max(255),
+                  }),
+                  sameAddress: Yup.bool().oneOf([true, false]),
                 })}
                 label={t("Addresses")}
               >
@@ -321,6 +357,73 @@ function FinaliseRegisterWizard(props) {
                         label={t("Additional Details")}
                       />
                     </Grid>
+                  </Grid>
+                  <Divider
+                    sx={{
+                      mt: 3,
+                      mb: 3,
+                    }}
+                  />
+                  <Typography variant="h4" sx={{ mb: 3 }}>
+                    {t("Workplace address")}
+                  </Typography>
+                  <Grid container spacing={3}>
+                    <Grid item xs={24} md={12}>
+                      <Field
+                        type="checkbox"
+                        component={CheckboxWithLabel}
+                        name="sameAddress"
+                        // value={sameAddress}
+                        Label={{ label: t("Same as headquarters") }}
+                        onClick={(e) => {
+                          handleAddressCheck(e);
+                        }}
+                      />
+                    </Grid>
+                    {!sameAddress ? (
+                      <>
+                        <Grid item xs={12} md={6}>
+                          <Field
+                            fullWidth
+                            name="workplaceAddress.streetAddress"
+                            component={TextField}
+                            label={t("Address")}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <Field
+                            fullWidth
+                            name="workplaceAddress.zip"
+                            component={TextField}
+                            label={t("Zip Code")}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <Field
+                            fullWidth
+                            name="workplaceAddress.city"
+                            component={TextField}
+                            label={t("City")}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <Field
+                            fullWidth
+                            name="workplaceAddress.country"
+                            component={TextField}
+                            label={t("Country")}
+                          />
+                        </Grid>
+                        <Grid item xs={24} md={12}>
+                          <Field
+                            fullWidth
+                            name="workplaceAddress.additional"
+                            component={TextField}
+                            label={t("Additional Details")}
+                          />
+                        </Grid>
+                      </>
+                    ) : null}
                   </Grid>
                 </Box>
               </FormikStep>
@@ -438,12 +541,16 @@ export function FormikStep({ children }) {
   return <>{children}</>;
 }
 
-export function FormikStepper({ children, selectedSize, ...props }) {
+export function FormikStepper({
+  children,
+  selectedSize,
+  sameAddress,
+  ...props
+}) {
   const childrenArray = Children.toArray(children);
   const [step, setStep] = useState(0);
   const currentChild = childrenArray[step];
   const [completed, setCompleted] = useState(false);
-  const [notFilled, setNotFilled] = useState(false);
   const { t } = useTranslation();
   const { user } = useAuth();
 
@@ -456,15 +563,17 @@ export function FormikStepper({ children, selectedSize, ...props }) {
   // }
 
   const onSubmit = async (values, helpers) => {
+    if (sameAddress) {
+      values.workplaceAddress = values.address;
+    }
     console.log(values);
-
     if (isLastStep()) {
       await props.onSubmit(values, helpers);
       const response = await axios.post(
         "api/v1/organization/neworganization/" + user._id,
         values
       );
-      console.log(response);
+      // console.log(response);
       if (response.data.success) {
         const res2 = await axios.put("/api/v1/auth/update/" + user._id, {
           organization: response.data.data._id,

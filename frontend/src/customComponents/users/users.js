@@ -12,16 +12,26 @@ import PageTitleWrapper from "src/components/PageTitleWrapper";
 
 import Results from "./userTable/Results";
 import PageHeader from "./userTable/PageHeader";
+import CreateUser from "./userTable/CreateUser";
 
 function TestUsers() {
   const isMountedRef = useRefMounted();
   const [users, setUsers] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [userToEdit, setUserToEdit] = useState();
+
+  const handleCreateUserOpen = (user) => {
+    console.log(userToEdit);
+    setUserToEdit(user);
+    setOpen(true);
+    console.log(userToEdit);
+  };
 
   const getUsers = async () => {
     try {
-      const response = await axios.get("/api/users");
+      const response = await axios.get("/api/v1/user/get/UsersInOrg");
       console.log(response);
-      setUsers(response.data);
+      setUsers(response.data.data);
     } catch (err) {
       console.error(err);
     }
@@ -48,7 +58,18 @@ function TestUsers() {
           <title>Users - Management</title>
         </Helmet>
         <PageTitleWrapper>
-          <PageHeader getUsers={getUsers} />
+          <PageHeader
+            getUsers={getUsers}
+            handleCreateUserOpen={handleCreateUserOpen}
+          />
+          {open ? (
+            <CreateUser
+              getUsers={getUsers}
+              open={open}
+              setOpen={setOpen}
+              userToEdit={userToEdit}
+            />
+          ) : null}
         </PageTitleWrapper>
 
         <Grid
@@ -62,7 +83,11 @@ function TestUsers() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <Results users={users} getUsers={getUsers} />
+            <Results
+              users={users}
+              getUsers={getUsers}
+              handleCreateUserOpen={handleCreateUserOpen}
+            />
           </Grid>
         </Grid>
       </div>

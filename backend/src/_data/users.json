@@ -12,7 +12,8 @@
     "lastname": "Doe",
     "email": "john@gmail.com",
     "role": "admin",
-    "password": "123456"
+    "password": "123456",
+    "organization": "ha"
   },
   {
     "firstname": "Jane",

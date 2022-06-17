@@ -176,7 +176,7 @@ const applyPagination = (users, page, limit) => {
 };
 
 const Results = (props) => {
-  const { users, getUsers } = props;
+  const { users, getUsers, handleCreateUserOpen } = props;
   const [selectedUsers, setSelectedUsers] = useState([]);
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
@@ -257,9 +257,9 @@ const Results = (props) => {
 
   const [toggleView, setToggleView] = useState("table_view");
 
-  const handleViewOrientation = (_event, newValue) => {
-    setToggleView(newValue);
-  };
+  // const handleViewOrientation = (_event, newValue) => {
+  //   setToggleView(newValue);
+  // };
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
@@ -279,7 +279,7 @@ const Results = (props) => {
     console.log(usersToDelete);
     try {
       console.log("attempt");
-      const response = await axios.delete("/api/users/delete", {
+      const response = await axios.delete("/api/v1/users/delete", {
         data: usersToDelete,
       });
       console.log(response);
@@ -443,12 +443,11 @@ const Results = (props) => {
                           <TableCell>{getUserRoleLabel(user.role)}</TableCell>
                           <TableCell align="center">
                             <Typography noWrap>
-                              <Tooltip title={t("View")} arrow>
+                              <Tooltip title={t("Edit")} arrow>
                                 <IconButton
-                                  component={RouterLink}
-                                  to={`/${
-                                    location.pathname.split("/")[1]
-                                  }/management/users/single/${user.id}`}
+                                  onClick={() => {
+                                    handleCreateUserOpen(user);
+                                  }}
                                   color="primary"
                                 >
                                   <EditTwoToneIcon

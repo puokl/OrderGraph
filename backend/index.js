@@ -21,6 +21,7 @@ const authRouter = require("./src/routes/authRoutes");
 const organizationRouter = require("./src/routes/organizationRoutes");
 const orderRouter = require("./src/routes/orderRoutes");
 const userRouter = require("./src/routes/userRoutes");
+const clientRouter = require("./src/routes/clientRoutes");
 
 // cookie parser
 app.use(cookieParser());
@@ -43,6 +44,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/organization", organizationRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/client", clientRouter);
 
 // mongoose error handler
 app.use(errorHandler);

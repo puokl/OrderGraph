@@ -6,14 +6,14 @@ import { InputAdornment } from "@mui/material";
 import { TextField } from "@mui/material";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 export default function ClientsTable(props) {
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
   const { clients } = props;
-  searchQuery? clients.filter((client)=> searchQuery === client) : clients
+  searchQuery ? clients.filter((client) => searchQuery === client) : clients;
   const columns = [
     { field: "id", headerName: "ID", width: 20 },
-    { field: "clientName", headerName: "NAME", width: 130 },
-    { field: "clientType", headerName: "TYPE", width: 130 },
-    { field: "email", headerName: "EMAIL", width: 200 },
+    { field: "clientName", headerName: "NAME", width: 150 },
+    { field: "clientType", headerName: "TYPE", width: 100 },
+    { field: "email", headerName: "EMAIL", width: 250 },
     {
       field: "orders",
       headerName: "ORDERS",
@@ -24,7 +24,7 @@ export default function ClientsTable(props) {
       field: "lastOrder",
       headerName: "LAST ORDER",
       sortable: TrustedScriptURL,
-      width: 120,
+      width: 150,
     },
     {
       field: "actions",
@@ -34,8 +34,8 @@ export default function ClientsTable(props) {
         return (
           <>
             {" "}
-            <EditTwoToneIcon index={params.row.id} color='primary'/>
-            <DeleteTwoToneIcon index={params.row.id} color='error'/>
+            <EditTwoToneIcon index={params.row.id} color="primary" />
+            <DeleteTwoToneIcon index={params.row.id} color="error" />
           </>
         );
       },
@@ -53,22 +53,22 @@ export default function ClientsTable(props) {
   return (
     <div className="dataGridContainer" style={{ height: 400, width: "100%" }}>
       <TextField
-                sx={{
-                  m: 2,
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchTwoToneIcon color="primary" />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={(e)=> setSearchQuery(e.target.value)}
-                placeholder="Search users..."
-                size="small"
-                margin="normal"
-                variant="outlined"
-              />
+        sx={{
+          m: 2,
+        }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchTwoToneIcon color="primary" />
+            </InputAdornment>
+          ),
+        }}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search users..."
+        size="small"
+        margin="normal"
+        variant="outlined"
+      />
       <DataGrid
         rows={rows}
         columns={columns}

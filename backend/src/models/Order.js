@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
-const itemSchema = new mongoose.Schema({
+const itemSchema = mongoose.Schema({
   id: Number,
   item: {
     itemName: String,
     itemSize: String,
     itemDescription: String,
   },
-  measurementUnits: {
+  measurementUnit: {
     type: String,
   },
   quantity: {
@@ -19,7 +19,7 @@ const itemSchema = new mongoose.Schema({
   },
 });
 
-const taskSchema = new mongoose.Schema({
+const taskSchema = mongoose.Schema({
   startDate: {},
   finished: {
     type: Boolean,
@@ -37,6 +37,7 @@ const taskSchema = new mongoose.Schema({
 
 const OrderSchema = new mongoose.Schema(
   {
+    id: Number,
     orderDetails: {
       type: String,
     },
@@ -50,7 +51,7 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add a status"],
       enum: ["upcoming", "active", "canceled", "halted", "finished"],
-      default: "new",
+      default: "upcoming",
       trim: true,
     },
     draft: {
