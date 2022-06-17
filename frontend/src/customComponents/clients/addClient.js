@@ -24,6 +24,7 @@ import Financials from "./formComponents/Financials";
 import ShippingAdress from "./formComponents/ShippingAdress";
 import PageHeader from "./PageHeader";
 import RemoveTwoToneIcon from "@mui/icons-material/RemoveTwoTone";
+import axios from "src/utils/axios2";
 
 const INITIAL_FORM_STATE = {
   /* Client Details */
@@ -58,6 +59,7 @@ const INITIAL_FORM_STATE = {
   contact: {
     contactName: "",
     contactRole: "",
+    contactDepartment: "",
     contactPhoneNumber: "",
     contactEMail: "",
   },
@@ -105,15 +107,16 @@ const FORM_VALIDATION = Yup.object().shape({
     bankName: Yup.string().required("Required"),
   }),
   /* Contact Person Validation */
-  /* contact: Yup.object({ */
-  contactName: Yup.string().required("Required"),
-  contactRole: Yup.string(),
-  contactPhoneNumber: Yup.number()
-    .integer()
-    .typeError("Please enter a valid phone number")
-    .required(),
-  contactEMail: Yup.string().email("Invalid Email").required("Required"),
-  /*  }), */
+  contact: Yup.object({
+    contactName: Yup.string().required("Required"),
+    contactRole: Yup.string(),
+    contactDepartment: Yup.string().required("Required"),
+    contactPhoneNumber: Yup.number()
+      .integer()
+      .typeError("Please enter a valid phone number")
+      .required(),
+    contactEMail: Yup.string().email("Invalid Email").required("Required"),
+  }),
   /* Same Address ? */
   SaSameAsBa: Yup.bool().oneOf([true, false]),
 });
@@ -127,6 +130,7 @@ function AddClient() {
   const [contactPersonNo, setContactPersonNo] = useState(1);
   const [cArray, setCArray] = useState([1]);
   const [formData, setFormData] = useState("");
+  const [removeCp, setRemoveCp] = useState(false);
   const updateFields = (fieldName, fieldValue) => {
     console.log(fieldName, fieldValue);
     setFormData({ ...formData, fieldValue });
@@ -149,6 +153,13 @@ function AddClient() {
     console.log("twest:", contactPersonNo);
     setContactPersonNo(contactPersonNo + 1);
     cArray.push(contactPersonNo);
+  };
+  const handleShowRemoveCp = () => {
+    if (contactPersonNo >= 1) {
+      setRemoveCp(true);
+    } else if (contactPersonNo < 2) {
+      setRemoveCp(false);
+    }
   };
 
   const handleRemoveContact = () => {
@@ -249,44 +260,17 @@ function AddClient() {
     );
   }  */
 
-  const handleCreateClient = async (e) => {
-    e.preventDefault();
-    const clientToCreate = {};
+  const handleCreateClient = async (values) => {
     try {
-      const response = await axios.post("/api/v1/client", userToCreate);
+      const response = await axios.post("/api/v1/client/newclient", values);
       if (response.status === 201) {
-        enqueueSnackbar(t("The user account was created successfully"), {
-          variant: "success",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
-        getUsers();
+        navigateToClientOverview();
       } else {
-        enqueueSnackbar(t("An error occured, please try again."), {
-          variant: "error",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
+        console.log("error");
       }
     } catch (err) {
       console.error(err);
-      enqueueSnackbar(t("An error occured, please try again."), {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right",
-        },
-        TransitionComponent: Zoom,
-      });
     }
-
-    setOpen(false);
   };
 
   return (
@@ -324,7 +308,7 @@ function AddClient() {
                 values.shippingAddress = values.billingAddress;
               }
               console.log(values);
-              handleCreateClient();
+              handleCreateClient(values);
             }}
           >
             <Grid
@@ -402,6 +386,8 @@ function AddClient() {
                           setFieldValue={setFieldValue}
                           handleChange={handleChange}
                           id={item}
+                          getIn={getIn}
+                          key={item}
                         />
                       ))}
                       {/* Add Contact Person Start */}
@@ -428,7 +414,10 @@ function AddClient() {
                                 sx={{
                                   px: 1,
                                 }}
-                                onClick={handleAddContact}
+                                onClick={(e) => {
+                                  handleAddContact();
+                                  handleShowRemoveCp();
+                                }}
                               >
                                 <CardContent>
                                   <AvatarAddWrapper>
@@ -441,37 +430,43 @@ function AddClient() {
                         </Grid>
 
                         {/* Add Contact Person End */}
+
                         {/* Remove Contact Person Start */}
-                        <Grid
-                          item
-                          xs={12}
-                          sm={12}
-                          md={5.9}
-                          lg={5.9}
-                          sx={{ py: 2, px: 2, mt: 2, ml: 1 }}
-                        >
-                          <Tooltip
-                            arrow
-                            title={t("Click to remove a Contact Person")}
+                        {removeCp ? (
+                          <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={5.9}
+                            lg={5.9}
+                            sx={{ py: 2, px: 2, mt: 2, ml: 1 }}
                           >
-                            <CardAddAction>
-                              <CardActionArea
-                                sx={{
-                                  px: 1,
-                                }}
-                                onClick={handleRemoveContact}
-                              >
-                                <CardContent>
-                                  <AvatarAddWrapper>
-                                    <RemoveTwoToneIcon fontSize="medium" />
-                                  </AvatarAddWrapper>
-                                </CardContent>
-                              </CardActionArea>
-                            </CardAddAction>
-                          </Tooltip>
-                        </Grid>
+                            <Tooltip
+                              arrow
+                              title={t("Click to remove a Contact Person")}
+                            >
+                              <CardAddAction>
+                                <CardActionArea
+                                  sx={{
+                                    px: 1,
+                                  }}
+                                  onClick={(e) => {
+                                    handleRemoveContact();
+                                  }}
+                                >
+                                  <CardContent>
+                                    <AvatarAddWrapper>
+                                      <RemoveTwoToneIcon fontSize="medium" />
+                                    </AvatarAddWrapper>
+                                  </CardContent>
+                                </CardActionArea>
+                              </CardAddAction>
+                            </Tooltip>
+                          </Grid>
+                        ) : null}
+
+                        {/* Remove Contact Person End */}
                       </Grid>
-                      {/* Remove Contact Person End */}
                     </>
                   ) : null}
 

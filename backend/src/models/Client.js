@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const contactSchema = new mongoose.Schema({
-  name: String,
-  role: String,
-  department: String,
-  phone: String,
-  email: {
+  contactName: String,
+  contactRole: String,
+  contactDepartment: String,
+  contactPhoneNumber: String,
+  contactEMail: {
     type: String,
     max: 50,
     unique: true,
@@ -18,9 +18,9 @@ const contactSchema = new mongoose.Schema({
 
 const ClientSchema = new mongoose.Schema(
   {
-    type: { type: String },
-    name: { type: String },
-    email: {
+    clientType: { type: String },
+    clientName: { type: String },
+    clientEMail: {
       type: String,
       max: 50,
       unique: true,
@@ -29,31 +29,31 @@ const ClientSchema = new mongoose.Schema(
         "Please add a valid email",
       ],
     },
-    phone: { type: String },
+    clientPhoneNumber: { type: String },
     website: { type: String },
 
     financials: {
-      registrationNo: String,
-      fiscalNo: String,
+      registrationNumber: String,
+      fiscalNumber: String,
       IBAN: String,
       BIC: String,
-      bank: String,
+      bankName: String,
     },
-    address: {
-      streetAddress: String,
-      zip: String,
-      city: String,
-      country: String,
-      additionalDetails: String,
+    billingAddress: {
+      Address: String,
+      Zip: String,
+      City: String,
+      State: String,
+      AdditionalInformation: String,
     },
-    workplaceAddress: {
-      streetAddress: String,
-      zip: String,
-      city: String,
-      country: String,
-      additionalDetails: String,
+    shippingAddress: {
+      Address: String,
+      Zip: String,
+      City: String,
+      State: String,
+      AdditionalInformation: String,
     },
-    contacts: [contactSchema],
+    contact: [contactSchema],
   },
   { timestamps: true }
 );
