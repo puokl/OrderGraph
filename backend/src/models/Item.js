@@ -5,8 +5,9 @@ const ItemSchema = new mongoose.Schema(
     orgId: {
       type: mongoose.Schema.ObjectId,
       ref: "Organization",
-      required: true,
+      required: false,
     },
+    public: Boolean,
     itemName: String,
     description: String,
     height: String,
