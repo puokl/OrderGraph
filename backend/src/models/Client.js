@@ -57,6 +57,7 @@ const ClientSchema = new mongoose.Schema(
       additionalDetails: String,
     },
     contacts: [contactSchema],
+    orders: [],
   },
   { timestamps: true }
 );

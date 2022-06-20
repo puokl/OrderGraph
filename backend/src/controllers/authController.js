@@ -90,13 +90,13 @@ const updateUser = asyncHandler(async (req, res, next) => {
     phone: req.body.phone,
   };
 
-  const user = await User.findByIdAndUpdate(req.params.id, fieldsToUpdate, {
+  const user = await User.findByIdAndUpdate(req.params.userId, fieldsToUpdate, {
     new: true,
     runValidators: true,
   });
 
   res.status(200).json({ success: true, data: user }); // password won't be shown because we selected false in the model
-  const { email, firstname, lastname } = req.body;
+  // const { email, firstname, lastname } = req.body;
 
   // const user = await User.findByIdAndUpdate(req.params.id, {
   //   $set: req.body,

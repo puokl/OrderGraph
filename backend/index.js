@@ -27,6 +27,9 @@ const organizationRouter = require("./src/routes/organizationRoutes");
 const orderRouter = require("./src/routes/orderRoutes");
 const userRouter = require("./src/routes/userRoutes");
 const clientRouter = require("./src/routes/clientRoutes");
+const supplierRouter = require("./src/routes/supplierRoutes");
+const itemRouter = require("./src/routes/itemRoutes");
+const testRouter = require("./src/routes/testRoutes");
 
 // cookie parser
 app.use(cookieParser());
@@ -70,6 +73,9 @@ app.use("/api/v1/organization", organizationRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/client", clientRouter);
+app.use("/api/v1/supplier", supplierRouter);
+app.use("/api/v1/item", itemRouter);
+app.use("/api/v1/test", testRouter);
 
 // mongoose error handler
 app.use(errorHandler);
