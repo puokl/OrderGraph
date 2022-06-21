@@ -295,7 +295,7 @@ function AddClient() {
   const handleCreateClient = async (values) => {
     const dataToSend = { ...values, organisation: user.organisation };
     try {
-      const response = await axios.post("/api/v1/client/newclient", values);
+      const response = await axios.post("/api/v1/client/newclient", dataToSend);
       if (response.status === 201) {
         console.log("Backend Create client response: ", response);
         navigateToClientOverview();
