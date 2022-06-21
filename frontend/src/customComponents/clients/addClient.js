@@ -8,8 +8,9 @@ import {
   styled,
   Tooltip,
   CircularProgress,
+  Box,
 } from "@mui/material";
-
+import useAuth from "src/hooks/useAuth";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import { Form, Formik, getIn } from "formik";
 import { useState } from "react";
@@ -183,6 +184,7 @@ const COMPANY_FORM_VALIDATION = Yup.object().shape({
 
 function AddClient() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [showContact, setShowContact] = useState(false);
   const [showShipping, setShowShipping] = useState(true);
   const [SaSameAsBa, setSaSameAsBa] = useState(false);
@@ -249,6 +251,12 @@ function AddClient() {
     },
   ];
 
+  /*   const BoxActions = styled(Box)(
+    ({ theme }) => `
+    background: ${theme.colors.alpha.black[5]}
+    `
+  ); */
+
   const CardAddAction = styled(Card)(
     ({ theme }) => `
           border: ${theme.colors.primary.main} dashed 2px;
@@ -285,6 +293,7 @@ function AddClient() {
   );
 
   const handleCreateClient = async (values) => {
+    const dataToSend = { ...values, organisation: user.organisation };
     try {
       const response = await axios.post("/api/v1/client/newclient", values);
       if (response.status === 201) {
@@ -504,46 +513,49 @@ function AddClient() {
                     </>
                   ) : null}
 
-                  <Button
-                    sx={{
-                      mt: { lg: 2, md: 0 },
-                      ml: { lg: 2 },
-                      mb: { lg: 2 },
-                    }}
-                    variant="outlined"
-                    color="primary"
-                    onClick={navigateToClientOverview}
+                  <Box
+                    p={1}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
                   >
-                    Cancel
-                  </Button>
+                    <Button
+                      sx={{
+                        px: { lg: 4 },
+                      }}
+                      variant="outlined"
+                      color="primary"
+                      onClick={navigateToClientOverview}
+                    >
+                      Cancel
+                    </Button>
 
-                  <Button
-                    sx={{
-                      mt: { lg: 2, md: 0 },
-                      ml: { lg: 110 },
-                      mb: { lg: 2 },
-                      px: { lg: 4 },
-                    }}
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    /* onClick Function gets launched first --> handleSubmit  looks for onSubmit function defined in the Formik Component 
+                    <Button
+                      sx={{
+                        px: { lg: 4 },
+                        ml: "auto",
+                      }}
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      /* onClick Function gets launched first --> handleSubmit  looks for onSubmit function defined in the Formik Component 
                     e.preventDefault needs to be called in the onClick NOT in the onSubmit */
-                    onClick={(e) => {
-                      e.preventDefault();
-                      /* SaSameAsBa Conditional needs to be called before handleSubmit, so that handleSubmit can accsess the values because they are set to be required in the validation */
-                      if (SaSameAsBa) {
-                        values.shippingAddress = values.billingAddress;
+                      onClick={(e) => {
+                        e.preventDefault();
+                        /* SaSameAsBa Conditional needs to be called before handleSubmit, so that handleSubmit can accsess the values because they are set to be required in the validation */
+                        if (SaSameAsBa) {
+                          values.shippingAddress = values.billingAddress;
+                        }
+                        handleSubmit(e);
+                        console.log(errors);
+                      }}
+                      startIcon={
+                        isSubmitting ? <CircularProgress size="1rem" /> : null
                       }
-                      handleSubmit(e);
-                      console.log(errors);
-                    }}
-                    startIcon={
-                      isSubmitting ? <CircularProgress size="1rem" /> : null
-                    }
-                  >
-                    Save
-                  </Button>
+                    >
+                      Save
+                    </Button>
+                  </Box>
                 </Card>
               </Grid>
             </Grid>
