@@ -56,13 +56,15 @@ const INITIAL_FORM_STATE = {
     bankName: "",
   },
   /* Contact Person */
-  contact: {
-    contactName: "",
-    contactRole: "",
-    contactDepartment: "",
-    contactPhoneNumber: "",
-    contactEMail: "",
-  },
+  contact: [
+    {
+      contactName: "",
+      contactRole: "",
+      contactDepartment: "",
+      contactPhoneNumber: "",
+      contactEMail: "",
+    },
+  ],
 
   /* Shipping Address same Adress as Billing Adress */
   SaSameAsBa: false,
@@ -107,23 +109,24 @@ const FORM_VALIDATION = Yup.object().shape({
     bankName: Yup.string().required("Required"),
   }),
   /* Contact Person Validation */
-  contact: Yup.object({
-    contactName: Yup.string().required("Required"),
-    contactRole: Yup.string(),
-    contactDepartment: Yup.string().required("Required"),
-    contactPhoneNumber: Yup.number()
-      .integer()
-      .typeError("Please enter a valid phone number")
-      .required(),
-    contactEMail: Yup.string().email("Invalid Email").required("Required"),
-  }),
+  contact: Yup.array().of(
+    Yup.object().shape({
+      contactName: Yup.string().required("Required"),
+      contactRole: Yup.string(),
+      contactDepartment: Yup.string().required("Required"),
+      contactPhoneNumber: Yup.number()
+        .integer()
+        .typeError("Please enter a valid phone number")
+        .required("Required"),
+      contactEMail: Yup.string().email("Invalid Email").required("Required"),
+    })
+  ),
   /* Same Address ? */
   SaSameAsBa: Yup.bool().oneOf([true, false]),
 });
 
 function AddClient() {
   const { t } = useTranslation();
-  const [query, setQuery] = useState("");
   const [showContact, setShowContact] = useState(false);
   const [showShipping, setShowShipping] = useState(true);
   const [SaSameAsBa, setSaSameAsBa] = useState(false);
@@ -132,7 +135,6 @@ function AddClient() {
   const [formData, setFormData] = useState("");
   const [removeCp, setRemoveCp] = useState(false);
   const updateFields = (fieldName, fieldValue) => {
-    console.log(fieldName, fieldValue);
     setFormData({ ...formData, fieldValue });
   };
   const navigate = useNavigate();
@@ -145,12 +147,10 @@ function AddClient() {
   };
 
   const handleShowContact = (value) => {
-    console.log(value);
     setShowContact(value);
   };
 
   const handleAddContact = () => {
-    console.log("twest:", contactPersonNo);
     setContactPersonNo(contactPersonNo + 1);
     cArray.push(contactPersonNo);
   };
@@ -163,17 +163,8 @@ function AddClient() {
   };
 
   const handleRemoveContact = () => {
-    console.log("test 2:", contactPersonNo);
     setContactPersonNo(contactPersonNo - 1);
     cArray.pop(contactPersonNo);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (clientName) {
-      console.log(clientName);
-    }
   };
 
   const roleTags = [
@@ -264,6 +255,7 @@ function AddClient() {
     try {
       const response = await axios.post("/api/v1/client/newclient", values);
       if (response.status === 201) {
+        console.log("Backend Create client response: ", response);
         navigateToClientOverview();
       } else {
         console.log("error");
@@ -289,6 +281,13 @@ function AddClient() {
         /* Set Timeout ? */
         onSubmit={(e) => {
           e.preventDefault();
+          console.log(e);
+          console.log("inside formik onsubmit");
+          if (SaSameAsBa) {
+            values.shippingAddress = values.billingAddress;
+          }
+          console.log("Form data: ", values);
+          handleCreateClient(values);
         }}
       >
         {({
@@ -301,16 +300,7 @@ function AddClient() {
           setFieldValue,
           values,
         }) => (
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (SaSameAsBa) {
-                values.shippingAddress = values.billingAddress;
-              }
-              console.log(values);
-              handleCreateClient(values);
-            }}
-          >
+          <Form onChange={console.log(values.contact)}>
             <Grid
               sx={{
                 px: 4,
@@ -374,7 +364,7 @@ function AddClient() {
                         setFieldValue={setFieldValue}
                         handleChange={handleChange}
                       />
-                      {cArray.map((item) => (
+                      {cArray.map((item, index) => (
                         <ContactPerson
                           /* Console says touch is undefined if I pass the props like I do with the other Components */
 
@@ -388,6 +378,7 @@ function AddClient() {
                           id={item}
                           getIn={getIn}
                           key={item}
+                          contactPersonNo={index}
                         />
                       ))}
                       {/* Add Contact Person Start */}
@@ -415,8 +406,21 @@ function AddClient() {
                                   px: 1,
                                 }}
                                 onClick={(e) => {
-                                  handleAddContact();
-                                  handleShowRemoveCp();
+                                  values.contact.push({
+                                    contactName: "",
+                                    contactRole: "",
+                                    contactDepartment: "",
+                                    contactPhoneNumber: "",
+                                    contactEMail: "",
+                                  });
+                                  let newContactPersonNo = contactPersonNo + 1;
+                                  setContactPersonNo(newContactPersonNo);
+                                  cArray.push(newContactPersonNo);
+                                  if (newContactPersonNo > 0) {
+                                    setRemoveCp(true);
+                                  } else if (newContactPersonNo < 1) {
+                                    setRemoveCp(false);
+                                  }
                                 }}
                               >
                                 <CardContent>
@@ -432,7 +436,7 @@ function AddClient() {
                         {/* Add Contact Person End */}
 
                         {/* Remove Contact Person Start */}
-                        {removeCp ? (
+                        {cArray.length === 1 ? null : (
                           <Grid
                             item
                             xs={12}
@@ -451,7 +455,17 @@ function AddClient() {
                                     px: 1,
                                   }}
                                   onClick={(e) => {
-                                    handleRemoveContact();
+                                    values.contact.pop();
+                                    let newContactPersonNo =
+                                      contactPersonNo - 1;
+                                    setContactPersonNo(newContactPersonNo);
+                                    cArray.pop(newContactPersonNo);
+
+                                    /*                  if (newContactPersonNo > 0) {
+                                      setRemoveCp(true);
+                                    } else if (contactPersonNo < 2) {
+                                      setRemoveCp(false);
+                                    } */
                                   }}
                                 >
                                   <CardContent>
@@ -463,7 +477,7 @@ function AddClient() {
                               </CardAddAction>
                             </Tooltip>
                           </Grid>
-                        ) : null}
+                        )}
 
                         {/* Remove Contact Person End */}
                       </Grid>
@@ -493,6 +507,7 @@ function AddClient() {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    onClick={navigateToClientOverview}
                   >
                     Save
                   </Button>

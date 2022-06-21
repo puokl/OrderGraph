@@ -14,7 +14,6 @@ function Financials({
   name,
   getIn,
 }) {
-  console.log(touched);
   touched = { financials: {} };
   const [showContact, setShowContact] = useState(false);
   return (
@@ -79,7 +78,6 @@ function Financials({
               value={values.financials.fiscalNumber}
               onChange={(e) => {
                 setFieldValue("financials.fiscalNumber", e.target.value);
-                console.log("Fiscal Number :", values.financials.fiscalNumber);
               }}
               fullWidth
               variant="outlined"
@@ -109,7 +107,6 @@ function Financials({
               value={values.financials.IBAN}
               onChange={(e) => {
                 setFieldValue("financials.IBAN", e.target.value);
-                console.log("IBAN :", values.financials.IBAN);
               }}
               placeholder="IBAN ..."
               fullWidth
@@ -139,7 +136,6 @@ function Financials({
               value={values.financials.bankName}
               onChange={(e) => {
                 setFieldValue("financials.bankName", e.target.value);
-                console.log("Bank Name :", values.financials.bankName);
               }}
               placeholder="Bank Name ..."
               fullWidth

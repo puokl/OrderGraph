@@ -46,7 +46,6 @@ function ClientDetails({
         onChange={(e) => {
           /*           handleRoleSelect(e); */
           setFieldValue("clientType", e.target.value);
-          console.log(e.target.value);
           if (e.target.value === "Company") handleShowContact(true);
           else if (e.target.value === "Person") handleShowContact(false);
           else handleShowContact(null);
@@ -127,7 +126,6 @@ function ClientDetails({
               id="clientName"
               onChange={(e) => {
                 setFieldValue("clientName", e.target.value);
-                console.log("Client Name :", values.clientName);
               }}
               /*               {...configTextfield} */
               /*               onChange={(e) => updateFields(e.target.id, e.target.value)} */
@@ -152,7 +150,6 @@ function ClientDetails({
               id="clientEMail"
               onChange={(e) => {
                 setFieldValue("clientEMail", e.target.value);
-                console.log("Email :", values.clientEMail);
               }}
             />
           </Box>
@@ -177,7 +174,6 @@ function ClientDetails({
               id="clientPhoneNumber"
               onChange={(e) => {
                 setFieldValue("clientPhoneNumber", e.target.value);
-                console.log("Phone :", values.clientPhoneNumber);
               }}
               /*               {...configTextfield} */
             />

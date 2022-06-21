@@ -25,6 +25,7 @@ function ContactPerson({
   name,
   params,
   getIn,
+  contactPersonNo,
 }) {
   const { t } = useTranslation();
   const [showContact, setShowContact] = useState(false);
@@ -58,8 +59,10 @@ function ContactPerson({
         value={field.value}
         onChange={(e) => {
           handleRoleSelect(e);
-          setFieldValue("contact.contactRole", e.target.value);
-          console.log(field.value);
+          setFieldValue(
+            `contact[${contactPersonNo}].contactRole`,
+            e.target.value
+          );
         }}
       >
         {roleTags.map((item) => (
@@ -94,21 +97,20 @@ function ContactPerson({
                 m: 0,
               }}
               error={Boolean(
-                getIn(touched, "contact.contactName") &&
-                  getIn(errors, "contact.contactName")
+                getIn(touched, `contact[${contactPersonNo}].contactName`) &&
+                  getIn(errors, `contact[${contactPersonNo}].contactName`)
               )}
               helperText={
-                getIn(touched, "contact.contactName") &&
-                getIn(errors, "contact.contactName")
+                getIn(touched, `contact[${contactPersonNo}].contactName`) &&
+                getIn(errors, `contact[${contactPersonNo}].contactName`)
               }
-              name="contact.contactName"
+              name={`contact[${contactPersonNo}].contactName`}
               onBlur={handleBlur}
-              value={values.contact.contactName}
+              value={values.contact[contactPersonNo].contactName}
               onChange={(e) => {
-                setFieldValue("contact.contactName", e.target.value);
-                console.log(
-                  "Contact Person Name :",
-                  values.contact.contactName
+                setFieldValue(
+                  `contact[${contactPersonNo}].contactName`,
+                  e.target.value
                 );
               }}
               placeholder="Name..."
@@ -132,26 +134,26 @@ function ContactPerson({
               getOptionLabel={(option) => option}
               getOptionSelected={(item, current) => item === current}
               onChange={(e, value) => {
-                setFieldValue("contact.contactRole", value.value);
+                setFieldValue("contact[0].contactRole", value.value);
                 console.log(
                   "Contact Person Role :",
-                  values.contact.contactRole
+                  values.contact[0].contactRole
                 );
               }}
-              name="contact.contactRole"
+              name="contact[0].contactRole"
               renderInput={(params) => (
                 <TextField
                   {...params}
                   error={Boolean(
-                    getIn(touched, "contact.contactRole") &&
-                      getIn(errors, "contact.contactRole")
+                    getIn(touched, "contact[0].contactRole") &&
+                      getIn(errors, "contact[0].contactRole")
                   )}
                   helperText={
-                    getIn(touched, "contact.contactRole") &&
-                    getIn(errors, "contact.contactRole")
+                    getIn(touched, "contact[0].contactRole") &&
+                    getIn(errors, "contact[0].contactRole")
                   }
                   onBlur={handleBlur}
-                  value={values.contact.contactRole}
+                  value={values.contact[0].contactRole}
                   onChange={handleChange}
                   fullWidth
                   variant="outlined"
@@ -163,7 +165,7 @@ function ContactPerson({
             /> */}
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Role</InputLabel>
-              <Field name="contact.contactRole" component={CustomSelect} />
+              <Field name="contact[0].contactRole" component={CustomSelect} />
             </FormControl>
           </Box>
         </Grid>
@@ -176,21 +178,26 @@ function ContactPerson({
               }}
               {...params}
               error={Boolean(
-                getIn(touched, "contact.contactDepartment") &&
-                  getIn(errors, "contact.contactDepartment")
+                getIn(
+                  touched,
+                  `contact[${contactPersonNo}].contactDepartment`
+                ) &&
+                  getIn(errors, `contact[${contactPersonNo}].contactDepartment`)
               )}
               helperText={
-                getIn(touched, "contact.contactDepartment") &&
-                getIn(errors, "contact.ccontactDepartment")
+                getIn(
+                  touched,
+                  `contact[${contactPersonNo}].contactDepartment`
+                ) &&
+                getIn(errors, `contact[${contactPersonNo}].contactDepartment`)
               }
-              name="contact.contactDepartment"
+              name={`contact[${contactPersonNo}].contactDepartment`}
               onBlur={handleBlur}
-              value={values.contact.contactDepartment}
+              value={values.contact[contactPersonNo].contactDepartment}
               onChange={(e) => {
-                setFieldValue("contact.contactDepartment", e.target.value);
-                console.log(
-                  "Contact Person Department :",
-                  values.contact.contactDepartment
+                setFieldValue(
+                  `contact[${contactPersonNo}].contactDepartment`,
+                  e.target.value
                 );
               }}
               placeholder="Department ..."
@@ -209,21 +216,29 @@ function ContactPerson({
                 m: 0,
               }}
               error={Boolean(
-                getIn(touched, "contact.contactPhoneNumber") &&
-                  getIn(errors, "contact.contactPhoneNumber")
+                getIn(
+                  touched,
+                  `contact[${contactPersonNo}].contactPhoneNumber`
+                ) &&
+                  getIn(
+                    errors,
+                    `contact[${contactPersonNo}].contactPhoneNumber`
+                  )
               )}
               helperText={
-                getIn(touched, "contact.contactPhoneNumber") &&
-                getIn(errors, "contact.contactPhoneNumber")
+                getIn(
+                  touched,
+                  `contact[${contactPersonNo}].contactPhoneNumber`
+                ) &&
+                getIn(errors, `contact[${contactPersonNo}].contactPhoneNumber`)
               }
-              name="contact.contactPhoneNumber"
+              name={`contact[${contactPersonNo}].contactPhoneNumber`}
               onBlur={handleBlur}
-              value={values.contact.contactPhoneNumber}
+              value={values.contact[contactPersonNo].contactPhoneNumber}
               onChange={(e) => {
-                setFieldValue("contact.contactPhoneNumber", e.target.value);
-                console.log(
-                  "Contact Person Phone :",
-                  values.contact.contactPhoneNumber
+                setFieldValue(
+                  `contact[${contactPersonNo}].contactPhoneNumber`,
+                  e.target.value
                 );
               }}
               placeholder="Phone Number ..."
@@ -242,21 +257,20 @@ function ContactPerson({
                 m: 0,
               }}
               error={Boolean(
-                getIn(touched, "contact.contactEMail") &&
-                  getIn(errors, "contact.contactEMail")
+                getIn(touched, `contact[${contactPersonNo}].contactEMail`) &&
+                  getIn(errors, `contact[${contactPersonNo}].contactEMail`)
               )}
               helperText={
-                getIn(touched, "contact.contactEMail") &&
-                getIn(errors, "contact.contactEMail")
+                getIn(touched, `contact[${contactPersonNo}].contactEMail`) &&
+                getIn(errors, `contact[${contactPersonNo}].contactEMail`)
               }
-              name="contact.contactEMail"
+              name={`contact[${contactPersonNo}].contactEMail`}
               onBlur={handleBlur}
-              value={values.contact.contactEMail}
+              value={values.contact[contactPersonNo].contactEMail}
               onChange={(e) => {
-                setFieldValue("contact.contactEMail", e.target.value);
-                console.log(
-                  "Contact Person Email :",
-                  values.contact.contactEMail
+                setFieldValue(
+                  `contact[${contactPersonNo}].contactEMail`,
+                  e.target.value
                 );
               }}
               placeholder="E-Mail ..."
