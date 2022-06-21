@@ -97,6 +97,13 @@ const updateUser = asyncHandler(async (req, res, next) => {
   });
 
   res.status(200).json({ success: true, data: user }); // password won't be shown because we selected false in the model
+  // const { email, firstname, lastname } = req.body;
+
+  // const user = await User.findByIdAndUpdate(req.params.id, {
+  //   $set: req.body,
+  // });
+
+  // res.status(200).json("Account has been updated");
 });
 
 module.exports = {

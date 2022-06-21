@@ -267,5 +267,225 @@
         "email": "client@gmail.com"
       }
     ]
+  },
+  {
+    "type": "client6",
+    "name": "testClient6",
+    "email": "client6@gmail.com",
+    "phone": "+49 123456",
+    "website": "www.client.com",
+    "financials": {
+      "registrationNo": "BN123456",
+      "fiscalNo": "BN123456",
+      "IBAN": "BN123456",
+      "BIC": "BN123456",
+      "bank": "client bank"
+    },
+    "address": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "shippingAddress": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "contacts": [
+      {
+        "name": "contact 1",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      },
+      {
+        "name": "contact 2",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      }
+    ]
+  },
+  {
+    "type": "client7",
+    "name": "testClient7",
+    "email": "client7@gmail.com",
+    "phone": "+49 123456",
+    "website": "www.client.com",
+    "financials": {
+      "registrationNo": "BN123456",
+      "fiscalNo": "BN123456",
+      "IBAN": "BN123456",
+      "BIC": "BN123456",
+      "bank": "client bank"
+    },
+    "address": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "shippingAddress": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "contacts": [
+      {
+        "name": "contact 1",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      },
+      {
+        "name": "contact 2",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      }
+    ]
+  },
+  {
+    "type": "client8",
+    "name": "testClient8",
+    "email": "client8@gmail.com",
+    "phone": "+49 123456",
+    "website": "www.client.com",
+    "financials": {
+      "registrationNo": "BN123456",
+      "fiscalNo": "BN123456",
+      "IBAN": "BN123456",
+      "BIC": "BN123456",
+      "bank": "client bank"
+    },
+    "address": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "shippingAddress": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "contacts": [
+      {
+        "name": "contact 1",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      },
+      {
+        "name": "contact 2",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      }
+    ]
+  },
+  {
+    "type": "client9",
+    "name": "testClient9",
+    "email": "client9@gmail.com",
+    "phone": "+49 123456",
+    "website": "www.client.com",
+    "financials": {
+      "registrationNo": "BN123456",
+      "fiscalNo": "BN123456",
+      "IBAN": "BN123456",
+      "BIC": "BN123456",
+      "bank": "client bank"
+    },
+    "address": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "shippingAddress": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "contacts": [
+      {
+        "name": "contact 1",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      },
+      {
+        "name": "contact 2",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      }
+    ]
+  },
+  {
+    "type": "client10",
+    "name": "testClient10",
+    "email": "client10@gmail.com",
+    "phone": "+49 123456",
+    "website": "www.client.com",
+    "financials": {
+      "registrationNo": "BN123456",
+      "fiscalNo": "BN123456",
+      "IBAN": "BN123456",
+      "BIC": "BN123456",
+      "bank": "client bank"
+    },
+    "address": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "shippingAddress": {
+      "streetAddress": "clientaddress",
+      "zip": "BN123456",
+      "city": "berlin",
+      "state": "Germany",
+      "additionalDetails": "client info"
+    },
+    "contacts": [
+      {
+        "name": "contact 1",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      },
+      {
+        "name": "contact 2",
+        "role": "contact",
+        "department": "sales",
+        "phone": "+49 123456",
+        "email": "client@gmail.com"
+      }
+    ]
   }
 ]
