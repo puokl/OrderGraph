@@ -58,6 +58,7 @@ function ContactPerson({
         label={t("Role")}
         value={field.value}
         onChange={(e) => {
+          console.log(field.name);
           handleRoleSelect(e);
           setFieldValue(
             `contact[${contactPersonNo}].contactRole`,
@@ -165,7 +166,10 @@ function ContactPerson({
             /> */}
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Role</InputLabel>
-              <Field name="contact[0].contactRole" component={CustomSelect} />
+              <Field
+                name={`contact[${contactPersonNo}].contactRole`}
+                component={CustomSelect}
+              />
             </FormControl>
           </Box>
         </Grid>
