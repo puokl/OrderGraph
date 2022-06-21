@@ -58,6 +58,7 @@ const ClientSchema = new mongoose.Schema(
     },
     contacts: [contactSchema],
     orders: [],
+    organizationId: String, // we got this from the front end
   },
   { timestamps: true }
 );

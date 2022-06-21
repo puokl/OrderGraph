@@ -9,7 +9,7 @@ const contactSchema = new mongoose.Schema(
     email: {
       type: String,
       max: 50,
-      unique: true,
+      //   unique: false,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please add a valid email",
@@ -25,8 +25,8 @@ const SupplierSchema = new mongoose.Schema(
     name: { type: String },
     email: {
       type: String,
-      max: 50,
-      unique: true,
+      //   max: 50,
+      //   unique: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please add a valid email",
@@ -58,6 +58,7 @@ const SupplierSchema = new mongoose.Schema(
     },
     contacts: [contactSchema],
     orders: [],
+    organizationId: String, // we got this from the front end
   },
   { timestamps: true }
 );
