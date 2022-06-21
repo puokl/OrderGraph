@@ -7,6 +7,7 @@ import {
   Grid,
   styled,
   Tooltip,
+  CircularProgress,
 } from "@mui/material";
 
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
@@ -70,7 +71,60 @@ const INITIAL_FORM_STATE = {
   SaSameAsBa: false,
 };
 
-const FORM_VALIDATION = Yup.object().shape({
+/* Person Form Validation Start */
+
+const PERSON_FORM_VALIDATION = Yup.object().shape({
+  /* Client Detail Validation */
+  clientName: Yup.string().required("Required"),
+  clientEMail: Yup.string().email("Invalid Email").required("Required"),
+  clientPhoneNumber: Yup.number()
+    .integer()
+    .typeError("Please enter a valid phone number")
+    .required("Required"),
+  /* Billing Adress Validation */
+  billingAddress: Yup.object().shape({
+    Address: Yup.string().required("Required"),
+    Zip: Yup.number().integer().required("Required"),
+    City: Yup.string().required("Required"),
+    State: Yup.string().required("Required"),
+    AdditionInformation: Yup.string().max(510),
+  }),
+  /* Shipping Adress Validation */
+  shippingAddress: Yup.object({
+    Address: Yup.string().required("Required"),
+    Zip: Yup.number().integer().required("Required"),
+    City: Yup.string().required("Required"),
+    State: Yup.string().required("Required"),
+    AdditionalInformation: Yup.string().max(510),
+  }),
+  /* Financials Validation */
+  financials: Yup.object().shape({
+    registrationNumber: Yup.number().integer(),
+    fiscalNumber: Yup.number.apply().integer(),
+    IBAN: Yup.number().integer(),
+    bankName: Yup.string(),
+  }),
+  /* Contact Person Validation */
+  contact: Yup.array().of(
+    Yup.object().shape({
+      contactName: Yup.string(),
+      contactRole: Yup.string(),
+      contactDepartment: Yup.string(),
+      contactPhoneNumber: Yup.number()
+        .integer()
+        .typeError("Please enter a valid phone number"),
+      contactEMail: Yup.string().email("Invalid Email"),
+    })
+  ),
+  /* Same Address ? */
+  SaSameAsBa: Yup.bool().oneOf([true, false]),
+});
+
+/* Person Form Validation End */
+
+/*  Company Form Validartion Start */
+
+const COMPANY_FORM_VALIDATION = Yup.object().shape({
   /* Client Detail Validation */
   clientName: Yup.string().required("Required"),
   clientEMail: Yup.string().email("Invalid Email").required("Required"),
@@ -125,6 +179,8 @@ const FORM_VALIDATION = Yup.object().shape({
   SaSameAsBa: Yup.bool().oneOf([true, false]),
 });
 
+/* Company Form Validation End */
+
 function AddClient() {
   const { t } = useTranslation();
   const [showContact, setShowContact] = useState(false);
@@ -154,6 +210,7 @@ function AddClient() {
     setContactPersonNo(contactPersonNo + 1);
     cArray.push(contactPersonNo);
   };
+
   const handleShowRemoveCp = () => {
     if (contactPersonNo >= 1) {
       setRemoveCp(true);
@@ -226,30 +283,6 @@ function AddClient() {
           height: ${theme.spacing(5)};
   `
   );
-  /*   const getClient = useCallback(async () => {
-    try {
-      const response = await axios.get("/api/clients");
-      console.log(response);
-      setClients(response.data.clients);
-    } catch (err) {
-      console.error(err);
-    }
-  });
-
-  getClient(); */
-
-  /* CREATE NEW FIELDS FOR EACH CONTACT PERSON */
-  /*   let ContactPersonList = [];
-  for (let i = 0; i < contactPersonNo; i++) {
-    ContactPersonList.push(
-      <ContactPerson
-        /* Console says touch is undefined if I pass the props like I do with the other Components */
-
-  /*           updateFields={updateFields} */
-  /*         id={i}
-      />
-    );
-  }  */
 
   const handleCreateClient = async (values) => {
     try {
@@ -277,17 +310,12 @@ function AddClient() {
         initialValues={{
           ...INITIAL_FORM_STATE,
         }}
-        validationSchema={FORM_VALIDATION}
-        /* Set Timeout ? */
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log(e);
-          console.log("inside formik onsubmit");
-          if (SaSameAsBa) {
-            values.shippingAddress = values.billingAddress;
-          }
-          console.log("Form data: ", values);
-          handleCreateClient(values);
+        validationSchema={
+          showContact ? COMPANY_FORM_VALIDATION : PERSON_FORM_VALIDATION
+        }
+        /* Asyncronus Submission and Validation -- Check Formik Submit Documentation for more info */
+        onSubmit={async (values) => {
+          await handleCreateClient(values);
         }}
       >
         {({
@@ -299,8 +327,9 @@ function AddClient() {
           touched,
           setFieldValue,
           values,
+          validateForm,
         }) => (
-          <Form onChange={console.log(values.contact)}>
+          <Form>
             <Grid
               sx={{
                 px: 4,
@@ -366,9 +395,6 @@ function AddClient() {
                       />
                       {cArray.map((item, index) => (
                         <ContactPerson
-                          /* Console says touch is undefined if I pass the props like I do with the other Components */
-
-                          /*           updateFields={updateFields} */
                           touched={touched}
                           handleBlur={handleBlur}
                           values={values}
@@ -460,12 +486,6 @@ function AddClient() {
                                       contactPersonNo - 1;
                                     setContactPersonNo(newContactPersonNo);
                                     cArray.pop(newContactPersonNo);
-
-                                    /*                  if (newContactPersonNo > 0) {
-                                      setRemoveCp(true);
-                                    } else if (contactPersonNo < 2) {
-                                      setRemoveCp(false);
-                                    } */
                                   }}
                                 >
                                   <CardContent>
@@ -507,7 +527,20 @@ function AddClient() {
                     variant="contained"
                     color="primary"
                     type="submit"
-                    onClick={navigateToClientOverview}
+                    /* onClick Function gets launched first --> handleSubmit  looks for onSubmit function defined in the Formik Component 
+                    e.preventDefault needs to be called in the onClick NOT in the onSubmit */
+                    onClick={(e) => {
+                      e.preventDefault();
+                      /* SaSameAsBa Conditional needs to be called before handleSubmit, so that handleSubmit can accsess the values because they are set to be required in the validation */
+                      if (SaSameAsBa) {
+                        values.shippingAddress = values.billingAddress;
+                      }
+                      handleSubmit(e);
+                      console.log(errors);
+                    }}
+                    startIcon={
+                      isSubmitting ? <CircularProgress size="1rem" /> : null
+                    }
                   >
                     Save
                   </Button>
