@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-// import axios from "src/utils/axios";
+import { useState, useEffect } from "react";
+
 import axios from "src/utils/axios2";
 
 import { Helmet } from "react-helmet-async";

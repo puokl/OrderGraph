@@ -18,7 +18,7 @@ import ordersRoutes from "./orders";
 import suppliersRoutes from "./suppliers";
 import organizationRoutes from "./organization";
 import usersRoutes from "./users";
-import PhuocUsers from "src/customComponents/phuoc/index"
+import PhuocUsers from "src/customComponents/phuoc/index";
 
 const router = [
   {
@@ -38,17 +38,12 @@ const router = [
     element: <DocsLayout />,
     children: documentationRoutes,
   },
-  
 
   // Accent Sidebar Layout
 
   {
     path: "/",
-    element: (
-      <Authenticated>
-        <AccentSidebarLayout />
-      </Authenticated>
-    ),
+    element: <Authenticated />,
     children: [
       {
         path: "/",
@@ -91,10 +86,9 @@ const router = [
         children: usersRoutes,
       },
       {
-    path: "pok",
-    element: <PhuocUsers />,
-  },
-
+        path: "pok",
+        element: <PhuocUsers />,
+      },
     ],
   },
 
@@ -102,11 +96,7 @@ const router = [
 
   {
     path: "top-navigation",
-    element: (
-      <Authenticated>
-        <TopNavigationLayout />
-      </Authenticated>
-    ),
+    element: <Authenticated />,
     children: [
       {
         path: "/",

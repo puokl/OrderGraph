@@ -352,7 +352,7 @@ function FinaliseRegisterWizard(props) {
                     <Grid item xs={24} md={12}>
                       <Field
                         fullWidth
-                        name="additional"
+                        name="address.additional"
                         component={TextField}
                         label={t("Additional Details")}
                       />

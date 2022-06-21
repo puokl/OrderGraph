@@ -35,7 +35,7 @@ function RegisterJWT() {
           .required(t("The email field is required")),
 
         password: Yup.string()
-          .min(8)
+          .min(6)
           .max(255)
           .required(t("The password field is required")),
         terms: Yup.boolean().oneOf(

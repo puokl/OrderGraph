@@ -7,6 +7,7 @@ const initialAuthState = {
   isInitialized: false,
   hasOrg: false,
   user: null,
+  role: "",
 };
 
 const setSession = (accessToken) => {
@@ -21,14 +22,15 @@ const setSession = (accessToken) => {
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, user, hasOrg } = action.payload;
-
+    const { isAuthenticated, user, hasOrg, role } = action.payload;
+    console.log(user);
     return {
       ...state,
       isAuthenticated,
       isInitialized: true,
       hasOrg,
       user,
+      role,
     };
   },
   LOGIN: (state, action) => {
@@ -39,6 +41,7 @@ const handlers = {
       isAuthenticated: true,
       hasOrg,
       user,
+      role: user.role,
     };
   },
   LOGOUT: (state) => ({
@@ -54,6 +57,7 @@ const handlers = {
       isAuthenticated: true,
       hasOrg: false,
       user,
+      role: user.role,
     };
   },
 };
@@ -91,16 +95,18 @@ export const AuthProvider = (props) => {
                 isAuthenticated: true,
                 hasOrg: false,
                 user,
+                role: user.role,
               },
             });
             console.log();
-          } else {
+          } else if (user) {
             dispatch({
               type: "INITIALIZE",
               payload: {
                 isAuthenticated: true,
                 hasOrg: true,
                 user,
+                role: user.role,
               },
             });
           }
@@ -110,6 +116,7 @@ export const AuthProvider = (props) => {
             payload: {
               isAuthenticated: false,
               user: null,
+              role: "",
             },
           });
         }
@@ -120,6 +127,7 @@ export const AuthProvider = (props) => {
           payload: {
             isAuthenticated: false,
             user: null,
+            role: "",
           },
         });
       }
@@ -144,6 +152,7 @@ export const AuthProvider = (props) => {
         payload: {
           hasOrg: false,
           user,
+          role: user.role,
         },
       });
       console.log("false");
@@ -153,6 +162,7 @@ export const AuthProvider = (props) => {
         payload: {
           hasOrg: true,
           user,
+          role: user.role,
         },
       });
     }
@@ -180,6 +190,7 @@ export const AuthProvider = (props) => {
       payload: {
         hasOrg: false,
         user,
+        role: user.role,
       },
     });
   };

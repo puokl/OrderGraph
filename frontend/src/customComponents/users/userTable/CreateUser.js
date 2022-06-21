@@ -288,6 +288,7 @@ function CreateUser(props) {
                         onBlur={handleBlur}
                         onChange={(e) => {
                           setFieldValue("firstname", e.target.value);
+                          console.log(touched);
                         }}
                         fullWidth
                         label={t("First name")}

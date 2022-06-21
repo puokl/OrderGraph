@@ -16,6 +16,12 @@ const Calendar = Loader(
   lazy(() => import("src/content/applications/Calendar"))
 );
 const Gantt = Loader(lazy(() => import("src/customComponents/gantt/gantt")));
+const Overview = Loader(
+  lazy(() => import("src/customComponents/orders/overview/index"))
+);
+const CreateOrder = Loader(
+  lazy(() => import("src/customComponents/orders/create/index"))
+);
 
 const ordersRoutes = [
   {
@@ -24,6 +30,18 @@ const ordersRoutes = [
   },
   {
     path: "gantt",
+    element: <Gantt />,
+  },
+  {
+    path: "overview",
+    element: <Overview />,
+  },
+  {
+    path: "create",
+    element: <CreateOrder />,
+  },
+  {
+    path: ":orderID",
     element: <Gantt />,
   },
 ];
