@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ClientsTable from "./ClientsTable";
-import "./ClientOverview.css";
+import OrderTable from "./OrderTable.js";
+import "./OrderOverview.css";
 import PropTypes from "prop-types";
 import {
   Grid,
@@ -20,45 +20,43 @@ import SearchIcon from "@mui/icons-material/Search";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
 import axios from "src/utils/axios2";
-const ClientOverview = () => {
+const OrderOverview = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loaded, setLoaded] = useState(false);
-  const [clients, setClients] = useState([]);
-  console.log(clients);
-
-  const getClients = async () => {
+  const [orders, setOrders] = useState([]);
+  
+  const getOrders = async () => {
+    console.log("hi")
     try {
-      const response = await axios.get("/api/v1/client");
-      setClients(response.data.data);
+      const response = await axios.get("/api/v1/order");
+      setOrders(response.data.data);
       setLoaded(true)
-      console.log(response.data);
     } catch (err) {
       console.error(err);
     }
   };
-
+  
   useEffect(() => {
-    getClients();
+    getOrders();
   }, []);
+
 
   const totalClients = 42;
   const newClientsMonth = 4;
   const clientsWActiveOrdrs = 2;
   const clientsWORecentOrdrs = 33;
 
-  
-
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <PageTitleWrapper>
         <Typography variant="h3" component="h3" gutterBottom>
-          {"Clients Overview"}
+          {"Orders Overview"}
         </Typography>
         <Typography variant="h5" component="h5" gutterBottom>
-          {"Take a look at your client list"}
+          {"Take a look at your order list"}
         </Typography>
       </PageTitleWrapper>
-      {/* client overview cards START */}
+      {/* order overview cards START */}
       <Grid container spacing={4} margin={1}>
         <Grid item xs={3}>
           <Card>
@@ -168,24 +166,24 @@ const ClientOverview = () => {
             </Grid>
           </Card>
         </Grid>
-        {/* clients overview cards END */}
+        {/* orders overview cards END */}
         <Grid item xs={12}>
-          {/* client search & table START */}
+          {/* order search & table START */}
 
           <Card margin={1}>
             <Grid container>
               <Grid item xs={12}>
-                <ClientsTable clients={clients} loaded={loaded} />
+                <OrderTable orders={orders} loaded={loaded} />
               </Grid>
             </Grid>
           </Card>
         </Grid>
-        {/* client search & table END */}
+        {/* order search & table END */}
       </Grid>
     </Grid>
   );
 };
 
-ClientOverview.propTypes = {};
+OrderOverview.propTypes = {};
 
-export default ClientOverview;
+export default OrderOverview;

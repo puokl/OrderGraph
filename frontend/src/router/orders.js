@@ -17,7 +17,7 @@ const Calendar = Loader(
 );
 const Gantt = Loader(lazy(() => import("src/customComponents/gantt/gantt")));
 const Overview = Loader(
-  lazy(() => import("src/customComponents/orders/overview/index"))
+  lazy(() => import("src/customComponents/orders/overview/OrderOverview"))
 );
 const CreateOrder = Loader(
   lazy(() => import("src/customComponents/orders/create/index"))
