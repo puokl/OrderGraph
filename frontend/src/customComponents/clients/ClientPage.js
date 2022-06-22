@@ -54,7 +54,7 @@ function ClientDetails() {
         <title>Client Details</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeaderClientDetails />
+        <PageHeaderClientDetails clients={clients} />
       </PageTitleWrapper>
       <Grid
         sx={{
@@ -72,10 +72,7 @@ function ClientDetails() {
             <Button href="#text-buttons" sx={{ ml: 70 }}>
               Edit
             </Button>
-            <CardHeader
-              title="Person"
-              subheader="Manage Informations related to your personal details"
-            />
+            <CardHeader title="Person" />
             <Divider />
             <Box p={2}>
               <Typography variant="caption" fontWeight="normal">

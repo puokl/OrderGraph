@@ -185,6 +185,7 @@ const COMPANY_FORM_VALIDATION = Yup.object().shape({
 function AddClient() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  console.log(user);
   const [showContact, setShowContact] = useState(false);
   const [showShipping, setShowShipping] = useState(true);
   const [SaSameAsBa, setSaSameAsBa] = useState(false);
@@ -293,12 +294,13 @@ function AddClient() {
   );
 
   const handleCreateClient = async (values) => {
-    const dataToSend = { ...values, organisation: user.organisation };
+    const dataToSend = { ...values, organization: user.organization };
+    console.log("DTS:", dataToSend);
     try {
       const response = await axios.post("/api/v1/client/newclient", dataToSend);
       if (response.status === 201) {
         console.log("Backend Create client response: ", response);
-        navigateToClientOverview();
+        /*         navigateToClientOverview(); */
       } else {
         console.log("error");
       }

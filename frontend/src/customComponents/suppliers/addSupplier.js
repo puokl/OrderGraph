@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
-
+import useAuth from "src/hooks/useAuth";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import { Form, Formik, getIn } from "formik";
 import { useState } from "react";
@@ -184,6 +184,7 @@ const COMPANY_FORM_VALIDATION = Yup.object().shape({
 
 function AddSupplier() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [showContact, setShowContact] = useState(false);
   const [showShipping, setShowShipping] = useState(true);
   const [SaSameAsBa, setSaSameAsBa] = useState(false);
@@ -292,10 +293,15 @@ function AddSupplier() {
   );
 
   const handleCreateSupplier = async (values) => {
+    const dataToSend = { ...values, organization: user.organization };
+    console.log("DTS", dataToSend);
     try {
-      const response = await axios.post("/api/v1/client/newclient", values);
+      const response = await axios.post(
+        "/api/v1/supplier/newsupplier",
+        dataToSend
+      );
       if (response.status === 201) {
-        console.log("Backend Create client response: ", response);
+        console.log("Backend Create supplier response: ", response);
         navigateToClientOverview();
       } else {
         console.log("error");
@@ -546,6 +552,7 @@ function AddSupplier() {
                         }
                         handleSubmit(e);
                         console.log(errors);
+                        console.log(values);
                       }}
                       startIcon={
                         isSubmitting ? <CircularProgress size="1rem" /> : null

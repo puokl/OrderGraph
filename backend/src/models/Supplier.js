@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 
 const contactSchema = new mongoose.Schema(
   {
-    name: String,
-    role: String,
-    department: String,
-    phone: String,
-    email: {
+    contactName: String,
+    contactRole: String,
+    contactDepartment: String,
+    contactPhoneNumber: String,
+    contactEMail: {
       type: String,
       max: 50,
-      //   unique: false,
+      unique: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please add a valid email",
@@ -21,18 +21,18 @@ const contactSchema = new mongoose.Schema(
 
 const SupplierSchema = new mongoose.Schema(
   {
-    type: { type: String },
-    name: { type: String },
-    email: {
+    supplierType: { type: String },
+    supplierName: { type: String },
+    supplierEMail: {
       type: String,
-      //   max: 50,
-      //   unique: true,
+      max: 50,
+      unique: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please add a valid email",
       ],
     },
-    phone: { type: String },
+    supplierPhoneNumber: { type: String },
     website: { type: String },
 
     financials: {
@@ -42,23 +42,23 @@ const SupplierSchema = new mongoose.Schema(
       BIC: String,
       bank: String,
     },
-    address: {
-      streetAddress: String,
-      zip: String,
-      city: String,
-      country: String,
-      additionalDetails: String,
+    billingAddress: {
+      Address: String,
+      Zip: String,
+      City: String,
+      State: String,
+      AdditionalInformation: String,
     },
-    workplaceAddress: {
-      streetAddress: String,
-      zip: String,
-      city: String,
-      country: String,
-      additionalDetails: String,
+    shippingAddress: {
+      Address: String,
+      Zip: String,
+      City: String,
+      State: String,
+      AdditionalInformation: String,
     },
     contacts: [contactSchema],
     orders: [],
-    organizationId: String, // we got this from the front end
+    organization: String, // we got this from the front end
   },
   { timestamps: true }
 );
