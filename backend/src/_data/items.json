@@ -1,0 +1,52 @@
+[
+  {
+    "public": true,
+    "itemName": "item1",
+    "description": "first item",
+    "height": "30 cm",
+    "width": "30 cm",
+    "units": "cm",
+    "unitPrice": "30€",
+    "tasks": []
+  },
+  {
+    "public": false,
+    "itemName": "item2",
+    "description": "second item",
+    "height": "30 cm",
+    "width": "30 cm",
+    "units": "cm",
+    "unitPrice": "30€",
+    "tasks": []
+  },
+  {
+    "public": false,
+    "itemName": "item3",
+    "description": "third item",
+    "height": "30 cm",
+    "width": "30 cm",
+    "units": "cm",
+    "unitPrice": "30€",
+    "tasks": []
+  },
+  {
+    "public": false,
+    "itemName": "item4",
+    "description": "fourth item",
+    "height": "30 cm",
+    "width": "30 cm",
+    "units": "cm",
+    "unitPrice": "30€",
+    "tasks": []
+  },
+  {
+    "public": true,
+    "itemName": "item5",
+    "description": "fifth item",
+    "height": "30 cm",
+    "width": "30 cm",
+    "units": "cm",
+    "unitPrice": "30€",
+    "tasks": []
+  }
+]

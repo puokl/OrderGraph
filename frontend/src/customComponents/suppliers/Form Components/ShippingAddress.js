@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
 
-function ShippingAdress({
+function SupplierShippingAdress({
   handleShowContact,
   updateFields,
   touched,
@@ -230,4 +230,4 @@ function ShippingAdress({
   );
 }
 
-export default ShippingAdress;
+export default SupplierShippingAdress;

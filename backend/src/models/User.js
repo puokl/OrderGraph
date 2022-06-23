@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       required: [true, "Please add a role"],
-      enum: ["worker", "admin"],
+      enum: ["worker", "admin", "representative"],
       default: "admin",
       trim: true,
     },
@@ -42,6 +42,7 @@ const UserSchema = new mongoose.Schema(
       select: false, // when we get a user through the api is not going to show the password
     },
     organization: {
+      // value comes from a put request as response from the frontend once user has created the org
       type: String,
       default: "",
     },

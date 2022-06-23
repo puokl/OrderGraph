@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Field } from "formik";
 
-function ContactPerson({
+function SupplierContactPerson({
   handleShowContact,
   updateFields,
   touched,
@@ -126,44 +126,44 @@ function ContactPerson({
         <Grid item xs={12} sm={6} md={6}>
           <Box p={1}>
             {/*             <Autocomplete
-              multiple
-              sx={{
-                m: 0,
-              }}
-              limitTags={2}
-              options={roleTags}
-              getOptionLabel={(option) => option}
-              getOptionSelected={(item, current) => item === current}
-              onChange={(e, value) => {
-                setFieldValue("contact[0].contactRole", value.value);
-                console.log(
-                  "Contact Person Role :",
-                  values.contact[0].contactRole
-                );
-              }}
-              name="contact[0].contactRole"
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  error={Boolean(
-                    getIn(touched, "contact[0].contactRole") &&
+                multiple
+                sx={{
+                  m: 0,
+                }}
+                limitTags={2}
+                options={roleTags}
+                getOptionLabel={(option) => option}
+                getOptionSelected={(item, current) => item === current}
+                onChange={(e, value) => {
+                  setFieldValue("contact[0].contactRole", value.value);
+                  console.log(
+                    "Contact Person Role :",
+                    values.contact[0].contactRole
+                  );
+                }}
+                name="contact[0].contactRole"
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={Boolean(
+                      getIn(touched, "contact[0].contactRole") &&
+                        getIn(errors, "contact[0].contactRole")
+                    )}
+                    helperText={
+                      getIn(touched, "contact[0].contactRole") &&
                       getIn(errors, "contact[0].contactRole")
-                  )}
-                  helperText={
-                    getIn(touched, "contact[0].contactRole") &&
-                    getIn(errors, "contact[0].contactRole")
-                  }
-                  onBlur={handleBlur}
-                  value={values.contact[0].contactRole}
-                  onChange={handleChange}
-                  fullWidth
-                  variant="outlined"
-                  label="Role"
-                  placeholder="Role..."
-                  id="contactRole"
-                />
-              )}
-            /> */}
+                    }
+                    onBlur={handleBlur}
+                    value={values.contact[0].contactRole}
+                    onChange={handleChange}
+                    fullWidth
+                    variant="outlined"
+                    label="Role"
+                    placeholder="Role..."
+                    id="contactRole"
+                  />
+                )}
+              /> */}
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Role</InputLabel>
               <Field
@@ -290,4 +290,4 @@ function ContactPerson({
   );
 }
 
-export default ContactPerson;
+export default SupplierContactPerson;

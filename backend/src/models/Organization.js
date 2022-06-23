@@ -19,10 +19,8 @@ const OrganizationSchema = new mongoose.Schema(
         "Please add a valid email",
       ],
     },
-    phone: {},
-    website: {
-      type: String,
-    },
+    phone: String,
+    website: String,
     orgSize: {
       type: String,
       enum: ["1-5", "6-10", "11-20", "21-50", "50+"],

@@ -1,7 +1,7 @@
 import { Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
 
-function BillingAdress({
+function SupplierBillingAdress({
   handleShowContact,
   updateFields,
   touched,
@@ -196,4 +196,4 @@ function BillingAdress({
   );
 }
 
-export default BillingAdress;
+export default SupplierBillingAdress;

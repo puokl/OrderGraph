@@ -2,7 +2,7 @@ import { Box, CardHeader, Grid, TextField } from "@mui/material";
 import React, { forwardRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-function Financials({
+function SupplierFinancials({
   handleShowContact,
   updateFields,
   touched,
@@ -150,4 +150,4 @@ function Financials({
   );
 }
 
-export default Financials;
+export default SupplierFinancials;

@@ -59,6 +59,7 @@ const updateClient = asyncHandler(async (req, res, next) => {
   const dotNotated = convertToDotNotation(req.body);
 
   client = await Client.findByIdAndUpdate(req.params.clientId, dotNotated, {
+    overwrite: true,
     new: true,
   });
   res.status(200).json({

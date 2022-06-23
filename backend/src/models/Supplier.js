@@ -19,11 +19,11 @@ const contactSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const ClientSchema = new mongoose.Schema(
+const SupplierSchema = new mongoose.Schema(
   {
-    clientType: { type: String },
-    clientName: { type: String },
-    clientEMail: {
+    supplierType: { type: String },
+    supplierName: { type: String },
+    supplierEMail: {
       type: String,
       max: 50,
       unique: true,
@@ -32,15 +32,15 @@ const ClientSchema = new mongoose.Schema(
         "Please add a valid email",
       ],
     },
-    clientPhoneNumber: { type: String },
+    supplierPhoneNumber: { type: String },
     website: { type: String },
 
     financials: {
-      registrationNumber: String,
-      fiscalNumber: String,
+      registrationNo: String,
+      fiscalNo: String,
       IBAN: String,
       BIC: String,
-      bankName: String,
+      bank: String,
     },
     billingAddress: {
       Address: String,
@@ -56,11 +56,11 @@ const ClientSchema = new mongoose.Schema(
       State: String,
       AdditionalInformation: String,
     },
-    contact: [contactSchema],
+    contacts: [contactSchema],
     orders: [],
     organization: String, // we got this from the front end
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Client", ClientSchema);
+module.exports = mongoose.model("Supplier", SupplierSchema);

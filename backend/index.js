@@ -2,6 +2,11 @@ const colors = require("colors");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
 const errorHandler = require("./src/middleware/errorHandler");
 const corsOptions = require("./src/utils/cors");
 
@@ -22,6 +27,9 @@ const organizationRouter = require("./src/routes/organizationRoutes");
 const orderRouter = require("./src/routes/orderRoutes");
 const userRouter = require("./src/routes/userRoutes");
 const clientRouter = require("./src/routes/clientRoutes");
+const supplierRouter = require("./src/routes/supplierRoutes");
+const itemRouter = require("./src/routes/itemRoutes");
+const testRouter = require("./src/routes/testRoutes");
 
 // cookie parser
 app.use(cookieParser());
@@ -35,6 +43,26 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// sanitize data
+app.use(mongoSanitize());
+
+// set security headers
+app.use(helmet());
+
+// prevent xss attacks
+app.use(xss());
+
+// rate limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 100, // set max 100 request per 10mins
+});
+
+app.use(limiter);
+
+// prevent http param pollution
+app.use(hpp());
+
 // enable cors
 app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
@@ -45,6 +73,9 @@ app.use("/api/v1/organization", organizationRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/client", clientRouter);
+app.use("/api/v1/supplier", supplierRouter);
+app.use("/api/v1/item", itemRouter);
+app.use("/api/v1/test", testRouter);
 
 // mongoose error handler
 app.use(errorHandler);

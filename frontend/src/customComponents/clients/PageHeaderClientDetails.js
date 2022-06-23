@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import PropTypes from "prop-types";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const PageHeaderClientDetails = () => {
+const PageHeaderClientDetails = ({ clients }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const navigateToClientOverview = () => {
@@ -15,7 +15,7 @@ const PageHeaderClientDetails = () => {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Client Name
+          {clients.clientName}
         </Typography>
       </Grid>
       <Grid item>

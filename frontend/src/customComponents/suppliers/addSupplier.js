@@ -1,214 +1,231 @@
 import {
-  Autocomplete,
   Avatar,
-  Box,
   Button,
   Card,
-  Dialog,
-  CardHeader,
-  FormControl,
+  CardActionArea,
+  CardContent,
   Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  lighten,
-  MenuItem,
-  Select,
-  Slide,
   styled,
-  TextField,
-  Divider,
+  Tooltip,
+  CircularProgress,
+  Box,
 } from "@mui/material";
-import { forwardRef, useState } from "react";
+import useAuth from "src/hooks/useAuth";
+import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
+import { Form, Formik, getIn } from "formik";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
+import * as Yup from "yup";
+import SupplierBillingAdress from "./Form Components/BillingAddress";
+import SupplierDetails from "./Form Components/SupplierDetails";
+import SupplierContactPerson from "./Form Components/ContactPerson";
+import SupplierFinancials from "./Form Components/Financials";
+import SupplierShippingAdress from "./Form Components/ShippingAddress";
 import PageHeader from "./PageHeader";
+import RemoveTwoToneIcon from "@mui/icons-material/RemoveTwoTone";
+import axios from "src/utils/axios2";
 
-const handleQueryChange = (event) => {
-  event.persist();
-  setQuery(event.target.value);
+const INITIAL_FORM_STATE = {
+  /* Client Details */
+  supplierType: "",
+  supplierName: "",
+  supplierEMail: "",
+  supplierPhoneNumber: "",
+  /* Billing Address */
+  billingAddress: {
+    Address: "",
+    Zip: "",
+    City: "",
+    State: "",
+    AdditionalInformation: "",
+  },
+  /* Shipping Address */
+  shippingAddress: {
+    Address: "",
+    Zip: "",
+    City: "",
+    State: "",
+    AdditionalInformation: "",
+  },
+  /* Financial */
+  financials: {
+    registrationNumber: "",
+    fiscalNumber: "",
+    IBAN: "",
+    bankName: "",
+  },
+  /* Contact Person */
+  contact: [
+    {
+      contactName: "",
+      contactRole: "",
+      contactDepartment: "",
+      contactPhoneNumber: "",
+      contactEMail: "",
+    },
+  ],
+
+  /* Shipping Address same Adress as Billing Adress */
+  SaSameAsBa: false,
 };
 
-const DialogWrapper = styled(Dialog)(
-  () => `
-        .MuiDialog-paper {
-          overflow: visible;
-        }
-  `
-);
+/* Person Form Validation Start */
 
-const AvatarError = styled(Avatar)(
-  ({ theme }) => `
-        background-color: ${theme.colors.error.lighter};
-        color: ${theme.colors.error.main};
-        width: ${theme.spacing(12)};
-        height: ${theme.spacing(12)};
-  
-        .MuiSvgIcon-root {
-          font-size: ${theme.typography.pxToRem(45)};
-        }
-  `
-);
-
-const CardWrapper = styled(Card)(
-  ({ theme }) => `
-  
-    position: relative;
-    overflow: visible;
-  
-    &::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      border-radius: inherit;
-      z-index: 1;
-      transition: ${theme.transitions.create(["box-shadow"])};
-    }
-        
-      &.Mui-selected::after {
-        box-shadow: 0 0 0 3px ${theme.colors.primary.main};
-      }
-    `
-);
-
-const ButtonError = styled(Button)(
-  ({ theme }) => `
-       background: ${theme.colors.error.main};
-       color: ${theme.palette.error.contrastText};
-  
-       &:hover {
-          background: ${theme.colors.error.dark};
-       }
-      `
-);
-
-const IconButtonError = styled(IconButton)(
-  ({ theme }) => `
-       background: ${theme.colors.error.lighter};
-       color: ${theme.colors.error.main};
-       padding: ${theme.spacing(0.75)};
-  
-       &:hover {
-        background: ${lighten(theme.colors.error.lighter, 0.4)};
-       }
-  `
-);
-
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="down" ref={ref} {...props} />;
+const PERSON_FORM_VALIDATION = Yup.object().shape({
+  /* Client Detail Validation */
+  supplierName: Yup.string().required("Required"),
+  supplierEMail: Yup.string().email("Invalid Email").required("Required"),
+  supplierPhoneNumber: Yup.number()
+    .integer()
+    .typeError("Please enter a valid phone number")
+    .required("Required"),
+  /* Billing Adress Validation */
+  billingAddress: Yup.object().shape({
+    Address: Yup.string().required("Required"),
+    Zip: Yup.number().integer().required("Required"),
+    City: Yup.string().required("Required"),
+    State: Yup.string().required("Required"),
+    AdditionInformation: Yup.string().max(510),
+  }),
+  /* Shipping Adress Validation */
+  shippingAddress: Yup.object({
+    Address: Yup.string().required("Required"),
+    Zip: Yup.number().integer().required("Required"),
+    City: Yup.string().required("Required"),
+    State: Yup.string().required("Required"),
+    AdditionalInformation: Yup.string().max(510),
+  }),
+  /* Financials Validation */
+  financials: Yup.object().shape({
+    registrationNumber: Yup.number().integer(),
+    fiscalNumber: Yup.number.apply().integer(),
+    IBAN: Yup.number().integer(),
+    bankName: Yup.string(),
+  }),
+  /* Contact Person Validation */
+  contact: Yup.array().of(
+    Yup.object().shape({
+      contactName: Yup.string(),
+      contactRole: Yup.string(),
+      contactDepartment: Yup.string(),
+      contactPhoneNumber: Yup.number()
+        .integer()
+        .typeError("Please enter a valid phone number"),
+      contactEMail: Yup.string().email("Invalid Email"),
+    })
+  ),
+  /* Same Address ? */
+  SaSameAsBa: Yup.bool().oneOf([true, false]),
 });
 
-const getProjectStatusLabel = (projectStatus) => {
-  const map = {
-    not_started: {
-      text: "Not started",
-      color: "error",
-    },
-    in_progress: {
-      text: "In progress",
-      color: "info",
-    },
-    completed: {
-      text: "Completed",
-      color: "success",
-    },
-  };
+/* Person Form Validation End */
 
-  const { text, color } = map[projectStatus];
+/*  Company Form Validartion Start */
 
-  return <Label color={color}>{text}</Label>;
-};
+const COMPANY_FORM_VALIDATION = Yup.object().shape({
+  /* Client Detail Validation */
+  supplierName: Yup.string().required("Required"),
+  supplierEMail: Yup.string().email("Invalid Email").required("Required"),
+  supplierPhoneNumber: Yup.number()
+    .integer()
+    .typeError("Please enter a valid phone number")
+    .required("Required"),
+  /* Billing Adress Validation */
+  billingAddress: Yup.object().shape({
+    Address: Yup.string().required("Required"),
+    Zip: Yup.number().integer().required("Required"),
+    City: Yup.string().required("Required"),
+    State: Yup.string().required("Required"),
+    AdditionInformation: Yup.string().max(510),
+  }),
+  /* Shipping Adress Validation */
+  shippingAddress: Yup.object({
+    Address: Yup.string().required("Required"),
+    Zip: Yup.number().integer().required("Required"),
+    City: Yup.string().required("Required"),
+    State: Yup.string().required("Required"),
+    AdditionalInformation: Yup.string().max(510),
+  }),
+  /* Financials Validation */
+  financials: Yup.object().shape({
+    registrationNumber: Yup.number()
+      .integer()
+      .typeError("Plaese enter a valid registration Number")
+      .required("Required"),
+    fiscalNumber: Yup.number
+      .apply()
+      .integer()
+      .typeError("Plaese enter a valid Fiscal Number")
+      .required("Required"),
+    IBAN: Yup.number().integer().required("Required"),
+    bankName: Yup.string().required("Required"),
+  }),
+  /* Contact Person Validation */
+  contact: Yup.array().of(
+    Yup.object().shape({
+      contactName: Yup.string().required("Required"),
+      contactRole: Yup.string(),
+      contactDepartment: Yup.string().required("Required"),
+      contactPhoneNumber: Yup.number()
+        .integer()
+        .typeError("Please enter a valid phone number")
+        .required("Required"),
+      contactEMail: Yup.string().email("Invalid Email").required("Required"),
+    })
+  ),
+  /* Same Address ? */
+  SaSameAsBa: Yup.bool().oneOf([true, false]),
+});
 
-const applyFilters = (projects, query, filters) => {
-  return projects.filter((project) => {
-    let matches = true;
-
-    if (query) {
-      const properties = ["name"];
-      let containsQuery = false;
-
-      properties.forEach((property) => {
-        if (project[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
-        }
-      });
-
-      if (filters.status && project.status !== filters.status) {
-        matches = false;
-      }
-
-      if (!containsQuery) {
-        matches = false;
-      }
-    }
-
-    Object.keys(filters).forEach((key) => {
-      const value = filters[key];
-
-      if (value && project[key] !== value) {
-        matches = false;
-      }
-    });
-
-    return matches;
-  });
-};
-
-const applyPagination = (projects, page, limit) => {
-  return projects.slice(page * limit, page * limit + limit);
-};
-
-const handleStatusChange = (e) => {
-  let value = null;
-
-  if (e.target.value !== "all") {
-    value = e.target.value;
-  }
-
-  setFilters((prevFilters) => ({
-    ...prevFilters,
-    status: value,
-  }));
-};
-
-const handleSelectAllProjects = (event) => {
-  setSelectedProjects(
-    event.target.checked ? projects.map((project) => project.id) : []
-  );
-};
-
-const handleSelectOneProject = (_event, projectId) => {
-  if (!selectedItems.includes(projectId)) {
-    setSelectedProjects((prevSelected) => [...prevSelected, projectId]);
-  } else {
-    setSelectedProjects((prevSelected) =>
-      prevSelected.filter((id) => id !== projectId)
-    );
-  }
-};
-
-const handlePageChange = (_event, newPage) => {
-  setPage(newPage);
-};
-
-const handleLimitChange = (event) => {
-  setLimit(parseInt(event.target.value));
-};
+/* Company Form Validation End */
 
 function AddSupplier() {
   const { t } = useTranslation();
-  const [query, setQuery] = useState("");
+  const { user } = useAuth();
+  const [showContact, setShowContact] = useState(false);
+  const [showShipping, setShowShipping] = useState(true);
+  const [SaSameAsBa, setSaSameAsBa] = useState(false);
+  const [contactPersonNo, setContactPersonNo] = useState(1);
+  const [cArray, setCArray] = useState([1]);
+  const [formData, setFormData] = useState("");
+  const [removeCp, setRemoveCp] = useState(false);
+  const updateFields = (fieldName, fieldValue) => {
+    setFormData({ ...formData, fieldValue });
+  };
   const navigate = useNavigate();
-  const navigateToSupplierOverview = () => {
-    navigate("/suppliers/overview");
+  const navigateToClientOverview = () => {
+    navigate("/clients/overview");
   };
 
-  const projectTags = [{ title: "Person" }, { title: "Company" }];
+  const handleShowShipping = (e) => {
+    setShowShipping(!showShipping);
+  };
+
+  const handleShowContact = (value) => {
+    setShowContact(value);
+  };
+
+  const handleAddContact = () => {
+    setContactPersonNo(contactPersonNo + 1);
+    cArray.push(contactPersonNo);
+  };
+
+  const handleShowRemoveCp = () => {
+    if (contactPersonNo >= 1) {
+      setRemoveCp(true);
+    } else if (contactPersonNo < 2) {
+      setRemoveCp(false);
+    }
+  };
+
+  const handleRemoveContact = () => {
+    setContactPersonNo(contactPersonNo - 1);
+    cArray.pop(contactPersonNo);
+  };
+
   const roleTags = [
     { title: "CEO" },
     { title: "Management" },
@@ -234,7 +251,66 @@ function AddSupplier() {
     },
   ];
 
-  // define states and styles
+  /*   const BoxActions = styled(Box)(
+    ({ theme }) => `
+    background: ${theme.colors.alpha.black[5]}
+    `
+  ); */
+
+  const CardAddAction = styled(Card)(
+    ({ theme }) => `
+          border: ${theme.colors.primary.main} dashed 2px;
+          height: 80%;
+          color: ${theme.colors.primary.main};
+          transition: ${theme.transitions.create(["all"])};
+  
+  
+  
+          .MuiCardActionArea-root {
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+          }
+          
+          .MuiTouchRipple-root {
+            opacity: .2;
+          }
+          
+          &:hover {
+            border-color: ${theme.colors.alpha.black[70]};
+          }
+  `
+  );
+
+  const AvatarAddWrapper = styled(Avatar)(
+    ({ theme }) => `
+          background: ${theme.colors.alpha.black[5]};
+          color: ${theme.colors.primary.main};
+          width: ${theme.spacing(5)};
+          height: ${theme.spacing(5)};
+  `
+  );
+
+  const handleCreateSupplier = async (values) => {
+    const dataToSend = { ...values, organization: user.organization };
+    console.log("DTS", dataToSend);
+    try {
+      const response = await axios.post(
+        "/api/v1/supplier/newsupplier",
+        dataToSend
+      );
+      if (response.status === 201) {
+        console.log("Backend Create supplier response: ", response);
+        navigateToClientOverview();
+      } else {
+        console.log("error");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -243,311 +319,254 @@ function AddSupplier() {
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
-      <Grid
-        sx={{
-          px: 4,
+      <Formik
+        initialValues={{
+          ...INITIAL_FORM_STATE,
         }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={4}
+        validationSchema={
+          showContact ? COMPANY_FORM_VALIDATION : PERSON_FORM_VALIDATION
+        }
+        /* Asyncronus Submission and Validation -- Check Formik Submit Documentation for more info */
+        onSubmit={async (values) => {
+          await handleCreateSupplier(values);
+        }}
       >
-        <Grid item xs={12}>
-          <Card
-            sx={{
-              p: 1,
-              mb: 3,
-            }}
-          >
-            <CardHeader title="Supplier Details" />
-            <Grid container spacing={1}>
-              {/* Client Type */}
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          setFieldValue,
+          values,
+          validateForm,
+        }) => (
+          <Form>
+            <Grid
+              sx={{
+                px: 4,
+              }}
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="stretch"
+              spacing={4}
+            >
               <Grid item xs={12}>
-                <Box p={1}>
-                  <Autocomplete
-                    /* multiple */
-                    sx={{
-                      m: 0,
-                    }}
-                    limitTags={2}
-                    options={projectTags}
-                    getOptionLabel={(option) => option.title}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        variant="outlined"
-                        label={t("Client type")}
-                        placeholder={t("Select client type...")}
-                      />
-                    )}
-                  />
-                </Box>
-              </Grid>
-              {/* Client Name */}
-              <Grid item xs={12} sm={6} md={6}>
-                <Box p={1}>
-                  <TextField
-                    sx={{
-                      m: 0,
-                    }}
-                    /*                     InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchTwoToneIcon />
-                          </InputAdornment>
-                        ),
-                      }} */
-                    /*                     onChange={handleQueryChange} */
-                    placeholder={t("Client Name...")}
-                    /*                     value={query} */
-                    fullWidth
-                    variant="outlined"
-                    lable="Client Name"
-                  />
-                </Box>
-              </Grid>
-              {/* E-Mail */}
-              <Grid item xs={12} sm={6} md={6}>
-                <Box p={1}>
-                  <TextField
-                    sx={{
-                      m: 0,
-                    }}
-                    /*                     InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchTwoToneIcon />
-                          </InputAdornment>
-                        ),
-                      }} */
-                    /*                     onChange={handleQueryChange} */
-                    placeholder={t("E-Mail...")}
-                    /*                     value={query} */
-                    fullWidth
-                    variant="outlined"
-                    lable="E-Mail"
-                    id="E-Mail"
-                  />
-                </Box>
-              </Grid>
-              {/* Phone  Number */}
-              <Grid item xs={12} sm={6} md={6}>
-                <Box p={1}>
-                  <TextField
-                    sx={{
-                      m: 0,
-                    }}
-                    /*                     InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchTwoToneIcon />
-                          </InputAdornment>
-                        ),
-                      }} */
-                    /*                     onChange={handleQueryChange} */
-                    placeholder={t("Phone Number...")}
-                    /*                     value={query} */
-                    fullWidth
-                    variant="outlined"
-                    lable="Phone Number"
-                    id="PhoneNumber"
-                  />
-                </Box>
-              </Grid>
-              {/* Vat ID */}
-              <Grid item xs={12} sm={6} md={6}>
-                <Box p={1}>
-                  <TextField
-                    sx={{
-                      m: 0,
-                    }}
-                    placeholder={t("Vat ID...")}
-                    fullWidth
-                    variant="outlined"
-                    lable="Vat ID"
-                    id="VatID"
-                  />
-                </Box>
-              </Grid>
-              {/* Billing Adress */}
-              <Grid item xs={12}>
-                <Box p={1}>
-                  <TextField
-                    sx={{
-                      m: 0,
-                    }}
-                    placeholder={t("Billing Adress...")}
-                    fullWidth
-                    variant="outlined"
-                    lable="Billing Adress"
-                    id="BillingAdress"
-                  />
-                </Box>
-              </Grid>
-              {/* Shipping Adress */}
-              <Grid item xs={12}>
-                <Box p={1}>
-                  <TextField
-                    sx={{
-                      m: 0,
-                    }}
-                    placeholder={t("Shipping Adress...")}
-                    fullWidth
-                    variant="outlined"
-                    lable="Shipping Adress"
-                    id="ShippingAdress"
-                  />
-                </Box>
-              </Grid>
-              {/* Additional Information */}
-              <Grid item xs={12}>
-                <Box p={1}>
-                  <TextField
-                    sx={{
-                      m: 0,
-                    }}
-                    placeholder={t("Additional Information...")}
-                    fullWidth
-                    variant="outlined"
-                    lable="Additional Information"
-                    id="AdditionalInformation"
-                    multiline={true}
-                    rows={3}
-                  />
-                </Box>
-                <Divider variant="middle" sx={{ mt: 2 }} />
-              </Grid>
-              {/* Divider, New Grid, Card, only shows visible if Project Tags = Company  */}
-
-              <>
-                <CardHeader title="Contact Person" />
-                <Grid
+                <Card
                   sx={{
-                    px: 1,
+                    p: 1,
+                    mb: 3,
                   }}
-                  container
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="stretch"
-                  spacing={1}
                 >
-                  {/* Company Name Contact Person */}
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Box p={1}>
-                      <TextField
-                        sx={{
-                          m: 0,
-                        }}
-                        /*                     InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchTwoToneIcon />
-                          </InputAdornment>
-                        ),
-                      }} */
-                        /*                     onChange={handleQueryChange} */
-                        placeholder={t("Name...")}
-                        /*                     value={query} */
-                        fullWidth
-                        variant="outlined"
-                        lable="Name"
+                  <SupplierDetails
+                    handleShowContact={handleShowContact}
+                    updateFields={updateFields}
+                    touched={touched}
+                    handleBlur={handleBlur}
+                    values={values}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                    handleChange={handleChange}
+                  />
+                  <SupplierBillingAdress
+                    getIn={getIn}
+                    updateFields={updateFields}
+                    touched={touched}
+                    handleBlur={handleBlur}
+                    values={values}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                    handleChange={handleChange}
+                  />
+
+                  <SupplierShippingAdress
+                    getIn={getIn}
+                    updateFields={updateFields}
+                    touched={touched}
+                    handleBlur={handleBlur}
+                    values={values}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                    handleChange={handleChange}
+                    setSaSameAsBa={setSaSameAsBa}
+                    SaSameAsBa={SaSameAsBa}
+                  />
+
+                  {showContact ? (
+                    <>
+                      <SupplierFinancials
+                        getIn={getIn}
+                        updateFields={updateFields}
+                        touched={touched}
+                        handleBlur={handleBlur}
+                        values={values}
+                        errors={errors}
+                        setFieldValue={setFieldValue}
+                        handleChange={handleChange}
                       />
-                    </Box>
-                  </Grid>
-                  {/* Role */}
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Box p={1}>
-                      <Autocomplete
-                        multiple
-                        sx={{
-                          m: 0,
-                        }}
-                        limitTags={2}
-                        options={roleTags}
-                        getOptionLabel={(option) => option.title}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            fullWidth
-                            variant="outlined"
-                            label={t("Role")}
-                            placeholder={t("Role...")}
-                          />
+                      {cArray.map((item, index) => (
+                        <SupplierContactPerson
+                          touched={touched}
+                          handleBlur={handleBlur}
+                          values={values}
+                          errors={errors}
+                          setFieldValue={setFieldValue}
+                          handleChange={handleChange}
+                          id={item}
+                          getIn={getIn}
+                          key={item}
+                          contactPersonNo={index}
+                        />
+                      ))}
+                      {/* Add Contact Person Start */}
+                      <Grid
+                        container
+                        direction="row"
+                        spacing={1}
+                        sx={{ justifyContent: "flex-start" }}
+                      >
+                        <Grid
+                          item
+                          xs={12}
+                          sm={12}
+                          md={5.9}
+                          lg={5.9}
+                          sx={{ py: 2, px: 2, mt: 2, ml: 1 }}
+                        >
+                          <Tooltip
+                            arrow
+                            title={t("Click to add a new Contact Person")}
+                          >
+                            <CardAddAction>
+                              <CardActionArea
+                                sx={{
+                                  px: 1,
+                                }}
+                                onClick={(e) => {
+                                  values.contact.push({
+                                    contactName: "",
+                                    contactRole: "",
+                                    contactDepartment: "",
+                                    contactPhoneNumber: "",
+                                    contactEMail: "",
+                                  });
+                                  let newContactPersonNo = contactPersonNo + 1;
+                                  setContactPersonNo(newContactPersonNo);
+                                  cArray.push(newContactPersonNo);
+                                  if (newContactPersonNo > 0) {
+                                    setRemoveCp(true);
+                                  } else if (newContactPersonNo < 1) {
+                                    setRemoveCp(false);
+                                  }
+                                }}
+                              >
+                                <CardContent>
+                                  <AvatarAddWrapper>
+                                    <AddTwoToneIcon fontSize="medium" />
+                                  </AvatarAddWrapper>
+                                </CardContent>
+                              </CardActionArea>
+                            </CardAddAction>
+                          </Tooltip>
+                        </Grid>
+
+                        {/* Add Contact Person End */}
+
+                        {/* Remove Contact Person Start */}
+                        {cArray.length === 1 ? null : (
+                          <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={5.9}
+                            lg={5.9}
+                            sx={{ py: 2, px: 2, mt: 2, ml: 1 }}
+                          >
+                            <Tooltip
+                              arrow
+                              title={t("Click to remove a Contact Person")}
+                            >
+                              <CardAddAction>
+                                <CardActionArea
+                                  sx={{
+                                    px: 1,
+                                  }}
+                                  onClick={(e) => {
+                                    values.contact.pop();
+                                    let newContactPersonNo =
+                                      contactPersonNo - 1;
+                                    setContactPersonNo(newContactPersonNo);
+                                    cArray.pop(newContactPersonNo);
+                                  }}
+                                >
+                                  <CardContent>
+                                    <AvatarAddWrapper>
+                                      <RemoveTwoToneIcon fontSize="medium" />
+                                    </AvatarAddWrapper>
+                                  </CardContent>
+                                </CardActionArea>
+                              </CardAddAction>
+                            </Tooltip>
+                          </Grid>
                         )}
-                      />
-                    </Box>
-                  </Grid>
-                  {/* Phone  Number */}
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Box p={1}>
-                      <TextField
-                        sx={{
-                          m: 0,
-                        }}
-                        /*                     InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchTwoToneIcon />
-                          </InputAdornment>
-                        ),
-                      }} */
-                        /*                     onChange={handleQueryChange} */
-                        placeholder={t("Phone Number...")}
-                        /*                     value={query} */
-                        fullWidth
-                        variant="outlined"
-                        lable="Phone Number"
-                        id="PhoneNumber"
-                      />
-                    </Box>
-                  </Grid>
-                  {/* E-Mail */}
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Box p={1}>
-                      <TextField
-                        sx={{
-                          m: 0,
-                        }}
-                        placeholder={t("E-Mail...")}
-                        fullWidth
-                        variant="outlined"
-                        lable="E-Mail"
-                        id="E-Mail"
-                      />
-                    </Box>
-                  </Grid>
-                </Grid>
-              </>
-              <Button
-                sx={{
-                  mt: { lg: 2, md: 0 },
-                  ml: { lg: 2 },
-                }}
-                /*           onClick={handleCreateEvent} */
-                variant="outlined"
-                color="primary"
-                onClick={navigateToSupplierOverview}
-              >
-                Cancel
-              </Button>
-              <Button
-                sx={{
-                  mt: { lg: 2, md: 0 },
-                  ml: { lg: 94 },
-                  px: { lg: 4 },
-                }}
-                /*           onClick={handleCreateEvent} */
-                variant="contained"
-                color="primary"
-              >
-                Save
-              </Button>
+
+                        {/* Remove Contact Person End */}
+                      </Grid>
+                    </>
+                  ) : null}
+
+                  <Box
+                    p={1}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Button
+                      sx={{
+                        px: { lg: 4 },
+                      }}
+                      variant="outlined"
+                      color="primary"
+                      onClick={navigateToClientOverview}
+                    >
+                      Cancel
+                    </Button>
+
+                    <Button
+                      sx={{
+                        px: { lg: 4 },
+                        ml: "auto",
+                      }}
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      /* onClick Function gets launched first --> handleSubmit  looks for onSubmit function defined in the Formik Component 
+                    e.preventDefault needs to be called in the onClick NOT in the onSubmit */
+                      onClick={(e) => {
+                        e.preventDefault();
+                        /* SaSameAsBa Conditional needs to be called before handleSubmit, so that handleSubmit can accsess the values because they are set to be required in the validation */
+                        if (SaSameAsBa) {
+                          values.shippingAddress = values.billingAddress;
+                        }
+                        handleSubmit(e);
+                        console.log(errors);
+                        console.log(values);
+                      }}
+                      startIcon={
+                        isSubmitting ? <CircularProgress size="1rem" /> : null
+                      }
+                    >
+                      Save
+                    </Button>
+                  </Box>
+                </Card>
+              </Grid>
             </Grid>
-          </Card>
-        </Grid>
-      </Grid>
+          </Form>
+        )}
+      </Formik>
     </>
   );
 }

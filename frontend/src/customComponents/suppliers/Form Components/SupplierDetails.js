@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { Formik, useField, Field } from "formik";
 
-function ClientDetails({
+function SupplierDetails({
   handleShowContact,
   updateFields,
   touched,
@@ -41,11 +41,11 @@ function ClientDetails({
         {...props}
         labelId="demo-simple-select-label"
         id="demo-simple-select"
-        label={t("clientType")}
+        label={t("supplierType")}
         value={field.value}
         onChange={(e) => {
           /*           handleRoleSelect(e); */
-          setFieldValue("clientType", e.target.value);
+          setFieldValue("supplierType", e.target.value);
           if (e.target.value === "Company") handleShowContact(true);
           else if (e.target.value === "Person") handleShowContact(false);
           else handleShowContact(null);
@@ -69,63 +69,65 @@ function ClientDetails({
 
   return (
     <div>
-      <CardHeader title="Client Details" />
+      <CardHeader title="Supplier Details" />
       <Grid container spacing={1}>
-        {/* Client Type */}
+        {/* supplier Type */}
         <Grid item xs={12} sm={6} md={6}>
           <Box p={1}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Client Type</InputLabel>
-              <Field name="clientType" component={CustomSelect} />
+              <InputLabel id="demo-simple-select-label">
+                Supplier Type
+              </InputLabel>
+              <Field name="supplierType" component={CustomSelect} />
             </FormControl>
 
             {/*             <Autocomplete
-              sx={{
-                m: 0,
-              }}
-              limitTags={2}
-              onChange={(event, value) => {
-                console.log(value.title);
-                if (value.title === "Company") handleShowContact(true);
-                else if (value.title === "Person") handleShowContact(false);
-                else handleShowContact(null);
-              }}
-              options={projectTags}
-              getOptionLabel={(option) => option.title}
-              isOptionEqualToValue={(option, value) =>
-                option.title === value.title
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  variant="outlined"
-                  label={t("Client type")}
-                  placeholder={t("Select client type...")}
-                  id="clientType"
-                />
-              )}
-            /> */}
+                sx={{
+                  m: 0,
+                }}
+                limitTags={2}
+                onChange={(event, value) => {
+                  console.log(value.title);
+                  if (value.title === "Company") handleShowContact(true);
+                  else if (value.title === "Person") handleShowContact(false);
+                  else handleShowContact(null);
+                }}
+                options={projectTags}
+                getOptionLabel={(option) => option.title}
+                isOptionEqualToValue={(option, value) =>
+                  option.title === value.title
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    variant="outlined"
+                    label={t("supplier type")}
+                    placeholder={t("Select supplier type...")}
+                    id="supplierType"
+                  />
+                )}
+              /> */}
           </Box>
         </Grid>
-        {/* Client Name */}
+        {/* supplier Name */}
         <Grid item xs={12} sm={6} md={6}>
           <Box p={1}>
             <TextField
               sx={{
                 m: 0,
               }}
-              error={Boolean(touched.clientName && errors.clientName)}
-              helperText={touched.clientName && errors.clientName}
+              error={Boolean(touched.supplierName && errors.supplierName)}
+              helperText={touched.supplierName && errors.supplierName}
               onBlur={handleBlur}
-              placeholder={t("Client Name...")}
+              placeholder={t("Supplier Name...")}
               fullWidth
-              value={values.clientName}
+              value={values.supplierName}
               variant="outlined"
-              label="Client Name"
-              id="clientName"
+              label="Supplier Name"
+              id="supplierName"
               onChange={(e) => {
-                setFieldValue("clientName", e.target.value);
+                setFieldValue("supplierName", e.target.value);
               }}
               /*               {...configTextfield} */
               /*               onChange={(e) => updateFields(e.target.id, e.target.value)} */
@@ -139,17 +141,17 @@ function ClientDetails({
               sx={{
                 m: 0,
               }}
-              error={Boolean(touched.clientEMail && errors.clientEMail)}
-              helperText={touched.clientEMail && errors.clientEMail}
+              error={Boolean(touched.supplierEMail && errors.supplierEMail)}
+              helperText={touched.supplierEMail && errors.supplierEMail}
               onBlur={handleBlur}
-              value={values.clientEMail}
+              value={values.supplierEMail}
               placeholder={t("E-Mail...")}
               fullWidth
               variant="outlined"
               label="E-Mail"
-              id="clientEMail"
+              id="supplierEMail"
               onChange={(e) => {
-                setFieldValue("clientEMail", e.target.value);
+                setFieldValue("supplierEMail", e.target.value);
               }}
             />
           </Box>
@@ -162,18 +164,20 @@ function ClientDetails({
                 m: 0,
               }}
               error={Boolean(
-                touched.clientPhoneNumber && errors.clientPhoneNumber
+                touched.supplierPhoneNumber && errors.supplierPhoneNumber
               )}
-              helperText={touched.clientPhoneNumber && errors.clientPhoneNumber}
+              helperText={
+                touched.supplierPhoneNumber && errors.supplierPhoneNumber
+              }
               onBlur={handleBlur}
-              value={values.clientPhoneNumber}
+              value={values.supplierPhoneNumber}
               placeholder={t("Phone Number...")}
               fullWidth
               variant="outlined"
               label="Phone Number"
-              id="clientPhoneNumber"
+              id="supplierPhoneNumber"
               onChange={(e) => {
-                setFieldValue("clientPhoneNumber", e.target.value);
+                setFieldValue("supplierPhoneNumber", e.target.value);
               }}
               /*               {...configTextfield} */
             />
@@ -184,4 +188,4 @@ function ClientDetails({
   );
 }
 
-export default ClientDetails;
+export default SupplierDetails;
