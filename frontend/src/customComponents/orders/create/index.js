@@ -16,8 +16,10 @@ import {
   CardHeader,
   Divider,
   Chip,
+  Button,
+  Fab,
 } from "@mui/material";
-
+import CloseIcon from "@mui/icons-material/Close";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 
 import PageHeader from "./PageHeader";
@@ -103,7 +105,7 @@ function CreateOrder() {
             <Card sx={{ p: "1.5rem" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
-                  Select client...
+                  {t("Select client...")}
                 </InputLabel>
                 <Select
                   label={t("Select client...")}
@@ -130,9 +132,21 @@ function CreateOrder() {
                   <Chip
                     color="success"
                     label={selectedClient.clientType}
-                    style={{ borderRadius: "0 0 0 0" }}
+                    style={{ borderRadius: "0 0 16px 0" }}
                   />
-                  <CardHeader title="Company"></CardHeader>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    style={{
+                      marginLeft: "auto",
+                      padding: ".2rem 1rem .2rem 1rem",
+                    }}
+                  >
+                    {t("Edit client")}
+                  </Button>
+                  <Button aria-label="Delete" size="small" color="primary">
+                    <CloseIcon color="primary" />
+                  </Button>
                   <Divider />
                   <Box
                     p={2}
