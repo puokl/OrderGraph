@@ -15,7 +15,7 @@ const Loader = (Component) => (props) =>
 const Calendar = Loader(
   lazy(() => import("src/content/applications/Calendar"))
 );
-const Gantt = Loader(lazy(() => import("src/customComponents/Gantt/index")));
+const Gantt = Loader(lazy(() => import("src/customComponents/gantt/index")));
 const Overview = Loader(
   lazy(() => import("src/customComponents/orders/overview/index"))
 );
