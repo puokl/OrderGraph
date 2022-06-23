@@ -255,23 +255,21 @@ function CreateUser(props) {
             .oneOf(["admin", "worker"])
             .required(t("The role field is required")),
         })}
-        onSubmit={handleCreateUserSuccess}
+        onSubmit={async (values) => {
+          await handleCreateUserSuccess(values);
+        }}
       >
         {({
           errors,
           handleBlur,
           handleChange,
+          handleSubmit,
           isSubmitting,
           touched,
           values,
           setFieldValue,
         }) => (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleCreateUserSuccess(values);
-            }}
-          >
+          <form>
             <DialogContent
               dividers
               sx={{
@@ -401,6 +399,10 @@ function CreateUser(props) {
                 }
                 disabled={Boolean(errors.submit) || isSubmitting}
                 variant="contained"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }}
               >
                 {userToEdit ? t("Edit user") : t("Add new user")}
               </Button>
