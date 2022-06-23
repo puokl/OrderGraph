@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 // import { Navigate } from "react-router-dom";
-
+import data from "./data.js";
 import SuspenseLoader from "src/components/SuspenseLoader";
 
 const Loader = (Component) => (props) =>
@@ -15,7 +15,7 @@ const Loader = (Component) => (props) =>
 const Calendar = Loader(
   lazy(() => import("src/content/applications/Calendar"))
 );
-const Gantt = Loader(lazy(() => import("src/customComponents/gantt/gantt")));
+const Gantt = Loader(lazy(() => import("src/customComponents/Gantt/index")));
 
 const ordersRoutes = [
   {
@@ -24,7 +24,7 @@ const ordersRoutes = [
   },
   {
     path: "gantt",
-    element: <Gantt />,
+    element: <Gantt tasks={data} />,
   },
 ];
 
