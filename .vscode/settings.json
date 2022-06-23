@@ -1,0 +1,10 @@
+{
+  "files.autoSave": "afterDelay",
+  "editor.tabSize": 4,
+  "editor.tabCompletion": "on",
+  "emmet.syntaxProfiles": {},
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "emmet.triggerExpansionOnTab": true
+}

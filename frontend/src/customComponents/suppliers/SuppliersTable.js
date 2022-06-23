@@ -5,27 +5,16 @@ import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { InputAdornment } from "@mui/material";
 import { TextField } from "@mui/material";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
-export default function ClientsTable(props) {
+export default function SuppliersTable(props) {
   const [searchQuery, setSearchQuery] = useState("");
-  const { clients, loaded } = props;
-  searchQuery ? clients.filter((client) => searchQuery === client) : clients;
+  const { suppliers, loaded } = props;
+  searchQuery
+    ? suppliers.filter((supplier) => searchQuery === supplier)
+    : suppliers;
   const columns = [
-    { field: "id", headerName: "ID", width: 20 },
-    { field: "clientName", headerName: "NAME", width: 150 },
-    { field: "clientType", headerName: "TYPE", width: 100 },
-    { field: "email", headerName: "EMAIL", width: 250 },
-    {
-      field: "orders",
-      headerName: "ORDERS",
-      type: "number",
-      width: 100,
-    },
-    {
-      field: "lastOrder",
-      headerName: "LAST ORDER",
-      sortable: TrustedScriptURL,
-      width: 200,
-    },
+
+    { field: "Name", headerName: "NAME", width: 450 },
+    { field: "email", headerName: "EMAIL", width: 450 },
     {
       field: "actions",
       headerName: "ACTIONS",
@@ -52,29 +41,23 @@ export default function ClientsTable(props) {
     },
   ];
   const removeClient = () => {
-    console.log(`${client.clientName} with the ID ${client._id} removed`);
+    console.log(`${suppliers.clientName} with the ID ${suppliers._id} removed`);
   };
   const editClient = () => {
-    console.log(`${client.clientName} with the ID ${client._id} edited`);
+    console.log(`${suppliers.clientName} with the ID ${suppliers._id} edited`);
   };
   let rows = [
     {
       id: "id",
       clientName: "not loaded",
-      clientType: "not loaded",
       email: "not loaded",
-      orders: "not loaded",
-      lastOrder: "not loaded",
     },
   ];
   if (loaded) {
-    rows = clients.map((client) => ({
-      id: client._id,
-      clientName: client.clientName,
-      clientType: client.clientType,
-      email: client.clientEMail,
-      orders: client.orders ? client.orders.length : 0,
-      lastOrder: client.orders.length != 0  ? client.orders[0] : "never",
+    rows = suppliers.map((supplier) => ({
+      id: supplier._id,
+      clientName: supplier.name,
+      email: supplier.email,
     }));
   }
   return (

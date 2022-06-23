@@ -5,11 +5,16 @@
 .MuiDataGrid-columnHeaderTitleContainer {
   justify-content: center;
 }
-.MuiDataGrid-cell--textLeft, .MuiDataGrid-cell.MuiDataGrid-cell--textRight {
+.MuiDataGrid-cell--textLeft,
+.MuiDataGrid-cell.MuiDataGrid-cell--textRight {
   display: flex;
   justify-content: center !important;
 }
 
 .MuiDataGrid-cellContent {
   display: flex;
+}
+
+.MuiGrid-root .MuiGrid-container .css-9cyib4-MuiGrid-root {
+  justify-content: space-between !important;
 }

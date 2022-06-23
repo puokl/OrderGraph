@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import OrderTable from "./OrderTable.js";
 import "./OrderOverview.css";
 import PropTypes from "prop-types";
@@ -24,22 +25,21 @@ const OrderOverview = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [orders, setOrders] = useState([]);
-  
+
   const getOrders = async () => {
-    console.log("hi")
+    console.log("hi");
     try {
       const response = await axios.get("/api/v1/order");
       setOrders(response.data.data);
-      setLoaded(true)
+      setLoaded(true);
     } catch (err) {
       console.error(err);
     }
   };
-  
+
   useEffect(() => {
     getOrders();
   }, []);
-
 
   const totalClients = 42;
   const newClientsMonth = 4;
@@ -48,14 +48,36 @@ const OrderOverview = () => {
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
-      <PageTitleWrapper>
-        <Typography variant="h3" component="h3" gutterBottom>
-          {"Orders Overview"}
-        </Typography>
-        <Typography variant="h5" component="h5" gutterBottom>
-          {"Take a look at your order list"}
-        </Typography>
-      </PageTitleWrapper>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          width: "100%",
+          margin: "3rem",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Typography variant="h3" component="h3" gutterBottom>
+            {"Orders Overview"}
+          </Typography>
+          <Typography variant="h5" component="h5" gutterBottom>
+            {"Take a look at your order list"}
+          </Typography>
+        </div>
+        <div style={{ display: "flex" }}>
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/orders/create";
+            }}
+          >
+            Create new order
+          </Button>
+        </div>
+      </div>
+
       {/* order overview cards START */}
       <Grid container spacing={4} margin={1}>
         <Grid item xs={3}>

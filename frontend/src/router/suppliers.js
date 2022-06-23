@@ -15,11 +15,18 @@ const Loader = (Component) => (props) =>
 const AddSupplier = Loader(
   lazy(() => import("src/customComponents/suppliers/addSupplier"))
 );
+const SuppliersOverview = Loader(
+  lazy(() => import("src/customComponents/suppliers/SuppliersOverview"))
+);
 
 const suppliersRoutes = [
   {
     path: "add",
     element: <AddSupplier />,
+  },
+  {
+    path: "overview",
+    element: <SuppliersOverview />,
   },
 ];
 
