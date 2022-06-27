@@ -444,13 +444,13 @@ function CreateOrder() {
               {t(" ")}
             </Typography>
 
-            <Card>
+            <Card sx={{ p: "1.5rem" }}>
               <Typography
                 variant="h4"
                 component="h4"
                 gutterBottom
                 sx={{
-                  px: 1,
+                  py: 1,
                 }}
               >
                 {t("Order")}
@@ -460,15 +460,24 @@ function CreateOrder() {
                 gutterBottom
                 fontWeight="normal"
                 sx={{
-                  px: 1,
+                  py: 1,
                 }}
               >
                 {t("Status")}
               </Typography>
-              <Button variant="outlined">Save draft</Button>
-              <Button variant="contained" color="primary">
-                Activate
-              </Button>
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Button variant="outlined" color="secondary" sx={{ mb: 1 }}>
+                  Save draft
+                </Button>
+                <Button variant="contained" color="primary">
+                  Activate
+                </Button>
+              </Box>
             </Card>
           </Grid>
 
