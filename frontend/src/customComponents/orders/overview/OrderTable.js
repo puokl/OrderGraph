@@ -8,6 +8,9 @@ import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import { id } from "date-fns/locale";
 export default function OrderTable(props) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [pageSize, setPageSize] = useState(5);
+  const [page, setPage] = useState(0);
+
   const { orders, loaded } = props;
   console.log(orders);
   searchQuery ? orders.filter((order) => searchQuery === order) : orders;
@@ -71,6 +74,13 @@ export default function OrderTable(props) {
       progress: order.createdAt ? `${order.createdAt} % ` : "null",
     }));
   }
+
+  const handlePageChange = (newPage) => {
+    // We have the cursor, we can allow the page transition.
+    if (newPage === 0 || mapPageToNextCursor.current[newPage - 1]) {
+      setPage(newPage);
+    }
+  };
   return (
     <div className="dataGridContainer" style={{ height: 400, width: "100%" }}>
       <TextField
@@ -93,8 +103,14 @@ export default function OrderTable(props) {
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={pageSize}
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        rowsPerPageOptions={[5, 10, 20, 50]}
+        pagination
+        paginationMode="server"
+        onPageChange={handlePageChange}
+        page={page}
+        loading={!loaded}
         checkboxSelection
         sx={{}}
       />

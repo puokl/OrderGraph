@@ -7,8 +7,11 @@ import { TextField } from "@mui/material";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 export default function ClientsTable(props) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [pageSize, setPageSize] = useState(5);
+  const [page, setPage] = useState(0);
   const { clients, loaded } = props;
   searchQuery ? clients.filter((client) => searchQuery === client) : clients;
+
   const columns = [
     { field: "id", headerName: "ID", width: 20 },
     { field: "clientName", headerName: "NAME", width: 150 },
@@ -74,9 +77,16 @@ export default function ClientsTable(props) {
       clientType: client.clientType,
       email: client.clientEMail,
       orders: client.orders ? client.orders.length : 0,
-      lastOrder: client.orders.length != 0  ? client.orders[0] : "never",
+      lastOrder: client.orders.length != 0 ? client.orders[0] : "never",
     }));
   }
+
+  const handlePageChange = (newPage) => {
+    // We have the cursor, we can allow the page transition.
+    if (newPage === 0 || mapPageToNextCursor.current[newPage - 1]) {
+      setPage(newPage);
+    }
+  };
   return (
     <div className="dataGridContainer" style={{ height: 400, width: "100%" }}>
       <TextField
@@ -99,8 +109,15 @@ export default function ClientsTable(props) {
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={pageSize}
+
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        rowsPerPageOptions={[5, 10, 20, 50]}
+        pagination
+        paginationMode="server"
+        onPageChange={handlePageChange}
+        page={page}
+        loading={!loaded}
         checkboxSelection
         sx={{}}
       />

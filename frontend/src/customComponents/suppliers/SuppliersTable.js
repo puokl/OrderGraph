@@ -7,12 +7,13 @@ import { TextField } from "@mui/material";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 export default function SuppliersTable(props) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [pageSize, setPageSize] = useState(5);
+  const [page, setPage] = useState(0);
   const { suppliers, loaded } = props;
   searchQuery
     ? suppliers.filter((supplier) => searchQuery === supplier)
     : suppliers;
   const columns = [
-
     { field: "Name", headerName: "NAME", width: 450 },
     { field: "email", headerName: "EMAIL", width: 450 },
     {
@@ -60,6 +61,13 @@ export default function SuppliersTable(props) {
       email: supplier.email,
     }));
   }
+
+  const handlePageChange = (newPage) => {
+    // We have the cursor, we can allow the page transition.
+    if (newPage === 0 || mapPageToNextCursor.current[newPage - 1]) {
+      setPage(newPage);
+    }
+  };
   return (
     <div className="dataGridContainer" style={{ height: 400, width: "100%" }}>
       <TextField
@@ -82,8 +90,14 @@ export default function SuppliersTable(props) {
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={pageSize}
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        rowsPerPageOptions={[5, 10, 20, 50]}
+        pagination
+        paginationMode="server"
+        onPageChange={handlePageChange}
+        page={page}
+        loading={!loaded}
         checkboxSelection
         sx={{}}
       />
