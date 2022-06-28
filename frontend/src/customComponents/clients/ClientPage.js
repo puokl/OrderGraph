@@ -390,8 +390,8 @@ function ClientDetails() {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Grid item lg={5.9}>
-                <Box p={2}>
+              <Grid item lg={6}>
+                <Box p={0}>
                   <Box
                     sx={{
                       minHeight: { xs: 0, md: 243 },
@@ -401,7 +401,7 @@ function ClientDetails() {
                     <Card sx={{ height: "200px" }}>
                       <Chip
                         color="success"
-                        label={selectedClient.clientType}
+                        label={dataLoaded ? clients.contact[0].contactRole : ""}
                         style={{ borderRadius: "0 0 16px 0" }}
                       />
                       <Grid
@@ -411,19 +411,54 @@ function ClientDetails() {
                         alignItems="center"
                         justifyContent="space-between"
                       >
-                        <Grid item lg={3}>
-                          <Avatar />
+                        <Grid item lg={1} sx={{ mx: "10px" }}>
+                          <Avatar sx={{ width: 48, height: 48 }} />
                         </Grid>
-                        <Grid item lg={9}>
-                          <Typography>test</Typography>
+                        <Grid item lg={8}>
+                          <Typography
+                            variant="h5"
+                            fontWeight="bold"
+                            clients={clients}
+                            sx={{ lineHeight: "27px", mt: "10px" }}
+                          >
+                            {dataLoaded ? clients.contact[0].contactName : ""}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            fontWeight="normal"
+                            clients={clients}
+                            sx={{ lineHeight: "27px" }}
+                          >
+                            {dataLoaded ? clients.contact[0].contactEMail : ""}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            fontWeight="normal"
+                            clients={clients}
+                            sx={{ lineHeight: "27px" }}
+                          >
+                            {dataLoaded
+                              ? clients.contact[0].contactPhoneNumber
+                              : ""}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            fontWeight="normal"
+                            clients={clients}
+                            sx={{ lineHeight: "27px" }}
+                          >
+                            {dataLoaded
+                              ? clients.contact[0].contactDepartment
+                              : ""}
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Card>
                   </Box>
                 </Box>
               </Grid>
-              <Grid item lg={5.9}>
-                <Box p={2}>
+              <Grid item lg={6}>
+                <Box p={0}>
                   <Box
                     sx={{
                       minHeight: { xs: 0, md: 243 },
@@ -431,7 +466,69 @@ function ClientDetails() {
                     p={2}
                   >
                     <Card sx={{ height: "200px" }}>
-                      <Grid container></Grid>
+                      <Grid
+                        container
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-around"
+                      >
+                        <Grid item lg={6}>
+                          <Chip
+                            color="success"
+                            label={
+                              dataLoaded ? clients.contact[0].contactRole : ""
+                            }
+                            style={{ borderRadius: "0 0 16px 0" }}
+                          />
+                        </Grid>
+                        <Grid item lg={6}>
+                          <Avatar
+                            sx={{
+                              width: 48,
+                              height: 48,
+                              ml: "auto",
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                      <Box sx={{ ml: "10px" }}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          clients={clients}
+                          sx={{ lineHeight: "27px", mt: "10px" }}
+                        >
+                          {dataLoaded ? clients.contact[1].contactName : ""}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          fontWeight="normal"
+                          clients={clients}
+                          sx={{ lineHeight: "27px" }}
+                        >
+                          {dataLoaded ? clients.contact[1].contactEMail : ""}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          fontWeight="normal"
+                          clients={clients}
+                          sx={{ lineHeight: "27px" }}
+                        >
+                          {dataLoaded
+                            ? clients.contact[1].contactPhoneNumber
+                            : ""}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          fontWeight="normal"
+                          clients={clients}
+                          sx={{ lineHeight: "27px" }}
+                        >
+                          {dataLoaded
+                            ? clients.contact[1].contactDepartment
+                            : ""}
+                        </Typography>
+                      </Box>
                     </Card>
                   </Box>
                 </Box>
