@@ -1,3 +1,10 @@
 .gantt-container {
   height: 100%;
 }
+
+.gantt_layout_root {
+  /* width: 1146px; */
+  height: 500px !important;
+  overflow-y: auto;
+  /* padding: 0px; */
+}
