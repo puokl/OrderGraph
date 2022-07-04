@@ -1,53 +1,24 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "src/utils/axios2";
-import { styled } from "@mui/material/styles";
 import { Helmet } from "react-helmet-async";
 import Footer from "src/components/Footer";
-import {
-  Grid,
-  Typography,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-  Box,
-  Card,
-  CardHeader,
-  Divider,
-  Chip,
-  Button,
-  Fab,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import PageTitleWrapper from "src/components/PageTitleWrapper";
+import { Grid, Typography } from "@mui/material";
 
+import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
 
-const BoxActions = styled(Box)(
-  ({ theme }) => `
-      background: white;
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-    //   border-radius: 25%;
-    //   box-shadow: ${theme.colors.shadows.primary};
-  `
-);
+import Clients from "./components/clients";
+import Items from "./components/items";
+import Invoices from "./components/invoices";
+import Status from "./components/status";
+import Documents from "./components/documents";
 
 function CreateOrder() {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
-
-  const handleCreateUserOpen = (user) => {
-    setOpen(true);
-  };
-
-  const handleClientSelect = (index) => {
-    setSelectedClient(clients[index]);
-    console.log(selectedClient);
-  };
+  const [startDate, setStartDate] = useState();
 
   const getClients = async () => {
     try {
@@ -89,7 +60,6 @@ function CreateOrder() {
           }}
           container
           direction="row"
-          // justifyContent="center"
           alignItems="flex-start"
           spacing={4}
         >
@@ -97,120 +67,40 @@ function CreateOrder() {
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Calendar")}
             </Typography>
+            {/* This component is empty in the figma mock up, so nothing here */}
           </Grid>
           <Grid item xs={12} sm={6} lg={8}>
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Client")}
             </Typography>
-            <Card sx={{ p: "1.5rem" }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  {t("Select client...")}
-                </InputLabel>
-                <Select
-                  label={t("Select client...")}
-                  value={selectedClient ? selectedClient.clientName : ""}
-                  // onChange={(e) => {
-                  //   handleClientSelect(e);
-                  // }}
-                >
-                  {clients.map((client, index) => (
-                    <MenuItem
-                      key={client._id}
-                      value={client.clientName}
-                      onClick={(e) => {
-                        handleClientSelect(index);
-                      }}
-                    >
-                      {client.clientName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              {selectedClient ? (
-                <Card sx={{ mt: "1rem" }}>
-                  <Chip
-                    color="success"
-                    label={selectedClient.clientType}
-                    style={{ borderRadius: "0 0 16px 0" }}
-                  />
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    style={{
-                      marginLeft: "auto",
-                      padding: ".2rem 1rem .2rem 1rem",
-                    }}
-                  >
-                    {t("Edit client")}
-                  </Button>
-                  <Button aria-label="Delete" size="small" color="primary">
-                    <CloseIcon color="primary" />
-                  </Button>
-                  <Divider />
-                  <Box
-                    p={2}
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        minHeight: { xs: 0, md: 243 },
-                      }}
-                      p={2}
-                    >
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          py: 1,
-                        }}
-                        fontWeight="normal"
-                      >
-                        Phone Number:
-                      </Typography>
-
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          py: 1,
-                        }}
-                        fontWeight="normal"
-                      >
-                        Email:
-                      </Typography>
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          py: 1,
-                        }}
-                        fontWeight="normal"
-                      >
-                        Billing Adress: <br></br>
-                      </Typography>
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          py: 1,
-                        }}
-                        fontWeight="normal"
-                      >
-                        Shipping Adress: <br></br>
-                      </Typography>
-                    </Box>
-                    <Divider orientation="vertical" />
-                  </Box>
-                </Card>
-              ) : null}
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={8}>
+            {/* Below is the Client picker dropdown component, which is almost fully functional, only the edit client button needs to become functional */}
+            <Clients
+              clients={clients}
+              selectedClient={selectedClient}
+              setSelectedClient={setSelectedClient}
+            />
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Items")}
             </Typography>
-            <Card sx={{ p: "1.5rem" }}></Card>
+            {/* Below is the add items component, currently only the button is done, not the form component to add items */}
+            <Items />
+            <Typography variant="h3" component="h3" gutterBottom>
+              {t("Invoices")}
+            </Typography>
+            {/* Below is the add invoices component, currently only the button is done, no functionality yet, we need to get a library for drag and drop */}
+            <Invoices />
           </Grid>
+
+          <Grid item xs={8} sm={4} lg={4}>
+            <Typography variant="h3" component="h3" gutterBottom>
+              {t(" ")}
+            </Typography>
+            {/* Below is the Status component, we need to somehow convert the date string that the date picker (which is currently in default US format) comes with to a UTC string */}
+            <Status startDate={startDate} setStartDate={setStartDate} />
+            <Documents />
+          </Grid>
+
+          <Grid item xs={12} sm={6} lg={8}></Grid>
         </Grid>
       </div>
       <Footer

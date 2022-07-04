@@ -10,7 +10,7 @@ function PageHeader() {
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <Typography variant="h3" component="h3" gutterBottom>
-            {t("Create Order")}
+            {t("Create a new order")}
           </Typography>
           <Typography variant="subtitle2">
             {t("Fill in the fields below to create a new order")}
