@@ -30,6 +30,7 @@ const clientRouter = require("./src/routes/clientRoutes");
 const supplierRouter = require("./src/routes/supplierRoutes");
 const itemRouter = require("./src/routes/itemRoutes");
 const testRouter = require("./src/routes/testRoutes");
+const taskRouter = require("./src/routes/taskRoute");
 
 // cookie parser
 app.use(cookieParser());
@@ -76,6 +77,7 @@ app.use("/api/v1/client", clientRouter);
 app.use("/api/v1/supplier", supplierRouter);
 app.use("/api/v1/item", itemRouter);
 app.use("/api/v1/test", testRouter);
+app.use("/api/v1/task", taskRouter);
 
 // mongoose error handler
 app.use(errorHandler);
