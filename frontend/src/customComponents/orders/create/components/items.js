@@ -11,10 +11,6 @@ import {
   Avatar,
   Divider,
   Button,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
   Box,
   Typography,
   Checkbox,
@@ -64,17 +60,30 @@ const filter = createFilterOptions();
 
 function Items() {
   const { t } = useTranslation();
-  const [itemNum, setItemNum] = useState(0);
+
   const [items, setItems] = useState("");
   const [selectedItem, setSelectedItem] = useState("");
-  const newItem = {};
+
+  const [orderItems, setOrderItems] = useState([]);
 
   const addItem = () => {
-    setItemNum((prev) => (prev += 1));
-    console.log(items);
+    setOrderItems([
+      ...orderItems,
+      {
+        description: "",
+        height: "",
+        itemName: "",
+        quantity: "",
+        tasks: [],
+        unitPrice: "",
+        units: "",
+        width: "",
+      },
+    ]);
   };
-  const removeItem = () => {
-    setItemNum(0);
+  const removeItem = (index) => {
+    const orderItemsMinusRemoved = orderItems.filter((item, i) => i !== index);
+    setOrderItems(orderItemsMinusRemoved);
   };
 
   const getItems = async () => {
@@ -106,8 +115,8 @@ function Items() {
         mb: "1.5rem",
       }}
     >
-      {itemNum >= 1 ? (
-        <Card sx={{ mt: "1rem", p: 2, mb: "1rem" }}>
+      {orderItems?.map((item, index) => (
+        <Card sx={{ mt: "1rem", p: 2, mb: "1rem" }} key={index}>
           <Box
             style={{
               display: "flex",
@@ -115,38 +124,19 @@ function Items() {
               justifyContent: "space-between",
             }}
           >
-            {/* <FormControl style={{ width: "60%" }}>
-              <InputLabel id="demo-simple-select-label">
-                {t("Select item...")}
-              </InputLabel>
-              <Select label={t("Select item...")}>
-                {items.map((item, index) => (
-                  <MenuItem
-                    key={item._id}
-                    value={item.itemName}
-                    onClick={(e) => {
-                      handleItemSelect(index);
-                    }}
-                  >
-                    {item.itemName}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
             <Autocomplete
-              value={selectedItem}
+              value={orderItems[index].itemName}
               onChange={(event, newValue) => {
-                if (typeof newValue === "string") {
-                  setSelectedItem(newValue);
-                } else if (newValue && newValue.inputValue) {
-                  // Create a new value from the user input
-                  setSelectedItem(newValue.itemName);
-                } else {
-                  setSelectedItem(newValue);
-                }
+                setSelectedItem(newValue.itemName);
+                const newOrderItems = orderItems.fill(
+                  newValue,
+                  index,
+                  index + 1
+                );
+                setOrderItems(() => newOrderItems);
+                console.log(orderItems);
               }}
               filterOptions={(options, params) => {
-                console.log(options);
                 const filtered = filter(options, params);
                 console.log(filtered);
                 const { inputValue } = params;
@@ -166,7 +156,6 @@ function Items() {
               selectOnFocus
               clearOnBlur
               handleHomeEndKeys
-              id="free-solo-with-text-demo"
               options={items}
               getOptionLabel={(option) => {
                 // Value selected with enter, right from the input
@@ -181,11 +170,22 @@ function Items() {
                 return option.itemName;
               }}
               renderOption={(props, option) => {
+                const newOrderItems = orderItems.fill(option, index, index + 1);
                 if (option.inputValue) {
                   return <li {...props}>{option.inputValue}</li>;
                 }
                 // Regular option
-                return <li {...props}>{option.itemName}</li>;
+                return (
+                  <li
+                    {...props}
+                    onClick={(event) => {
+                      setOrderItems(newOrderItems);
+                      props.onClick(event);
+                    }}
+                  >
+                    {option.itemName}
+                  </li>
+                );
               }}
               sx={{ width: "60%" }}
               freeSolo
@@ -202,8 +202,9 @@ function Items() {
                 backgroundColor: "rgba(85, 105, 255, 0.1)",
                 minWidth: "2rem",
               }}
+              onClick={() => removeItem(index)}
             >
-              <CloseIcon color="primary" onClick={() => removeItem()} />
+              <CloseIcon color="primary" />
             </Button>
           </Box>
           <Divider sx={{ mt: 1, mb: 1 }} />
@@ -227,28 +228,44 @@ function Items() {
               <Typography
                 variant="h5"
                 fontWeight="bold"
-                style={{ height: "25%", display: "flex", alignItems: "center" }}
+                style={{
+                  height: "25%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
                 {t("Description :")}
               </Typography>
               <Typography
                 variant="h5"
                 fontWeight="bold"
-                style={{ height: "25%", display: "flex", alignItems: "center" }}
+                style={{
+                  height: "25%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
                 {t("Size :")}
               </Typography>
               <Typography
                 variant="h5"
                 fontWeight="bold"
-                style={{ height: "25%", display: "flex", alignItems: "center" }}
+                style={{
+                  height: "25%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
                 {t("Units :")}
               </Typography>
               <Typography
                 variant="h5"
                 fontWeight="bold"
-                style={{ height: "25%", display: "flex", alignItems: "center" }}
+                style={{
+                  height: "25%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
                 {t("Price / Unit :")}
               </Typography>
@@ -258,43 +275,117 @@ function Items() {
                 style={{ margin: ".5rem 0" }}
                 fullWidth
                 placeholder={t("Item description")}
-                value={
-                  selectedItem ? selectedItem.description : newItem.description
-                }
-                onChange={(e) => (newItem.description = e.target.value)}
+                value={orderItems[index].description}
+                onChange={(e) => {
+                  setSelectedItem(e.target.value);
+                  const newOption = { ...orderItems[index] };
+                  newOption.description = e.target.value;
+                  const newOrderItems = orderItems.fill(
+                    newOption,
+                    index,
+                    index + 1
+                  );
+                  setOrderItems(() => newOrderItems);
+                  console.log(orderItems);
+                }}
               />
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <TextField
+                  style={{ margin: ".5rem .5rem .5rem 0" }}
+                  placeholder={t("Height")}
+                  value={orderItems[index].height}
+                  onChange={(e) => {
+                    setSelectedItem(e.target.value);
+                    const newOption = { ...orderItems[index] };
+                    newOption.height = e.target.value;
+                    const newOrderItems = orderItems.fill(
+                      newOption,
+                      index,
+                      index + 1
+                    );
+                    setOrderItems(() => newOrderItems);
+                    console.log(orderItems);
+                  }}
+                />
+                <span style={{ fontWeight: "bold", fontSize: "1.3rem" }}>
+                  x
+                </span>
+                <TextField
+                  style={{ margin: ".5rem 0 .5rem .5rem " }}
+                  placeholder={t("Width")}
+                  value={orderItems[index].width}
+                  onChange={(e) => {
+                    setSelectedItem(e.target.value);
+                    const newOption = { ...orderItems[index] };
+                    newOption.width = e.target.value;
+                    const newOrderItems = orderItems.fill(
+                      newOption,
+                      index,
+                      index + 1
+                    );
+                    setOrderItems(() => newOrderItems);
+                    console.log(orderItems);
+                  }}
+                />
+              </Box>
+
               <TextField
-                style={{ margin: ".5rem 0" }}
-                placeholder={t("Height")}
-                value={selectedItem ? selectedItem.height : newItem.height}
-                onChange={(e) => (newItem.height = e.target.value)}
-              />
-              <TextField
-                style={{ margin: ".5rem 0" }}
-                placeholder={t("Width")}
-                value={selectedItem ? selectedItem.width : newItem.width}
-                onChange={(e) => (newItem.width = e.target.value)}
-              />
-              <TextField
-                style={{ margin: ".5rem 0" }}
+                style={{ margin: ".5rem 1.8rem .5rem 0" }}
                 placeholder={t("Quantity")}
-                value={selectedItem ? selectedItem.quantity : newItem.quantity}
-                onChange={(e) => (newItem.quantity = e.target.value)}
+                value={orderItems[index].quantity}
+                onChange={(e) => {
+                  setSelectedItem(e.target.value);
+                  const newOption = { ...orderItems[index] };
+                  newOption.quantity = e.target.value;
+                  const newOrderItems = orderItems.fill(
+                    newOption,
+                    index,
+                    index + 1
+                  );
+                  setOrderItems(() => newOrderItems);
+                  console.log(orderItems);
+                }}
               />
               <TextField
                 style={{ margin: ".5rem 0" }}
                 placeholder={t("Measurement Units")}
-                value={selectedItem ? selectedItem.units : newItem.units}
-                onChange={(e) => (newItem.units = e.target.value)}
+                value={orderItems[index].units}
+                onChange={(e) => {
+                  setSelectedItem(e.target.value);
+                  const newOption = { ...orderItems[index] };
+                  newOption.units = e.target.value;
+                  const newOrderItems = orderItems.fill(
+                    newOption,
+                    index,
+                    index + 1
+                  );
+                  setOrderItems(() => newOrderItems);
+                  console.log(orderItems);
+                }}
               />
               <TextField
                 style={{ margin: ".5rem 0" }}
                 fullWidth
                 placeholder={t("Price / Unit")}
-                value={
-                  selectedItem ? selectedItem.unitPrice : newItem.unitPrice
-                }
-                onChange={(e) => (newItem.unitPrice = e.target.value)}
+                value={orderItems[index].unitPrice}
+                onChange={(e) => {
+                  setSelectedItem(e.target.value);
+                  const newOption = { ...orderItems[index] };
+                  newOption.unitPrice = e.target.value;
+                  const newOrderItems = orderItems.fill(
+                    newOption,
+                    index,
+                    index + 1
+                  );
+                  setOrderItems(() => newOrderItems);
+                  console.log(orderItems);
+                }}
               />
             </Box>
           </Box>
@@ -346,10 +437,17 @@ function Items() {
                     minWidth: 0,
                   }}
                 >
-                  <CalendarTodayOutlinedIcon
-                    color="primary"
-                    // onClick={}
-                  />
+                  {orderItems[index].tasks.length > 0 ? (
+                    <CalendarTodayOutlinedIcon
+                      color="primary"
+                      // onClick={}
+                    />
+                  ) : (
+                    <AddTwoToneIcon
+                      color="primary"
+                      // onClick={}
+                    />
+                  )}
                 </Button>
                 <TextField
                   variant="standard"
@@ -358,6 +456,11 @@ function Items() {
                     disableUnderline: true,
                   }}
                   sx={{ ml: 1 }}
+                  value={
+                    orderItems[index].tasks
+                      ? orderItems[index].tasks[0]?.taskName
+                      : ""
+                  }
                 />
               </Box>
               <Box
@@ -404,12 +507,9 @@ function Items() {
                       height: "1.3rem",
                       borderRadius: "50%",
                     }}
+                    onClick={() => removeItem()}
                   >
-                    <CloseIcon
-                      color="primary"
-                      fontSize="small"
-                      onClick={() => removeItem()}
-                    />
+                    <CloseIcon color="primary" fontSize="small" />
                   </Button>
                 </Box>
               </Box>
@@ -449,7 +549,7 @@ function Items() {
             </Box>
           </Box>
         </Card>
-      ) : null}
+      ))}
       <Tooltip arrow title={t("Click to add a new item")}>
         <CardAddAction>
           <CardActionArea
