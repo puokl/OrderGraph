@@ -13,6 +13,13 @@ export default function OrderTable(props) {
   const [page, setPage] = useState(0);
   const { orders, clients, loaded } = props;
   searchQuery ? orders.filter((order) => searchQuery === order) : orders;
+  
+  const removeClient = (id) => {
+  };
+  const editClient = (id) => {
+
+  };
+  
   const columns = [
     { field: "clientName", headerName: "CLIENT", width: 200 },
     { field: "status", headerName: "STATUS", width: 200 },
@@ -47,25 +54,18 @@ export default function OrderTable(props) {
       headerName: "ACTIONS",
       width: 150,
       renderCell: (params) => {
-        const removeClient = () => {
-          console.log(`Order with the ID ${params._id} removed`);
-        };
-        const editClient = () => {
-          console.log(`Order with the ID ${params._id} edited`);
-        };
         return (
           <>
-            {" "}
             <EditTwoToneIcon
               index={params.row.id}
               color="primary"
-              onClick={editClient}
+              onClick={editClient(params.row.id)}
               style={{ cursor: "pointer" }}
             />
             <DeleteTwoToneIcon
               index={params.row.id}
               color="error"
-              onClick={removeClient}
+              onClick={removeClient(params.row.id)}
               style={{ cursor: "pointer" }}
             />
           </>
@@ -80,6 +80,7 @@ export default function OrderTable(props) {
       status: "not loaded",
       timeLeft: "not loaded",
       progress: 0,
+      actions: null
     },
   ];
   if (loaded) {
@@ -91,6 +92,7 @@ export default function OrderTable(props) {
       status: order.status,
       timeLeft: order.createdAt ? order.createdAt : null,
       progress: order.status,
+      actions: order._id,
     }));
   }
 
@@ -119,7 +121,6 @@ export default function OrderTable(props) {
         margin="normal"
         variant="outlined"
       />
-      {loaded ? console.log("rows ", rows) : null}
       <DataGrid
         rows={rows}
         columns={columns}

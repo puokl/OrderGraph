@@ -20,6 +20,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
 import axios from "src/utils/axios2";
+
+const orderRoutes = require("../../../../backend/src/controllers/orderController.js")
+
 const ClientOverview = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loaded, setLoaded] = useState(false);
