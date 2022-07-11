@@ -1,33 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import OrderTable from "./OrderTable.js";
 import "./OrderOverview.css";
-import PropTypes from "prop-types";
-import {
-  Grid,
-  TextField,
-  Card,
-  CardHeader,
-  Button,
-  CardContent,
-  Typography,
-  InputBase,
-  IconButton,
-  Input,
-} from "@mui/material";
-import shadows from "@mui/system";
+import { Grid, Card, Button, Typography } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import SearchIcon from "@mui/icons-material/Search";
-import PageTitleWrapper from "src/components/PageTitleWrapper";
-import PageHeader from "./PageHeader";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material";
 import axios from "src/utils/axios2";
 const OrderOverview = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [clients, setClients] = useState([]);
 
   const getOrders = async () => {
-    console.log("hi");
     try {
       const response = await axios.get("/api/v1/order");
       setOrders(response.data.data);
@@ -37,8 +23,18 @@ const OrderOverview = () => {
     }
   };
 
+  const getClients = async () => {
+    try {
+      const response = await axios.get("/api/v1/client");
+      setClients(response.data.data);
+      setLoaded(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useEffect(() => {
     getOrders();
+    getClients();
   }, []);
 
   const totalClients = 42;
@@ -195,7 +191,7 @@ const OrderOverview = () => {
           <Card margin={1}>
             <Grid container>
               <Grid item xs={12}>
-                <OrderTable orders={orders} loaded={loaded} />
+                <OrderTable orders={orders} clients={clients} loaded={loaded} />
               </Grid>
             </Grid>
           </Card>

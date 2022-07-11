@@ -5,14 +5,13 @@ import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { InputAdornment } from "@mui/material";
 import { TextField } from "@mui/material";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
-import { id } from "date-fns/locale";
+import LinearProgress from "@mui/material/LinearProgress";
+
 export default function OrderTable(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(0);
-
-  const { orders, loaded } = props;
-  console.log(orders);
+  const { orders, clients, loaded } = props;
   searchQuery ? orders.filter((order) => searchQuery === order) : orders;
   const columns = [
     { field: "clientName", headerName: "CLIENT", width: 200 },
@@ -22,14 +21,38 @@ export default function OrderTable(props) {
     {
       field: "progress",
       headerName: "PROGRESS",
-      type: "number",
       width: 250,
+      renderCell: (params) => (
+        <>
+          <LinearProgress
+            sx={{ width: 250 }}
+            variant="determinate"
+            value={
+              params.row.status === "finished"
+                ? 100
+                : params.row.status === "in_progress"
+                ? 20
+                : params.row.status === "upcoming"
+                ? 75
+                : params.row.status === "draft"
+                ? 0
+                : null
+            }
+          />
+        </>
+      ),
     },
     {
       field: "actions",
       headerName: "ACTIONS",
       width: 150,
       renderCell: (params) => {
+        const removeClient = () => {
+          console.log(`Order with the ID ${params._id} removed`);
+        };
+        const editClient = () => {
+          console.log(`Order with the ID ${params._id} edited`);
+        };
         return (
           <>
             {" "}
@@ -50,28 +73,24 @@ export default function OrderTable(props) {
       },
     },
   ];
-  const removeClient = () => {
-    console.log(`${order} with the ID ${order._id} removed`);
-  };
-  const editClient = () => {
-    console.log(`${order} with the ID ${order._id} edited`);
-  };
   let rows = [
     {
       id: "id",
       clientName: "not loaded",
       status: "not loaded",
       timeLeft: "not loaded",
-      progress: "not loaded",
+      progress: 0,
     },
   ];
   if (loaded) {
     rows = orders.map((order) => ({
       id: order._id,
-      clientName: order.client,
+      clientName: clients.filter((client, order) =>
+        client._id === order.createdByUser ? client.clientName : null
+      ),
       status: order.status,
-      timeLeft: order.createdAt ? order.createdAt : "null",
-      progress: order.createdAt ? `${order.createdAt} % ` : "null",
+      timeLeft: order.createdAt ? order.createdAt : null,
+      progress: order.status,
     }));
   }
 
@@ -100,6 +119,7 @@ export default function OrderTable(props) {
         margin="normal"
         variant="outlined"
       />
+      {loaded ? console.log("rows ", rows) : null}
       <DataGrid
         rows={rows}
         columns={columns}
