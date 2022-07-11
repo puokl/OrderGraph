@@ -35,6 +35,7 @@ function ClientDetails() {
         },
       });
       console.log("res: ", response);
+      console.log("res2: ", response.data.data[1]);
 
       setClients(response.data.data[10]);
       setDataLoaded(true);
@@ -101,7 +102,7 @@ function ClientDetails() {
               >
                 {/* Client Name Start */}
                 <Grid container sx={{ mb: "20px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
+                  <Grid item xs={2} sm={2} lg={3}>
                     <Typography
                       variant="h5"
                       fontWeight="normal"
@@ -125,7 +126,7 @@ function ClientDetails() {
 
                 {/* Client Email Start */}
                 <Grid container sx={{ mb: "20px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
+                  <Grid item xs={2} sm={2} lg={3}>
                     <Typography
                       variant="h5"
                       fontWeight="normal"
@@ -149,7 +150,7 @@ function ClientDetails() {
 
                 {/* Client Phone Start */}
                 <Grid container sx={{ mb: "20px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
+                  <Grid item xs={2} sm={2} lg={3}>
                     <Typography
                       variant="h5"
                       fontWeight="normal"
@@ -173,7 +174,7 @@ function ClientDetails() {
 
                 {/* Client Billing Address Start */}
                 <Grid container sx={{ mb: "40px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
+                  <Grid item xs={2} sm={2} lg={3}>
                     <Typography
                       variant="h5"
                       fontWeight="normal"
@@ -210,7 +211,7 @@ function ClientDetails() {
 
                 {/* Client Billing Address Start */}
                 <Grid container sx={{ mb: "10px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
+                  <Grid item xs={2} sm={2} lg={3}>
                     <Typography
                       variant="h5"
                       fontWeight="normal"
@@ -246,233 +247,169 @@ function ClientDetails() {
                 {/* Client Billing Address End */}
               </Box>
             </Box>
-            {/* Financials Start */}
-            <Grid
-              container
-              direction="row"
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Grid item xs={6} sm={6} lg={6}>
-                <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-                  <CardHeader title="Financials" />
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Divider />
-            <Box p={2}>
-              <Box
-                sx={{
-                  minHeight: { xs: 0, md: 243 },
-                }}
-                p={2}
-              >
-                {/* Registration No  Start */}
-                <Grid container sx={{ mb: "20px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="normal"
-                      textAlign="right"
+            {clients.clientType === "Company" ? (
+              <>
+                {/* Financials Start */}
+                <Grid
+                  container
+                  direction="row"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Grid item xs={6} sm={6} lg={6}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        my: "0px",
+                      }}
                     >
-                      Registration No:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={8} sm={8} lg={8}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="bold"
-                      clients={clients}
-                      sx={{ ml: "20px" }}
-                    >
-                      {dataLoaded ? clients.financials.registrationNumber : ""}
-                    </Typography>
+                      <CardHeader title="Financials" />
+                    </Box>
                   </Grid>
                 </Grid>
-                {/* Registration No End */}
-
-                {/* Fiscal No. Start */}
-                <Grid container sx={{ mb: "20px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="normal"
-                      textAlign="right"
-                    >
-                      Fiscal No:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={8} sm={8} lg={8}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="bold"
-                      clients={clients}
-                      sx={{ ml: "20px" }}
-                    >
-                      {dataLoaded ? clients.financials.fiscalNumber : ""}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                {/* Fiscal No. End */}
-
-                {/* IBAN Start */}
-                <Grid container sx={{ mb: "20px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="normal"
-                      textAlign="right"
-                    >
-                      IBAN:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={8} sm={8} lg={8}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="bold"
-                      clients={clients}
-                      sx={{ ml: "20px" }}
-                    >
-                      {dataLoaded ? clients.financials.IBAN : ""}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                {/* IBAN End */}
-
-                {/* Bank Name Start */}
-                <Grid container sx={{ mb: "40px" }}>
-                  <Grid item xs={2} sm={2} lg={2}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="normal"
-                      textAlign="right"
-                    >
-                      Bank:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={8} sm={8} lg={8}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="bold"
-                      clients={clients}
-                      sx={{ ml: "20px" }}
-                    >
-                      {dataLoaded ? clients.financials.bankName : ""}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                {/* Bank Name End */}
-                {/* Financials End */}
-              </Box>
-            </Box>
-            {/* Contact Start */}
-            <Grid
-              container
-              direction="row"
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Grid item xs={6} sm={6} lg={6}>
-                <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-                  <CardHeader title="Contact Persons" />
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Divider />
-            <Grid
-              container
-              direction="row"
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Grid item lg={6}>
-                <Box p={0}>
+                <Divider />
+                <Box p={2}>
                   <Box
                     sx={{
                       minHeight: { xs: 0, md: 243 },
                     }}
                     p={2}
                   >
-                    <Card sx={{ height: "200px" }}>
-                      <Chip
-                        color="success"
-                        label={dataLoaded ? clients.contact[0].contactRole : ""}
-                        style={{ borderRadius: "0 0 16px 0" }}
-                      />
-                      <Grid
-                        container
-                        direction="row"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <Grid item lg={1} sx={{ mx: "10px" }}>
-                          <Avatar sx={{ width: 48, height: 48 }} />
-                        </Grid>
-                        <Grid item lg={8}>
-                          <Typography
-                            variant="h5"
-                            fontWeight="bold"
-                            clients={clients}
-                            sx={{ lineHeight: "27px", mt: "10px" }}
-                          >
-                            {dataLoaded ? clients.contact[0].contactName : ""}
-                          </Typography>
-                          <Typography
-                            variant="h6"
-                            fontWeight="normal"
-                            clients={clients}
-                            sx={{ lineHeight: "27px" }}
-                          >
-                            {dataLoaded ? clients.contact[0].contactEMail : ""}
-                          </Typography>
-                          <Typography
-                            variant="h6"
-                            fontWeight="normal"
-                            clients={clients}
-                            sx={{ lineHeight: "27px" }}
-                          >
-                            {dataLoaded
-                              ? clients.contact[0].contactPhoneNumber
-                              : ""}
-                          </Typography>
-                          <Typography
-                            variant="h6"
-                            fontWeight="normal"
-                            clients={clients}
-                            sx={{ lineHeight: "27px" }}
-                          >
-                            {dataLoaded
-                              ? clients.contact[0].contactDepartment
-                              : ""}
-                          </Typography>
-                        </Grid>
+                    {/* Registration No  Start */}
+                    <Grid container sx={{ mb: "20px" }}>
+                      <Grid item xs={2} sm={2} lg={3}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="normal"
+                          textAlign="right"
+                        >
+                          Registration No:
+                        </Typography>
                       </Grid>
-                    </Card>
+                      <Grid item xs={8} sm={8} lg={8}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          clients={clients}
+                          sx={{ ml: "20px" }}
+                        >
+                          {dataLoaded
+                            ? clients.financials.registrationNumber
+                            : ""}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    {/* Registration No End */}
+
+                    {/* Fiscal No. Start */}
+                    <Grid container sx={{ mb: "20px" }}>
+                      <Grid item xs={2} sm={2} lg={3}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="normal"
+                          textAlign="right"
+                        >
+                          Fiscal No:
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8} sm={8} lg={8}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          clients={clients}
+                          sx={{ ml: "20px" }}
+                        >
+                          {dataLoaded ? clients.financials.fiscalNumber : ""}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    {/* Fiscal No. End */}
+
+                    {/* IBAN Start */}
+                    <Grid container sx={{ mb: "20px" }}>
+                      <Grid item xs={2} sm={2} lg={3}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="normal"
+                          textAlign="right"
+                        >
+                          IBAN:
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8} sm={8} lg={8}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          clients={clients}
+                          sx={{ ml: "20px" }}
+                        >
+                          {dataLoaded ? clients.financials.IBAN : ""}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    {/* IBAN End */}
+
+                    {/* Bank Name Start */}
+                    <Grid container sx={{ mb: "40px" }}>
+                      <Grid item xs={2} sm={2} lg={3}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="normal"
+                          textAlign="right"
+                        >
+                          Bank:
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8} sm={8} lg={8}>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          clients={clients}
+                          sx={{ ml: "20px" }}
+                        >
+                          {dataLoaded ? clients.financials.bankName : ""}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    {/* Bank Name End */}
+                    {/* Financials End */}
                   </Box>
                 </Box>
-              </Grid>
-              <Grid item lg={6}>
-                <Box p={0}>
-                  <Box
-                    sx={{
-                      minHeight: { xs: 0, md: 243 },
-                    }}
-                    p={2}
-                  >
-                    <Card sx={{ height: "200px" }}>
-                      <Grid
-                        container
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-around"
+
+                {/* Contact Start */}
+                <Grid
+                  container
+                  direction="row"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Grid item xs={6} sm={6} lg={6}>
+                    <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+                      <CardHeader title="Contact Persons" />
+                    </Box>
+                  </Grid>
+                </Grid>
+
+                <Divider />
+                <Grid
+                  container
+                  direction="row"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Grid item lg={6}>
+                    <Box p={0}>
+                      <Box
+                        sx={{
+                          minHeight: { xs: 0, md: 243 },
+                        }}
+                        p={2}
                       >
-                        <Grid item lg={6}>
+                        <Card sx={{ height: "200px" }}>
                           <Chip
                             color="success"
                             label={
@@ -480,61 +417,147 @@ function ClientDetails() {
                             }
                             style={{ borderRadius: "0 0 16px 0" }}
                           />
-                        </Grid>
-                        <Grid item lg={6}>
-                          <Avatar
-                            sx={{
-                              width: 48,
-                              height: 48,
-                              ml: "auto",
-                            }}
-                          />
-                        </Grid>
-                      </Grid>
-                      <Box sx={{ ml: "10px" }}>
-                        <Typography
-                          variant="h5"
-                          fontWeight="bold"
-                          clients={clients}
-                          sx={{ lineHeight: "27px", mt: "10px" }}
-                        >
-                          {dataLoaded ? clients.contact[1].contactName : ""}
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          fontWeight="normal"
-                          clients={clients}
-                          sx={{ lineHeight: "27px" }}
-                        >
-                          {dataLoaded ? clients.contact[1].contactEMail : ""}
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          fontWeight="normal"
-                          clients={clients}
-                          sx={{ lineHeight: "27px" }}
-                        >
-                          {dataLoaded
-                            ? clients.contact[1].contactPhoneNumber
-                            : ""}
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          fontWeight="normal"
-                          clients={clients}
-                          sx={{ lineHeight: "27px" }}
-                        >
-                          {dataLoaded
-                            ? clients.contact[1].contactDepartment
-                            : ""}
-                        </Typography>
+                          <Grid
+                            container
+                            direction="row"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-between"
+                          >
+                            <Grid item lg={1} sx={{ mx: "10px" }}>
+                              <Avatar sx={{ width: 48, height: 48 }} />
+                            </Grid>
+                            <Grid item lg={8}>
+                              <Typography
+                                variant="h5"
+                                fontWeight="bold"
+                                clients={clients}
+                                sx={{ lineHeight: "27px", mt: "10px" }}
+                              >
+                                {dataLoaded
+                                  ? clients.contact[0].contactName
+                                  : ""}
+                              </Typography>
+                              <Typography
+                                variant="h6"
+                                fontWeight="normal"
+                                clients={clients}
+                                sx={{ lineHeight: "27px" }}
+                              >
+                                {dataLoaded
+                                  ? clients.contact[0].contactEMail
+                                  : ""}
+                              </Typography>
+                              <Typography
+                                variant="h6"
+                                fontWeight="normal"
+                                clients={clients}
+                                sx={{ lineHeight: "27px" }}
+                              >
+                                {dataLoaded
+                                  ? clients.contact[0].contactPhoneNumber
+                                  : ""}
+                              </Typography>
+                              <Typography
+                                variant="h6"
+                                fontWeight="normal"
+                                clients={clients}
+                                sx={{ lineHeight: "27px" }}
+                              >
+                                {dataLoaded
+                                  ? clients.contact[0].contactDepartment
+                                  : ""}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Card>
                       </Box>
-                    </Card>
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
-            {/* Contact End */}
+                    </Box>
+                  </Grid>
+                  <Grid item lg={6}>
+                    <Box p={0}>
+                      <Box
+                        sx={{
+                          minHeight: { xs: 0, md: 243 },
+                        }}
+                        p={2}
+                      >
+                        <Card sx={{ height: "200px" }}>
+                          <Grid
+                            container
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-around"
+                          >
+                            <Grid item lg={6}>
+                              <Chip
+                                color="success"
+                                label={
+                                  dataLoaded
+                                    ? clients.contact[0].contactRole
+                                    : ""
+                                }
+                                style={{ borderRadius: "0 0 16px 0" }}
+                              />
+                            </Grid>
+                            <Grid item lg={6}>
+                              <Avatar
+                                sx={{
+                                  width: 48,
+                                  height: 48,
+                                  ml: "auto",
+                                }}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Box sx={{ ml: "10px" }}>
+                            <Typography
+                              variant="h5"
+                              fontWeight="bold"
+                              clients={clients}
+                              sx={{ lineHeight: "27px", mt: "10px" }}
+                            >
+                              {dataLoaded ? clients.contact[1].contactName : ""}
+                            </Typography>
+                            <Typography
+                              variant="h6"
+                              fontWeight="normal"
+                              clients={clients}
+                              sx={{ lineHeight: "27px" }}
+                            >
+                              {dataLoaded
+                                ? clients.contact[1].contactEMail
+                                : ""}
+                            </Typography>
+                            <Typography
+                              variant="h6"
+                              fontWeight="normal"
+                              clients={clients}
+                              sx={{ lineHeight: "27px" }}
+                            >
+                              {dataLoaded
+                                ? clients.contact[1].contactPhoneNumber
+                                : ""}
+                            </Typography>
+                            <Typography
+                              variant="h6"
+                              fontWeight="normal"
+                              clients={clients}
+                              sx={{ lineHeight: "27px" }}
+                            >
+                              {dataLoaded
+                                ? clients.contact[1].contactDepartment
+                                : ""}
+                            </Typography>
+                          </Box>
+                        </Card>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
+                {/* Contact End */}
+              </>
+            ) : null}
           </Card>
         </Grid>
 
@@ -570,7 +593,7 @@ function ClientDetails() {
                       <Typography
                         variant="h5"
                         fontWeight="bold"
-                        sx={{ ml: "10px" }}
+                        sx={{ ml: "30px" }}
                       >
                         Orders
                       </Typography>
@@ -579,25 +602,25 @@ function ClientDetails() {
                   <Grid container>
                     <Grid item lg={2}></Grid>
                     <Grid item lg={2} sx={{ mt: "-30px" }}>
-                      <Typography fontWeight="Light" sx={{ ml: "10px" }}>
+                      <Typography fontWeight="Light" sx={{ ml: "30px" }}>
                         Total
                       </Typography>
                       <Typography
                         variant="h5"
                         fontWeight="bold"
-                        sx={{ fontSize: 20, ml: "10px" }}
+                        sx={{ fontSize: 20, ml: "30px" }}
                       >
                         12
                       </Typography>
                     </Grid>
                     <Grid item lg={2} sx={{ mt: "-30px" }}>
-                      <Typography fontWeight="Light" sx={{ ml: "10px" }}>
+                      <Typography fontWeight="Light" sx={{ ml: "30px" }}>
                         Activ
                       </Typography>
                       <Typography
                         variant="h5"
                         fontWeight="bold"
-                        sx={{ fontSize: 20, ml: "10px" }}
+                        sx={{ fontSize: 20, ml: "30px" }}
                       >
                         12
                       </Typography>
@@ -626,7 +649,7 @@ function ClientDetails() {
                       <Typography
                         variant="h5"
                         fontWeight="bold"
-                        sx={{ ml: "10px" }}
+                        sx={{ ml: "30px" }}
                       >
                         Previous Orders
                       </Typography>
@@ -638,7 +661,7 @@ function ClientDetails() {
                       <Typography
                         variant="h5"
                         fontWeight="bold"
-                        sx={{ fontSize: 20, ml: "10px" }}
+                        sx={{ fontSize: 20, ml: "30px" }}
                       >
                         435
                       </Typography>
@@ -666,7 +689,7 @@ function ClientDetails() {
                       <Typography
                         variant="h5"
                         fontWeight="bold"
-                        sx={{ ml: "10px" }}
+                        sx={{ ml: "30px" }}
                       >
                         Upcoming Orders
                       </Typography>
@@ -678,7 +701,7 @@ function ClientDetails() {
                       <Typography
                         variant="h5"
                         fontWeight="bold"
-                        sx={{ fontSize: 20, ml: "10px" }}
+                        sx={{ fontSize: 20, ml: "30px" }}
                       >
                         1
                       </Typography>
