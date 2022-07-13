@@ -5,7 +5,8 @@ import "./Gantt.css";
 
 export default class Gantt extends Component {
   componentDidMount() {
-    gantt.config.date_format = "%Y-%m-%d %H:%i";
+    gantt.config.date_format = "%D %M %d %Y %H:%i:%s";
+
     gantt.config.columns = [
       { name: "text", label: "Task name", width: "*", tree: true },
       { name: "add", label: "", width: 44 },

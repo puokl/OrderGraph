@@ -66,7 +66,7 @@ function OrderDetails() {
         >
           <Grid item xs={12} sm={6} lg={8}>
             <Typography variant="h3" component="h3" gutterBottom>
-              {t("Items")}
+              {t("Tasks")}
             </Typography>
             {/* Below is the add items component, currently only the button is done, not the form component to add items */}
             {Object.keys(currentOrder).length > 0 ? (
@@ -84,6 +84,9 @@ function OrderDetails() {
           </Grid>
 
           <Grid item xs={12} sm={6} lg={8}>
+            <Typography variant="h3" component="h3" gutterBottom>
+              {t("Items")}
+            </Typography>
             <Items />
           </Grid>
         </Grid>

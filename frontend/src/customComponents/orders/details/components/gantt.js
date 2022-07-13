@@ -9,29 +9,36 @@ function OrderGantt({ currentOrder }) {
   const tasks = {
     tasks: [],
   };
+  const dateString =
+    new Date(currentOrder.startDate).toDateString() +
+    " " +
+    new Date(currentOrder.startDate).toLocaleTimeString("it-IT");
+  console.log(dateString);
 
-  useEffect(() => {
-    currentOrder.tasks.forEach((item, index) => {
-      console.log("hi");
+  currentOrder.tasks.forEach((item, index) => {
+    console.log("hi");
+    tasks.tasks.push({
+      id: index + 1,
+      text: item.taskName,
+      start_date: dateString,
+      duration: 3,
+    });
+    item.subTasks?.forEach((subitem, index2) => {
       tasks.tasks.push({
-        id: index,
-        text: item.taskName,
-        start_date: currentOrder.startDate,
-        duration: 3,
-      });
-      item.subTasks?.forEach((subitem, index2) => {
-        tasks.tasks.push({
-          id: index2,
-          text: subitem.description,
-          start_date: currentOrder.startDate,
-          duration: subitem.timeEstimate,
-          parent: index,
-        });
+        id: index2 + 22,
+        text: subitem.description,
+        start_date: dateString,
+        duration: subitem.timeEstimate,
+        parent: index + 1,
       });
     });
+  });
+  console.log(tasks);
 
-    console.log(tasks);
-  }, []);
+  //   useEffect(() => {
+
+  //     console.log(tasks);
+  //   }, []);
 
   return (
     <Card sx={{ p: "1.5rem" }}>
