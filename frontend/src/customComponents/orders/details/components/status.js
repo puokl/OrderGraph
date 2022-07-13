@@ -18,6 +18,11 @@ function Status({ currentOrder }) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [isReady, setReady] = useState(false);
+  const dateString =
+    new Date(currentOrder.startDate).toDateString() +
+    " " +
+    new Date(currentOrder.startDate).toLocaleTimeString("it-IT");
+  console.log(dateString);
 
   const multipleExist = (arr, values) => {
     return values.every((value) => {
@@ -151,16 +156,6 @@ function Status({ currentOrder }) {
           >
             {t("Start Date :")}
           </Typography>
-          <Typography
-            variant="h5"
-            gutterBottom
-            fontWeight="bold"
-            sx={{
-              py: 1,
-            }}
-          >
-            {currentOrder ? currentOrder.startDate : t("Not yet set")}
-          </Typography>
         </Box>
         <Box>
           <Typography
@@ -172,6 +167,16 @@ function Status({ currentOrder }) {
             }}
           >
             {currentOrder ? t(`${currentOrder.status}`) : t("")}
+          </Typography>
+          <Typography
+            variant="h5"
+            gutterBottom
+            fontWeight="bold"
+            sx={{
+              py: 1,
+            }}
+          >
+            {currentOrder ? dateString : t("Not yet set")}
           </Typography>
         </Box>
       </Box>

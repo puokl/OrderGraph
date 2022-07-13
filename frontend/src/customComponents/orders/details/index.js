@@ -10,6 +10,7 @@ import PageHeader from "./PageHeader";
 import { useParams } from "react-router-dom";
 
 import OrderGantt from "./components/gantt";
+import GoogleGantt from "./components/googleGantt";
 import Items from "./components/items";
 import Status from "./components/status";
 import Documents from "./components/documents";
@@ -70,7 +71,7 @@ function OrderDetails() {
             </Typography>
             {/* Below is the add items component, currently only the button is done, not the form component to add items */}
             {Object.keys(currentOrder).length > 0 ? (
-              <OrderGantt currentOrder={currentOrder} />
+              <GoogleGantt currentOrder={currentOrder} />
             ) : null}
           </Grid>
 

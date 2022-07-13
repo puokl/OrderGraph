@@ -147,6 +147,10 @@ function Items({ orderItems, setOrderItems }) {
                   setSelectedItem(newValue);
                   if (newValue.tasks.length === 0) {
                     newValue.tasks.push({
+                      finished: false,
+                      halted: false,
+                      startDate: "",
+                      haltReason: "",
                       taskName: "",
                       subTasks: [],
                     });
@@ -785,11 +789,15 @@ function Items({ orderItems, setOrderItems }) {
                             const newOption = { ...orderItems[index] };
                             if (!orderItems[index].tasks[index2 + 1]) {
                               newOption.tasks.push({
+                                finished: false,
+                                halted: false,
+                                startDate: "",
+                                haltReason: "",
                                 taskName: e.target.value,
                                 subTasks: [],
                               });
                             }
-                            newOption.tasks[index2 + 1].taskname =
+                            newOption.tasks[index2 + 1].taskName =
                               e.target.value;
 
                             console.log(newOption);

@@ -54,7 +54,7 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
   }, [fullOrder]);
 
   const saveDraft = async () => {
-    orderItems.tasks?.forEach((item) => (item.startDate = startDate));
+    fullOrder.items?.tasks?.forEach((item) => (item.startDate = startDate));
     orderItems.forEach((item) => taskArray.push(...item.tasks));
 
     try {
@@ -91,7 +91,22 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
   const activateOrder = async () => {
     fullOrder.status = "active";
     fullOrder.draft = false;
-    orderItems.tasks?.forEach((item) => (item.startDate = startDate));
+    fullOrder.items.forEach((item) => {
+      console.log("hi");
+      item.tasks.forEach((task) => {
+        task.startDate = startDate;
+        console.log("hi2");
+        let duration = 0;
+        task.subTasks.forEach(
+          (subtask) => (duration = duration + Number(subtask.timeEstimate))
+        );
+        {
+          duration === 0
+            ? (task.duration = duration + 1)
+            : (task.duration = duration);
+        }
+      });
+    });
     orderItems.forEach((item) => taskArray.push(...item.tasks));
     try {
       const response = await axios.post(
