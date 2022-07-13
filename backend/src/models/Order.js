@@ -29,6 +29,7 @@ const taskSchema = mongoose.Schema({
     type: String,
   },
   subTasks: [],
+  duration: { type: String },
 });
 
 const OrderSchema = new mongoose.Schema(
