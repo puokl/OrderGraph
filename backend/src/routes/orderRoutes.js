@@ -10,6 +10,6 @@ const {
 
 router.get("/", getAllOrder);
 router.post("/neworder/:orgId", newOrder);
-router.route("/:ordId").get(getOrder).put(updateOrder).delete(deleteOrder);
+router.route("/:orderID").get(getOrder).put(updateOrder).delete(deleteOrder);
 
 module.exports = router;

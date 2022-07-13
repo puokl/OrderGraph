@@ -58,13 +58,11 @@ const CardAddAction = styled(Card)(
 
 const filter = createFilterOptions();
 
-function Items() {
+function Items({ orderItems, setOrderItems }) {
   const { t } = useTranslation();
 
-  const [items, setItems] = useState("");
+  const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
-
-  const [orderItems, setOrderItems] = useState([]);
 
   const addItem = () => {
     setOrderItems([
@@ -74,7 +72,7 @@ function Items() {
         height: "",
         itemName: "",
         quantity: "",
-        tasks: [],
+        tasks: [{}],
         unitPrice: "",
         units: "",
         width: "",
@@ -126,15 +124,41 @@ function Items() {
           >
             <Autocomplete
               value={orderItems[index].itemName}
-              onChange={(event, newValue) => {
-                setSelectedItem(newValue.itemName);
-                const newOrderItems = orderItems.fill(
-                  newValue,
-                  index,
-                  index + 1
-                );
-                setOrderItems(() => newOrderItems);
-                console.log(orderItems);
+              onChange={(event, newValue, reason) => {
+                console.log(reason);
+                if (reason === "clear") {
+                  setSelectedItem(newValue);
+                  const newOrderItems = orderItems.fill(
+                    {
+                      description: "",
+                      height: "",
+                      itemName: "",
+                      quantity: "",
+                      tasks: [{}],
+                      unitPrice: "",
+                      units: "",
+                      width: "",
+                    },
+                    index,
+                    index + 1
+                  );
+                  setOrderItems(() => newOrderItems);
+                } else {
+                  setSelectedItem(newValue);
+                  if (newValue.tasks.length === 0) {
+                    newValue.tasks.push({
+                      taskName: "",
+                      subTasks: [],
+                    });
+                  }
+                  const newOrderItems = orderItems.fill(
+                    newValue,
+                    index,
+                    index + 1
+                  );
+                  setOrderItems(() => newOrderItems);
+                  console.log(orderItems);
+                }
               }}
               filterOptions={(options, params) => {
                 const filtered = filter(options, params);
@@ -148,6 +172,13 @@ function Items() {
                   filtered.push({
                     itemName: inputValue,
                     inputValue: `Add "${inputValue}" `,
+                    description: "",
+                    height: "",
+                    quantity: "",
+                    tasks: [{}],
+                    unitPrice: "",
+                    units: "",
+                    width: "",
                   });
                 }
 
@@ -156,7 +187,7 @@ function Items() {
               selectOnFocus
               clearOnBlur
               handleHomeEndKeys
-              options={items}
+              options={items.length > 0 ? items : []}
               getOptionLabel={(option) => {
                 // Value selected with enter, right from the input
                 if (typeof option === "string") {
@@ -277,7 +308,7 @@ function Items() {
                 placeholder={t("Item description")}
                 value={orderItems[index].description}
                 onChange={(e) => {
-                  setSelectedItem(e.target.value);
+                  setSelectedItem(e);
                   const newOption = { ...orderItems[index] };
                   newOption.description = e.target.value;
                   const newOrderItems = orderItems.fill(
@@ -301,7 +332,7 @@ function Items() {
                   placeholder={t("Height")}
                   value={orderItems[index].height}
                   onChange={(e) => {
-                    setSelectedItem(e.target.value);
+                    setSelectedItem(e);
                     const newOption = { ...orderItems[index] };
                     newOption.height = e.target.value;
                     const newOrderItems = orderItems.fill(
@@ -321,7 +352,7 @@ function Items() {
                   placeholder={t("Width")}
                   value={orderItems[index].width}
                   onChange={(e) => {
-                    setSelectedItem(e.target.value);
+                    setSelectedItem(e);
                     const newOption = { ...orderItems[index] };
                     newOption.width = e.target.value;
                     const newOrderItems = orderItems.fill(
@@ -357,7 +388,7 @@ function Items() {
                 placeholder={t("Measurement Units")}
                 value={orderItems[index].units}
                 onChange={(e) => {
-                  setSelectedItem(e.target.value);
+                  setSelectedItem(e);
                   const newOption = { ...orderItems[index] };
                   newOption.units = e.target.value;
                   const newOrderItems = orderItems.fill(
@@ -437,7 +468,7 @@ function Items() {
                     minWidth: 0,
                   }}
                 >
-                  {orderItems[index].tasks.length > 0 ? (
+                  {orderItems[index].tasks[0]?.taskName ? (
                     <CalendarTodayOutlinedIcon
                       color="primary"
                       // onClick={}
@@ -445,7 +476,21 @@ function Items() {
                   ) : (
                     <AddTwoToneIcon
                       color="primary"
-                      // onClick={}
+                      onClick={(e) => {
+                        console.log("hi");
+                        setSelectedItem(e);
+                        const newOption = { ...orderItems[index] };
+                        newOption.tasks[0] = {
+                          taskName: "New Task",
+                          subTasks: [],
+                        };
+                        const newOrderItems = orderItems.fill(
+                          newOption,
+                          index,
+                          index + 1
+                        );
+                        setOrderItems(() => newOrderItems);
+                      }}
                     />
                   )}
                 </Button>
@@ -457,45 +502,26 @@ function Items() {
                   }}
                   sx={{ ml: 1 }}
                   value={
-                    orderItems[index].tasks
+                    orderItems[index].tasks[0]?.taskName
                       ? orderItems[index].tasks[0]?.taskName
                       : ""
                   }
-                />
-              </Box>
-              <Box
-                style={{
-                  borderLeft: "1px solid #D9D9D9",
-                  width: "100%",
-                  marginLeft: "1.5rem",
-                }}
-              >
-                <Box
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
+                  onChange={(e) => {
+                    setSelectedItem(e);
+                    const newOption = { ...orderItems[index] };
+
+                    newOption.tasks[0].taskName = e.target.value;
+                    newOption.tasks[0].subTasks = [];
+                    const newOrderItems = orderItems.fill(
+                      newOption,
+                      index,
+                      index + 1
+                    );
+                    setOrderItems(() => newOrderItems);
+                    console.log(orderItems);
                   }}
-                >
-                  <Checkbox />
-                  <TextField
-                    variant="standard"
-                    placeholder="Add a subtask..."
-                    InputProps={{
-                      disableUnderline: true,
-                    }}
-                    style={{ width: "10rem" }}
-                  />
-                  <TimerTwoToneIcon color="disabled" />
-                  <TextField
-                    variant="standard"
-                    placeholder="Add a time estimate..."
-                    InputProps={{
-                      disableUnderline: true,
-                    }}
-                    style={{ width: "10rem" }}
-                  />
+                />
+                {orderItems[index].tasks[0].taskName ? (
                   <Button
                     aria-label="Delete"
                     size="small"
@@ -503,49 +529,313 @@ function Items() {
                     style={{
                       backgroundColor: "rgba(85, 105, 255, 0.1)",
                       minWidth: 0,
-                      width: "1.3rem",
-                      height: "1.3rem",
+                      width: "1.5rem",
+                      height: "1.5rem",
                       borderRadius: "50%",
+                      marginLeft: "auto",
                     }}
-                    onClick={() => removeItem()}
+                    onClick={(e) => {
+                      setSelectedItem(e);
+                      const newOption = { ...orderItems[index] };
+                      if (newOption.tasks.length > 1) {
+                        newOption.tasks.shift();
+                      } else {
+                        newOption.tasks[0] = {};
+                      }
+
+                      const newOrderItems = orderItems.fill(
+                        newOption,
+                        index,
+                        index + 1
+                      );
+                      setOrderItems(() => newOrderItems);
+                    }}
                   >
                     <CloseIcon color="primary" fontSize="small" />
                   </Button>
-                </Box>
+                ) : null}
               </Box>
-              <Box
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  aria-label="Tasks"
-                  size="small"
-                  color="primary"
-                  style={{
-                    backgroundColor: "rgba(85, 105, 255, 0.1)",
-                    width: "3rem",
-                    height: "3rem",
-                    borderRadius: "50%",
-                    minWidth: 0,
-                  }}
-                >
-                  <AddTwoToneIcon
-                    color="primary"
-                    // onClick={}
-                  />
-                </Button>
-                <TextField
-                  variant="standard"
-                  placeholder="Add a task..."
-                  InputProps={{
-                    disableUnderline: true,
-                  }}
-                  sx={{ ml: 1 }}
-                />
-              </Box>
+              {orderItems[index].tasks[0].taskName
+                ? orderItems[index].tasks?.map((task, index2) => (
+                    <>
+                      <Box
+                        style={{
+                          borderLeft: "1px solid #D9D9D9",
+                          width: "100%",
+                          marginLeft: "1.5rem",
+                        }}
+                        key={index2}
+                      >
+                        {task.subTasks?.map((subtask, index3) => (
+                          <Box
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                            }}
+                            key={index3}
+                          >
+                            <Checkbox />
+                            <TextField
+                              variant="standard"
+                              placeholder="Add a subtask..."
+                              InputProps={{
+                                disableUnderline: true,
+                              }}
+                              style={{ width: "10rem" }}
+                              value={subtask.description}
+                              onChange={(e) => {
+                                setSelectedItem(e);
+                                const newOption = { ...orderItems[index] };
+                                newOption.tasks[index2].subTasks[
+                                  index3
+                                ].description = e.target.value;
+                                const newOrderItems = orderItems.fill(
+                                  newOption,
+                                  index,
+                                  index + 1
+                                );
+                                setOrderItems(() => newOrderItems);
+                                console.log(orderItems);
+                              }}
+                              autoFocus={
+                                subtask.description !== "" ? true : false
+                              }
+                            />
+                            <TimerTwoToneIcon color="disabled" />
+                            <TextField
+                              variant="standard"
+                              placeholder="Add a time estimate..."
+                              InputProps={{
+                                disableUnderline: true,
+                              }}
+                              style={{ width: "10rem" }}
+                              value={subtask.timeEstimate}
+                              onChange={(e) => {
+                                setSelectedItem(e);
+                                const newOption = { ...orderItems[index] };
+                                newOption.tasks[index2].subTasks[
+                                  index3
+                                ].timeEstimate = e.target.value;
+                                const newOrderItems = orderItems.fill(
+                                  newOption,
+                                  index,
+                                  index + 1
+                                );
+                                setOrderItems(() => newOrderItems);
+                                console.log(orderItems);
+                              }}
+                              autoFocus={
+                                subtask.timeEstimate !== "" ? true : false
+                              }
+                            />
+                            <Button
+                              aria-label="Delete"
+                              size="small"
+                              color="primary"
+                              style={{
+                                backgroundColor: "rgba(85, 105, 255, 0.1)",
+                                minWidth: 0,
+                                width: "1.3rem",
+                                height: "1.3rem",
+                                borderRadius: "50%",
+                              }}
+                              onClick={(e) => {
+                                setSelectedItem(e);
+                                const newOption = { ...orderItems[index] };
+                                newOption.tasks[index2].subTasks =
+                                  newOption.tasks[index2].subTasks.filter(
+                                    (item, i) => i !== index3
+                                  );
+                                const newOrderItems = orderItems.fill(
+                                  newOption,
+                                  index,
+                                  index + 1
+                                );
+                                setOrderItems(() => newOrderItems);
+                              }}
+                            >
+                              <CloseIcon color="primary" fontSize="small" />
+                            </Button>
+                          </Box>
+                        ))}
+                        <Box
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Checkbox />
+                          <TextField
+                            variant="standard"
+                            placeholder="Add a subtask..."
+                            InputProps={{
+                              disableUnderline: true,
+                            }}
+                            style={{ width: "10rem" }}
+                            value=""
+                            onChange={(e) => {
+                              setSelectedItem(e);
+                              const newOption = { ...orderItems[index] };
+                              newOption.tasks[index2].subTasks.push({
+                                description: e.target.value,
+                                timeEstimate: "",
+                                finished: false,
+                              });
+                              const newOrderItems = orderItems.fill(
+                                newOption,
+                                index,
+                                index + 1
+                              );
+                              setOrderItems(() => newOrderItems);
+                              console.log(orderItems);
+                            }}
+                          />
+                          <TimerTwoToneIcon color="disabled" />
+                          <TextField
+                            variant="standard"
+                            placeholder="Add a time estimate..."
+                            InputProps={{
+                              disableUnderline: true,
+                            }}
+                            value=""
+                            style={{ width: "10rem" }}
+                            onChange={(e) => {
+                              setSelectedItem(e);
+                              const newOption = { ...orderItems[index] };
+                              newOption.tasks[index2].subTasks.push({
+                                description: "",
+                                timeEstimate: e.target.value,
+                                finished: false,
+                              });
+                              const newOrderItems = orderItems.fill(
+                                newOption,
+                                index,
+                                index + 1
+                              );
+                              setOrderItems(() => newOrderItems);
+                              console.log(orderItems);
+                            }}
+                          />
+                          <Box style={{ width: "1.3rem" }}></Box>
+                        </Box>
+                      </Box>
+                      <Box
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Button
+                          aria-label="Tasks"
+                          size="small"
+                          color="primary"
+                          style={{
+                            backgroundColor: "rgba(85, 105, 255, 0.1)",
+                            width: "3rem",
+                            height: "3rem",
+                            borderRadius: "50%",
+                            minWidth: 0,
+                          }}
+                        >
+                          {orderItems[index].tasks[index2 + 1]?.taskName ? (
+                            <CalendarTodayOutlinedIcon
+                              color="primary"
+                              // onClick={}
+                            />
+                          ) : (
+                            <AddTwoToneIcon
+                              color="primary"
+                              onClick={(e) => {
+                                console.log("hi");
+                                setSelectedItem(e);
+                                const newOption = { ...orderItems[index] };
+                                newOption.tasks[index2 + 1] = {
+                                  taskName: "New Task",
+                                  subTasks: [],
+                                };
+                                const newOrderItems = orderItems.fill(
+                                  newOption,
+                                  index,
+                                  index + 1
+                                );
+                                setOrderItems(() => newOrderItems);
+                              }}
+                            />
+                          )}
+                        </Button>
+                        <TextField
+                          variant="standard"
+                          placeholder="Add a task..."
+                          InputProps={{
+                            disableUnderline: true,
+                          }}
+                          sx={{ ml: 1 }}
+                          value={
+                            orderItems[index].tasks[index2 + 1]?.taskName
+                              ? orderItems[index].tasks[index2 + 1]?.taskName
+                              : ""
+                          }
+                          onChange={(e) => {
+                            setSelectedItem(e);
+                            const newOption = { ...orderItems[index] };
+                            if (!orderItems[index].tasks[index2 + 1]) {
+                              newOption.tasks.push({
+                                taskName: e.target.value,
+                                subTasks: [],
+                              });
+                            }
+                            newOption.tasks[index2 + 1].taskname =
+                              e.target.value;
+
+                            console.log(newOption);
+                            const newOrderItems = orderItems.fill(
+                              newOption,
+                              index,
+                              index + 1
+                            );
+                            setOrderItems(() => newOrderItems);
+                            console.log(orderItems);
+                          }}
+                        />
+                        {orderItems[index].tasks[index2 + 1]?.taskName ? (
+                          <Button
+                            aria-label="Delete"
+                            size="small"
+                            color="primary"
+                            style={{
+                              backgroundColor: "rgba(85, 105, 255, 0.1)",
+                              minWidth: 0,
+                              width: "1.5rem",
+                              height: "1.5rem",
+                              borderRadius: "50%",
+                              marginLeft: "auto",
+                            }}
+                            onClick={(e) => {
+                              setSelectedItem(e);
+                              const newOption = { ...orderItems[index] };
+                              newOption.tasks = newOption.tasks.filter(
+                                (item, i) => i !== index2 + 1
+                              );
+                              const newOrderItems = orderItems.fill(
+                                newOption,
+                                index,
+                                index + 1
+                              );
+                              setOrderItems(() => newOrderItems);
+                            }}
+                          >
+                            <CloseIcon color="primary" fontSize="small" />
+                          </Button>
+                        ) : null}
+                      </Box>
+                    </>
+                  ))
+                : null}
             </Box>
           </Box>
         </Card>

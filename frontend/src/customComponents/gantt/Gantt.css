@@ -8,3 +8,42 @@
   overflow-y: auto;
   /* padding: 0px; */
 }
+.gantt_grid_head_cell {
+  width: 100px !important;
+}
+
+#root
+  > div.MuiBox-root.css-98f52o
+  > div.MuiBox-root.css-1u1t82v
+  > div
+  > div
+  > div:nth-child(1)
+  > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-4.css-spq4we-MuiGrid-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div.gantt_layout_cell.gantt_layout.gantt_layout_x.gantt_layout_cell_border_transparent.gantt_layout_cell_border_bottom
+  > div.gantt_layout_cell.grid_cell.gantt_layout_outer_scroll.gantt_layout_outer_scroll_vertical.gantt_layout_outer_scroll.gantt_layout_outer_scroll_horizontal.gantt_layout_cell_border_right {
+  width: 225px !important;
+}
+
+.gantt_cell,
+.gantt_cell_tree {
+  width: 130px !important;
+}
+#root
+  > div.MuiBox-root.css-98f52o
+  > div.MuiBox-root.css-1u1t82v
+  > div
+  > div
+  > div:nth-child(1)
+  > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-4.css-spq4we-MuiGrid-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div.gantt_layout_cell.gantt_layout.gantt_layout_x.gantt_layout_cell_border_transparent.gantt_layout_cell_border_bottom
+  > div.gantt_layout_cell.timeline_cell.gantt_layout_outer_scroll.gantt_layout_outer_scroll_vertical.gantt_layout_outer_scroll.gantt_layout_outer_scroll_horizontal {
+  width: 100% !important;
+}

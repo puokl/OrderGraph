@@ -3,11 +3,13 @@ import { gantt } from "dhtmlx-gantt";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import "./Gantt.css";
 
-
-
 export default class Gantt extends Component {
   componentDidMount() {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
+    gantt.config.columns = [
+      { name: "text", label: "Task name", width: "*", tree: true },
+      { name: "add", label: "", width: 44 },
+    ];
     const { tasks } = this.props;
     gantt.init(this.ganttContainer);
     gantt.parse(tasks);

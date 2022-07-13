@@ -7,33 +7,32 @@ import { Grid, Typography } from "@mui/material";
 
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
+import { useParams } from "react-router-dom";
 
-import Clients from "./components/clients";
+import OrderGantt from "./components/gantt";
 import Items from "./components/items";
-import Invoices from "./components/invoices";
 import Status from "./components/status";
 import Documents from "./components/documents";
 
-function CreateOrder() {
+function OrderDetails() {
   const { t } = useTranslation();
-  const [clients, setClients] = useState([]);
-  const [selectedClient, setSelectedClient] = useState("");
-  const [startDate, setStartDate] = useState();
+  const [currentOrder, setCurrentOrder] = useState({});
+  const { orderID } = useParams();
 
   const [orderItems, setOrderItems] = useState([]);
 
-  const getClients = async () => {
+  const getOrder = async () => {
     try {
-      const response = await axios.get("/api/v1/client");
+      const response = await axios.get("/api/v1/order/" + orderID);
       console.log(response);
-      setClients(response.data.data);
+      setCurrentOrder(response.data.data);
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    getClients();
+    getOrder();
   }, []);
 
   return (
@@ -53,7 +52,7 @@ function CreateOrder() {
           <title>Create Order</title>
         </Helmet>
         <PageTitleWrapper>
-          <PageHeader />
+          <PageHeader orderID={orderID} />
         </PageTitleWrapper>
 
         <Grid
@@ -67,30 +66,12 @@ function CreateOrder() {
         >
           <Grid item xs={12} sm={6} lg={8}>
             <Typography variant="h3" component="h3" gutterBottom>
-              {t("Calendar")}
-            </Typography>
-            {/* This component is empty in the figma mock up, so nothing here */}
-          </Grid>
-          <Grid item xs={12} sm={6} lg={8}>
-            <Typography variant="h3" component="h3" gutterBottom>
-              {t("Client")}
-            </Typography>
-            {/* Below is the Client picker dropdown component, which is almost fully functional, only the edit client button needs to become functional */}
-            <Clients
-              clients={clients}
-              selectedClient={selectedClient}
-              setSelectedClient={setSelectedClient}
-            />
-            <Typography variant="h3" component="h3" gutterBottom>
               {t("Items")}
             </Typography>
             {/* Below is the add items component, currently only the button is done, not the form component to add items */}
-            <Items orderItems={orderItems} setOrderItems={setOrderItems} />
-            <Typography variant="h3" component="h3" gutterBottom>
-              {t("Invoices")}
-            </Typography>
-            {/* Below is the add invoices component, currently only the button is done, no functionality yet, we need to get a library for drag and drop */}
-            <Invoices />
+            {Object.keys(currentOrder).length > 0 ? (
+              <OrderGantt currentOrder={currentOrder} />
+            ) : null}
           </Grid>
 
           <Grid item xs={8} sm={4} lg={4}>
@@ -98,16 +79,13 @@ function CreateOrder() {
               {t(" ")}
             </Typography>
             {/* Below is the Status component, we need to somehow convert the date string that the date picker (which is currently in default US format) comes with to a UTC string */}
-            <Status
-              startDate={startDate}
-              setStartDate={setStartDate}
-              selectedClient={selectedClient}
-              orderItems={orderItems}
-            />
+            <Status currentOrder={currentOrder} />
             <Documents />
           </Grid>
 
-          <Grid item xs={12} sm={6} lg={8}></Grid>
+          <Grid item xs={12} sm={6} lg={8}>
+            <Items />
+          </Grid>
         </Grid>
       </div>
       <Footer
@@ -119,4 +97,4 @@ function CreateOrder() {
   );
 }
 
-export default CreateOrder;
+export default OrderDetails;
