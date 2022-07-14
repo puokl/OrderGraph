@@ -88,7 +88,9 @@ function OrderDetails() {
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Items")}
             </Typography>
-            <Items />
+            {Object.keys(currentOrder).length > 0 ? (
+              <Items currentOrder={currentOrder} />
+            ) : null}
           </Grid>
         </Grid>
       </div>

@@ -130,19 +130,18 @@ function GoogleGantt({ currentOrder }) {
       {items.map((item, index) => {
         const data = [columns, ...item];
         return (
-          <>
+          <div key={index}>
             <Typography variant="h4" component="h4" sx={{ m: 1 }}>
               {t(`${currentOrder.items[index].itemName}`)}
             </Typography>
             <Chart
-              key={index}
               chartType="Gantt"
               width="100%"
               height="300px"
               data={data}
               options={options}
             />
-          </>
+          </div>
         );
       })}
     </Card>
