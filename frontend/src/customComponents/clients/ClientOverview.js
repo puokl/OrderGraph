@@ -21,7 +21,7 @@ import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
 import axios from "src/utils/axios2";
 
-const orderRoutes = require("../../../../backend/src/controllers/orderController.js")
+/* const orderRoutes = require("../../../../backend/src/controllers/orderController.js") */
 
 const ClientOverview = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,35 +51,35 @@ const ClientOverview = () => {
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "row",
-            width: "100%",
-            margin: "3rem",
-          }}
-        >
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <Typography variant="h3" component="h3" gutterBottom>
-              {"Clients Overview"}
-            </Typography>
-            <Typography variant="h5" component="h5" gutterBottom>
-              {"Take a look at your client list"}
-            </Typography>
-          </div>
-          <div style={{ display: "flex" }}>
-            <Button
-              variant="contained"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = "/clients/add";
-              }}
-            >
-              Add new client
-            </Button>
-          </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          width: "100%",
+          margin: "3rem",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Typography variant="h3" component="h3" gutterBottom>
+            {"Clients Overview"}
+          </Typography>
+          <Typography variant="h5" component="h5" gutterBottom>
+            {"Take a look at your client list"}
+          </Typography>
         </div>
+        <div style={{ display: "flex" }}>
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/clients/add";
+            }}
+          >
+            Add new client
+          </Button>
+        </div>
+      </div>
       {/* client overview cards START */}
       <Grid container spacing={4} margin={1}>
         <Grid item xs={3}>

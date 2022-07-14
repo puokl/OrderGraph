@@ -27,6 +27,8 @@ import ShippingAdress from "./formComponents/ShippingAdress";
 import PageHeader from "./PageHeader";
 import RemoveTwoToneIcon from "@mui/icons-material/RemoveTwoTone";
 import axios from "src/utils/axios2";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const INITIAL_FORM_STATE = {
   /* Client Details */
@@ -71,6 +73,8 @@ const INITIAL_FORM_STATE = {
   /* Shipping Address same Adress as Billing Adress */
   SaSameAsBa: false,
 };
+
+const EDIT_FORM_STATE = {};
 
 /* Person Form Validation Start */
 
@@ -192,7 +196,54 @@ function AddClient() {
   const [contactPersonNo, setContactPersonNo] = useState(1);
   const [cArray, setCArray] = useState([1]);
   const [formData, setFormData] = useState("");
+  const [controlState, setControlState] = useState(false);
+  const [clientToEdit, setClientToEdit] = useState({
+    /* Client Details */
+    clientType: "",
+    clientName: "",
+    clientEMail: "",
+    clientPhoneNumber: "",
+    /* Billing Address */
+    billingAddress: {
+      Address: "",
+      Zip: "",
+      City: "",
+      State: "",
+      AdditionalInformation: "",
+    },
+    /* Shipping Address */
+    shippingAddress: {
+      Address: "",
+      Zip: "",
+      City: "",
+      State: "",
+      AdditionalInformation: "",
+    },
+    /* Financial */
+    financials: {
+      registrationNumber: "",
+      fiscalNumber: "",
+      IBAN: "",
+      bankName: "",
+    },
+    /* Contact Person */
+    contact: [
+      {
+        contactName: "",
+        contactRole: "",
+        contactDepartment: "",
+        contactPhoneNumber: "",
+        contactEMail: "",
+      },
+    ],
+
+    /* Shipping Address same Adress as Billing Adress */
+    SaSameAsBa: false,
+  });
+
   const [removeCp, setRemoveCp] = useState(false);
+  const { clientId } = useParams();
+  console.log(clientId);
   const updateFields = (fieldName, fieldValue) => {
     setFormData({ ...formData, fieldValue });
   };
@@ -292,6 +343,60 @@ function AddClient() {
           height: ${theme.spacing(5)};
   `
   );
+  const handleGetClient = async () => {
+    setControlState(true);
+    const response = await axios.get("/api/v1/client/" + clientId);
+    console.log(response);
+    setClientToEdit({
+      /* Client Details */
+      clientType: response.data.data.clientType,
+      clientName: response.data.data.clientName,
+      clientEMail: response.data.data.clientEMail,
+      clientPhoneNumber: response.data.data.clientPhoneNumber,
+      /* Billing Address */
+      billingAddress: {
+        Address: "",
+        Zip: "",
+        City: "",
+        State: "",
+        AdditionalInformation: "",
+      },
+      /* Shipping Address */
+      shippingAddress: {
+        Address: "",
+        Zip: "",
+        City: "",
+        State: "",
+        AdditionalInformation: "",
+      },
+      /* Financial */
+      financials: {
+        registrationNumber: "",
+        fiscalNumber: "",
+        IBAN: "",
+        bankName: "",
+      },
+      /* Contact Person */
+      contact: [
+        {
+          contactName: "",
+          contactRole: "",
+          contactDepartment: "",
+          contactPhoneNumber: "",
+          contactEMail: "",
+        },
+      ],
+
+      /* Shipping Address same Adress as Billing Adress */
+      SaSameAsBa: false,
+    });
+  };
+  useEffect(() => {
+    if (clientId) {
+      handleGetClient();
+      console.log("CTE: ", clientToEdit);
+    }
+  }, []);
 
   const handleCreateClient = async (values) => {
     const dataToSend = { ...values, organization: user.organization };
@@ -309,6 +414,24 @@ function AddClient() {
     }
   };
 
+  const handleEditClient = async (values) => {
+    const dataToSend = { ...values, organization: user.organization };
+    console.log("DTS:", dataToSend);
+    try {
+      const response = await axios.put(
+        "/api/v1/client/" + clientId,
+        dataToSend
+      );
+      if (response.status === 201) {
+        console.log("Backend Create client response: ", response);
+        /*         navigateToClientOverview(); */
+      } else {
+        console.log("error");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <>
       <Helmet>
@@ -318,15 +441,21 @@ function AddClient() {
         <PageHeader />
       </PageTitleWrapper>
       <Formik
-        initialValues={{
-          ...INITIAL_FORM_STATE,
-        }}
+        initialValues={
+          clientId
+            ? { ...clientToEdit }
+            : {
+                ...INITIAL_FORM_STATE,
+              }
+        }
         validationSchema={
           showContact ? COMPANY_FORM_VALIDATION : PERSON_FORM_VALIDATION
         }
         /* Asyncronus Submission and Validation -- Check Formik Submit Documentation for more info */
         onSubmit={async (values) => {
-          await handleCreateClient(values);
+          clientId
+            ? await handleEditClient(values)
+            : await handleCreateClient(values);
         }}
       >
         {({
