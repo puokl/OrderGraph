@@ -50,7 +50,7 @@ function OrderDetails() {
         }}
       >
         <Helmet>
-          <title>Create Order</title>
+          <title>Order Details</title>
         </Helmet>
         <PageTitleWrapper>
           <PageHeader orderID={orderID} />
@@ -84,7 +84,7 @@ function OrderDetails() {
             <Documents />
           </Grid>
 
-          <Grid item xs={12} sm={6} lg={8}>
+          <Grid item xs={12} sm={12} lg={12}>
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Items")}
             </Typography>

@@ -32,7 +32,7 @@ function Status({ currentOrder }) {
 
   useEffect(() => {
     console.log(isReady);
-    if (currentOrder) {
+    if (currentOrder && currentOrder.status !== "active") {
       if (
         multipleExist(Object.keys(currentOrder), [
           "items",

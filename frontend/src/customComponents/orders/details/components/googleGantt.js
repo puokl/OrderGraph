@@ -24,49 +24,64 @@ function GoogleGantt({ currentOrder }) {
 
   currentOrder.items.forEach((item, index) => {
     items.push([]);
+
     item.tasks.forEach((task, index2) => {
-      const completion =
+      let completion =
         (task.subTasks.filter((subtask) => subtask.finished === true).length *
           100) /
         task.subTasks.length;
-      console.log(completion);
+
+      if (isNaN(completion)) {
+        completion = 0;
+      }
 
       const taskID = nextId();
       if (index2 === 0) {
         items[index].push([
           taskID,
           task.taskName,
-          null,
+          `Task ${index2}`,
           new Date(task.startDate),
           null,
           task.duration * 24 * 60 * 60 * 1000,
-          40,
+          completion,
           null,
         ]);
       } else {
+        const start =
+          Date.parse(task.startDate) +
+          Number(item.tasks[index2 - 1].duration) * 24 * 60 * 60 * 1000;
         items[index].push([
           taskID,
           task.taskName,
-          null,
-          null,
+          `Task ${index2}`,
+          new Date(start),
           null,
           task.duration * 24 * 60 * 60 * 1000,
-          40,
-          JSON.stringify(taskID - items[index].length),
+          completion,
+          null,
         ]);
       }
 
       task.subTasks?.forEach((subtask, index3) => {
+        let subCompletion = 0;
+
+        if (subtask.finished === true) {
+          subCompletion = 100;
+        }
+
         if (index3 === 0 && index2 === 0) {
+          const start = Date.parse(task.startDate) + 1;
+
           const subtaskID = nextId();
           items[index].push([
             subtaskID,
             subtask.description,
-            task.taskName,
-            new Date(task.startDate),
+            `Task ${index2}`,
+            new Date(start),
             null,
-            Number(subtask.timeEstimate) * 24 * 60 * 60 * 1000,
-            40,
+            Number(subtask.timeEstimate) * 24 * 60 * 60 * 999,
+            subCompletion,
             null,
           ]);
         } else if (index3 === 0) {
@@ -78,11 +93,11 @@ function GoogleGantt({ currentOrder }) {
           items[index].push([
             subtaskID,
             subtask.description,
-            task.taskName,
+            `Task ${index2}`,
             new Date(start),
             null,
             Number(subtask.timeEstimate) * 24 * 60 * 60 * 1000,
-            40,
+            subCompletion,
             null,
           ]);
         } else {
@@ -90,11 +105,11 @@ function GoogleGantt({ currentOrder }) {
           items[index].push([
             subtaskID,
             subtask.description,
-            task.taskName,
+            `Task ${index2}`,
             null,
             null,
             Number(subtask.timeEstimate) * 24 * 60 * 60 * 1000,
-            40,
+            subCompletion,
             JSON.stringify(subtaskID - 1),
           ]);
         }
@@ -113,7 +128,6 @@ function GoogleGantt({ currentOrder }) {
   return (
     <Card sx={{ p: "1.5rem" }}>
       {items.map((item, index) => {
-        console.log(item[index]);
         const data = [columns, ...item];
         return (
           <>
