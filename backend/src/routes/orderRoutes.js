@@ -9,7 +9,11 @@ const {
 } = require("../controllers/orderController");
 
 router.get("/", getAllOrder);
-router.post("/neworder/:orgId", newOrder);
-router.route("/:orderID").get(getOrder).put(updateOrder).delete(deleteOrder);
+router.post("/neworder/:orgId", protect, authorize("admin"), newOrder);
+router
+  .route("/:orderID")
+  .get(getOrder)
+  .put(protect, updateOrder)
+  .delete(protect, authorize("admin"), deleteOrder);
 
 module.exports = router;
