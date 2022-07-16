@@ -42,6 +42,9 @@ function Items({ currentOrder }) {
       finished.push(item);
     } else {
       unfinished.push(item);
+      console.log(
+        item.tasks.reduce((prev, current) => prev.duration + current.duration)
+      );
     }
   });
 

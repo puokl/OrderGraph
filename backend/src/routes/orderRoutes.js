@@ -8,6 +8,8 @@ const {
   deleteOrder,
 } = require("../controllers/orderController");
 
+const { protect, authorize } = require("../middleware/auth");
+
 router.get("/", getAllOrder);
 router.post("/neworder/:orgId", protect, authorize("admin"), newOrder);
 router
