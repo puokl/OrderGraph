@@ -4,7 +4,7 @@ import axios from "src/utils/axios2";
 import { Helmet } from "react-helmet-async";
 import Footer from "src/components/Footer";
 import { Grid, Typography } from "@mui/material";
-
+import { useParams } from "react-router-dom";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PageHeader from "./PageHeader";
 
@@ -19,6 +19,26 @@ function CreateOrder() {
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
   const [startDate, setStartDate] = useState();
+  const [orderItems, setOrderItems] = useState([]);
+  const { orderID } = useParams();
+
+  const getOrder = async (orderID) => {
+    try {
+      const response = await axios.get("/api/v1/order/" + orderID);
+      console.log(response);
+      setSelectedClient(
+        clients.find((client) => client._id === response.data.data.client)
+      );
+      setStartDate(response.data.data.startDate);
+      setOrderItems(response.data.data.items);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (orderID) {
+    getOrder(orderID);
+  }
 
   const getClients = async () => {
     try {
@@ -83,7 +103,7 @@ function CreateOrder() {
               {t("Items")}
             </Typography>
             {/* Below is the add items component, currently only the button is done, not the form component to add items */}
-            <Items />
+            <Items orderItems={orderItems} setOrderItems={setOrderItems} />
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Invoices")}
             </Typography>
@@ -96,7 +116,12 @@ function CreateOrder() {
               {t(" ")}
             </Typography>
             {/* Below is the Status component, we need to somehow convert the date string that the date picker (which is currently in default US format) comes with to a UTC string */}
-            <Status startDate={startDate} setStartDate={setStartDate} />
+            <Status
+              startDate={startDate}
+              setStartDate={setStartDate}
+              selectedClient={selectedClient}
+              orderItems={orderItems}
+            />
             <Documents />
           </Grid>
 

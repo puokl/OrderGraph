@@ -12,10 +12,10 @@ const newOrder = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Get an order
-// @route   GET /api/v1/order/:ordId
+// @route   GET /api/v1/order/:orderID
 // @access  Private
 const getOrder = asyncHandler(async (req, res, next) => {
-  const order = await Order.findById(req.params.ordId);
+  const order = await Order.findById(req.params.orderID);
   res.status(200).json({ success: true, data: order });
 });
 
@@ -28,12 +28,12 @@ const getAllOrder = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Update an order
-// @route   PUT /api/v1/order/:ordId
+// @route   PUT /api/v1/order/:orderID
 // @access  Private
 
 //dotnotation
 const updateOrder = asyncHandler(async (req, res, next) => {
-  let order = await Order.findById(req.params.ordId);
+  let order = await Order.findById(req.params.orderID);
 
   // dot notation is needed in order to update an embedded document
   function convertToDotNotation(obj, newObj = {}, prefix = "") {
@@ -50,7 +50,7 @@ const updateOrder = asyncHandler(async (req, res, next) => {
 
   const dotNotated = convertToDotNotation(req.body);
 
-  order = await Order.findByIdAndUpdate(req.params.ordId, dotNotated, {
+  order = await Order.findByIdAndUpdate(req.params.orderID, dotNotated, {
     new: true,
   });
 
@@ -58,10 +58,10 @@ const updateOrder = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Delete single order
-// @route   DELETE /api/v1/order/:ordId
+// @route   DELETE /api/v1/order/:orderID
 // @access  Private
 const deleteOrder = asyncHandler(async (req, res, next) => {
-  await Order.findByIdAndDelete(req.params.ordId);
+  await Order.findByIdAndDelete(req.params.orderID);
   res.status(200).json({ success: true, data: {} });
 });
 

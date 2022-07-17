@@ -13,13 +13,16 @@ import {
 import { useSnackbar } from "notistack";
 import useAuth from "src/hooks/useAuth";
 
-import { DateTimePicker } from "@mui/lab";
-
-function Status({ startDate, setStartDate, orderItems, selectedClient }) {
+function Status({ currentOrder }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [isReady, setReady] = useState(false);
+  const dateString =
+    new Date(currentOrder.startDate).toDateString() +
+    " " +
+    new Date(currentOrder.startDate).toLocaleTimeString("it-IT");
+  console.log(dateString);
 
   const multipleExist = (arr, values) => {
     return values.every((value) => {
@@ -27,40 +30,27 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
     });
   };
 
-  const taskArray = [];
-
-  const fullOrder = {
-    ...(orderItems.length > 0 ? { items: orderItems } : null),
-    ...(selectedClient ? { client: selectedClient._id } : null),
-    ...(startDate ? { startDate: startDate } : null),
-    status: "upcoming",
-    draft: true,
-    ...(orderItems[0]?.tasks?.length > 0 ? { tasks: taskArray } : null),
-    createdByUser: user._id,
-    createdByOrganization: user.organization,
-  };
   useEffect(() => {
     console.log(isReady);
-    if (
-      multipleExist(Object.keys(fullOrder), [
-        "items",
-        "client",
-        "startDate",
-        "tasks",
-      ])
-    ) {
-      setReady(true);
+    if (currentOrder && currentOrder.status !== "active") {
+      if (
+        multipleExist(Object.keys(currentOrder), [
+          "items",
+          "client",
+          "startDate",
+          "tasks",
+        ])
+      ) {
+        setReady(true);
+      }
     }
-  }, [fullOrder]);
+  }, [currentOrder]);
 
   const saveDraft = async () => {
-    fullOrder.items?.tasks?.forEach((item) => (item.startDate = startDate));
-    orderItems.forEach((item) => taskArray.push(...item.tasks));
-
     try {
       const response = await axios.post(
         "/api/v1/order/neworder/" + user.organization,
-        fullOrder
+        currentOrder
       );
       console.log(response);
 
@@ -89,29 +79,13 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
   };
 
   const activateOrder = async () => {
-    fullOrder.status = "active";
-    fullOrder.draft = false;
-    fullOrder.items.forEach((item) => {
-      console.log("hi");
-      item.tasks.forEach((task) => {
-        task.startDate = startDate;
-        console.log("hi2");
-        let duration = 0;
-        task.subTasks.forEach(
-          (subtask) => (duration = duration + Number(subtask.timeEstimate))
-        );
-        {
-          duration === 0
-            ? (task.duration = duration + 1)
-            : (task.duration = duration);
-        }
-      });
-    });
-    orderItems.forEach((item) => taskArray.push(...item.tasks));
+    currentOrder.status = "active";
+    currentOrder.draft = false;
+
     try {
       const response = await axios.post(
         "/api/v1/order/neworder/" + user.organization,
-        fullOrder
+        currentOrder
       );
       console.log(response);
 
@@ -192,22 +166,18 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
               py: 1,
             }}
           >
-            {t("Draft / Active")}
+            {currentOrder ? t(`${currentOrder.status}`) : t("")}
           </Typography>
-          <DateTimePicker
-            value={startDate}
-            onChange={(date) => setStartDate(date)}
-            label={t("Start date and time...")}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                margin="normal"
-                variant="outlined"
-                fullWidth
-                color="primary"
-              />
-            )}
-          />
+          <Typography
+            variant="h5"
+            gutterBottom
+            fontWeight="bold"
+            sx={{
+              py: 1,
+            }}
+          >
+            {currentOrder ? dateString : t("Not yet set")}
+          </Typography>
         </Box>
       </Box>
       <Box
