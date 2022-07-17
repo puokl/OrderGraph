@@ -19,8 +19,7 @@ function GoogleGantt({ currentOrder }) {
     { type: "string", label: "Dependencies" },
   ];
 
-  const rows = [];
-  const items = [];
+    const items = [];
 
   currentOrder.items.forEach((item, index) => {
     items.push([]);
@@ -59,7 +58,7 @@ function GoogleGantt({ currentOrder }) {
           null,
           task.duration * 24 * 60 * 60 * 1000,
           completion,
-          null,
+          JSON.stringify(taskID - items[index].length),
         ]);
       }
 
@@ -122,6 +121,7 @@ function GoogleGantt({ currentOrder }) {
     height: "100%",
     gantt: {
       defaultStartDateMillis: new Date(2015, 3, 28),
+      sortTasks: false,
     },
   };
 

@@ -89,7 +89,7 @@ function OrderDetails() {
               {t("Items")}
             </Typography>
             {Object.keys(currentOrder).length > 0 ? (
-              <Items currentOrder={currentOrder} />
+              <Items currentOrder={currentOrder} getOrder={getOrder} />
             ) : null}
           </Grid>
         </Grid>
