@@ -15,7 +15,13 @@ import useAuth from "src/hooks/useAuth";
 
 import { DateTimePicker } from "@mui/lab";
 
-function Status({ startDate, setStartDate, orderItems, selectedClient }) {
+function Status({
+  startDate,
+  setStartDate,
+  orderItems,
+  selectedClient,
+  currentOrder,
+}) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -33,12 +39,14 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
     ...(orderItems.length > 0 ? { items: orderItems } : null),
     ...(selectedClient ? { client: selectedClient._id } : null),
     ...(startDate ? { startDate: startDate } : null),
+
     status: "upcoming",
     draft: true,
     ...(orderItems[0]?.tasks?.length > 0 ? { tasks: taskArray } : null),
     createdByUser: user._id,
     createdByOrganization: user.organization,
   };
+
   useEffect(() => {
     console.log(isReady);
     if (
@@ -125,7 +133,7 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
           TransitionComponent: Zoom,
         });
       } else {
-        enqueueSnackbar(t("other status"), {
+        enqueueSnackbar(t("There was an error activating the order, please try again"), {
           variant: "error",
           anchorOrigin: {
             vertical: "top",
@@ -135,6 +143,56 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
         });
       }
     } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateOrder = async () => {
+    fullOrder.status = "active";
+    fullOrder.draft = false;
+    fullOrder.items.forEach((item) => {
+      console.log("hi");
+      item.tasks.forEach((task) => {
+        task.startDate = startDate;
+        console.log("hi2");
+        let duration = 0;
+        task.subTasks.forEach(
+          (subtask) => (duration = duration + Number(subtask.timeEstimate))
+        );
+        {
+          duration === 0
+            ? (task.duration = duration + 1)
+            : (task.duration = duration);
+        }
+      });
+    });
+    orderItems.forEach((item) => taskArray.push(...item.tasks));
+
+    try {
+      const response = await axios.put(
+        "/api/v1/order/" + currentOrder._id,
+        fullOrder
+      );
+      console.log(response);
+      if (response.status === 200) {
+        enqueueSnackbar(t("The item was saved successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      enqueueSnackbar(t("There was an error"), {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+        TransitionComponent: Zoom,
+      });
       console.error(err);
     }
   };
@@ -235,15 +293,27 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
           }
         >
           <div>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              disabled={isReady ? false : true}
-              onClick={() => activateOrder()}
-            >
-              Activate
-            </Button>
+            {currentOrder ? (
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                disabled={isReady ? false : true}
+                onClick={() => activateOrder()}
+              >
+                Update
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                disabled={isReady ? false : true}
+                onClick={() => activateOrder()}
+              >
+                Activate
+              </Button>
+            )}
           </div>
         </Tooltip>
       </Box>
