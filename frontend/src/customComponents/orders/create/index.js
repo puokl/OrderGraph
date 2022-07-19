@@ -21,11 +21,13 @@ function CreateOrder() {
   const [startDate, setStartDate] = useState();
   const [orderItems, setOrderItems] = useState([]);
   const { orderID } = useParams();
+  const [currentOrder, setCurrentOrder] = useState();
 
   const getOrder = async (orderID) => {
     try {
       const response = await axios.get("/api/v1/order/" + orderID);
       console.log(response);
+      setCurrentOrder(response.data.data);
       setSelectedClient(
         clients.find((client) => client._id === response.data.data.client)
       );
@@ -35,10 +37,6 @@ function CreateOrder() {
       console.error(err);
     }
   };
-
-  if (orderID) {
-    getOrder(orderID);
-  }
 
   const getClients = async () => {
     try {
@@ -52,6 +50,9 @@ function CreateOrder() {
 
   useEffect(() => {
     getClients();
+    if (orderID) {
+      getOrder(orderID);
+    }
   }, []);
 
   return (
@@ -98,12 +99,13 @@ function CreateOrder() {
               clients={clients}
               selectedClient={selectedClient}
               setSelectedClient={setSelectedClient}
+              currentOrder={currentOrder}
             />
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Items")}
             </Typography>
             {/* Below is the add items component, currently only the button is done, not the form component to add items */}
-            <Items orderItems={orderItems} setOrderItems={setOrderItems} />
+            <Items orderItems={orderItems} setOrderItems={setOrderItems} currentOrder={currentOrder}/>
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Invoices")}
             </Typography>
@@ -121,6 +123,8 @@ function CreateOrder() {
               setStartDate={setStartDate}
               selectedClient={selectedClient}
               orderItems={orderItems}
+              orderID={orderID}
+              currentOrder={currentOrder}
             />
             <Documents />
           </Grid>

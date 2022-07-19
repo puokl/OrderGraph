@@ -60,7 +60,7 @@ const CardAddAction = styled(Card)(
 
 const filter = createFilterOptions();
 
-function Items({ orderItems, setOrderItems }) {
+function Items({ orderItems, setOrderItems,currentOrder }) {
   const { t } = useTranslation();
 
   const [items, setItems] = useState([]);

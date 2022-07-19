@@ -36,6 +36,20 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
     console.log(orderToUpdate.items[orderToUpdate.items.indexOf(itemToEdit)]);
     orderToUpdate.items[orderToUpdate.items.indexOf(itemToEdit)] = selectedItem;
 
+    orderToUpdate.items.forEach((item) => {
+      item.tasks.forEach((task) => {
+        let duration = 0;
+        task.subTasks.forEach(
+          (subtask) => (duration = duration + Number(subtask.timeEstimate))
+        );
+        {
+          duration === 0
+            ? (task.duration = duration + 1)
+            : (task.duration = duration);
+        }
+      });
+    });
+
     try {
       const response = await axios.put(
         "/api/v1/order/" + orderToUpdate._id,
@@ -65,6 +79,68 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
     }
     onClose();
   };
+  const handleItemTemplate = async () => {
+    try {
+      const response = await axios.post("/api/v1/item/newitem", selectedItem);
+      console.log(response);
+      if (response.status === 201) {
+        enqueueSnackbar(t("Item template was saved successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(
+        t("There was an error saving the item template, please try again"),
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        }
+      );
+    }
+  };
+
+  const handleItemTemplateUpdate = async () => {
+    try {
+      const response = await axios.put(
+        "/api/v1/item/" + selectedItem._id,
+        selectedItem
+      );
+      console.log(response);
+      if (response.status === 200) {
+        enqueueSnackbar(t("Item template was updated successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(
+        t("There was an error updating the item template, please try again"),
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        }
+      );
+    }
+  };
 
   return (
     <Card sx={{ m: "1rem", p: 2, mb: "1rem" }}>
@@ -85,6 +161,33 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
             setSelectedItem({ ...itemCopy });
           }}
         />
+        {selectedItem._id ? (
+          <Button
+            aria-label="Update Template"
+            size="small"
+            color="primary"
+            style={{
+              backgroundColor: "rgba(85, 105, 255, 0.1)",
+              minWidth: "2rem",
+            }}
+            onClick={() => handleItemTemplateUpdate()}
+          >
+            {t("Update item template")}
+          </Button>
+        ) : (
+          <Button
+            aria-label="Save Template"
+            size="small"
+            color="primary"
+            style={{
+              backgroundColor: "rgba(85, 105, 255, 0.1)",
+              minWidth: "2rem",
+            }}
+            onClick={() => handleItemTemplate()}
+          >
+            {t("Save item as template")}
+          </Button>
+        )}
         <Button
           aria-label="Delete"
           color="primary"
@@ -405,8 +508,8 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                           style={{
                             backgroundColor: "rgba(85, 105, 255, 0.1)",
                             minWidth: 0,
-                            width: "1.3rem",
-                            height: "1.3rem",
+                            width: "1.5rem",
+                            height: "1.5rem",
                             borderRadius: "50%",
                           }}
                           onClick={(e) => {

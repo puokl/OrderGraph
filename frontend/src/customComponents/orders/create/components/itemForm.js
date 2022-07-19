@@ -14,11 +14,12 @@ import {
   Box,
   Typography,
   Checkbox,
+  Zoom,
 } from "@mui/material";
 
 import TextField from "@mui/material/TextField";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-
+import { useSnackbar } from "notistack";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
@@ -33,12 +34,80 @@ function ItemForm({
   setSelectedItem,
   orderItems,
   setOrderItems,
+  currentOrder,
 }) {
   const { t } = useTranslation();
+  const { enqueueSnackbar } = useSnackbar();
 
   const removeItem = (index) => {
     const orderItemsMinusRemoved = orderItems.filter((item, i) => i !== index);
     setOrderItems(orderItemsMinusRemoved);
+  };
+
+  const handleItemTemplate = async (index) => {
+    try {
+      const response = await axios.post(
+        "/api/v1/item/newitem",
+        orderItems[index]
+      );
+      console.log(response);
+      if (response.status === 201) {
+        enqueueSnackbar(t("Item template was saved successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(
+        t("There was an error saving the item template, please try again"),
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        }
+      );
+    }
+  };
+
+  const handleItemTemplateUpdate = async () => {
+    try {
+      const response = await axios.put(
+        "/api/v1/item/" + orderItems[index]._id,
+        orderItems[index]
+      );
+      console.log(response);
+      if (response.status === 200) {
+        enqueueSnackbar(t("Item template was updated successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(
+        t("There was an error updating the item template, please try again"),
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        }
+      );
+    }
   };
 
   return (
@@ -152,7 +221,33 @@ function ItemForm({
             <TextField {...params} label="Item name..." />
           )}
         />
-
+        {orderItems[index]._id ? (
+          <Button
+            aria-label="Update Template"
+            size="small"
+            color="primary"
+            style={{
+              backgroundColor: "rgba(85, 105, 255, 0.1)",
+              minWidth: "2rem",
+            }}
+            onClick={() => handleItemTemplateUpdate(index)}
+          >
+            {t("Update item template")}
+          </Button>
+        ) : (
+          <Button
+            aria-label="Save Template"
+            size="small"
+            color="primary"
+            style={{
+              backgroundColor: "rgba(85, 105, 255, 0.1)",
+              minWidth: "2rem",
+            }}
+            onClick={() => handleItemTemplate(index)}
+          >
+            {t("Save item as template")}
+          </Button>
+        )}
         <Button
           aria-label="Delete"
           size="small"
@@ -437,7 +532,7 @@ function ItemForm({
                 const newOption = { ...orderItems[index] };
 
                 newOption.tasks[0].taskName = e.target.value;
-                if (!newOption.tasks[0].subTasks) {
+                if (!newOption.tasks[0].subTasks.length) {
                   newOption.tasks[0].subTasks = [];
                 }
 
@@ -561,8 +656,8 @@ function ItemForm({
                           style={{
                             backgroundColor: "rgba(85, 105, 255, 0.1)",
                             minWidth: 0,
-                            width: "1.3rem",
-                            height: "1.3rem",
+                            width: "1.5rem",
+                            height: "1.5rem",
                             borderRadius: "50%",
                           }}
                           onClick={(e) => {

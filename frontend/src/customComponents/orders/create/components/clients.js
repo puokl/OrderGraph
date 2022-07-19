@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-function Clients({ clients, selectedClient, setSelectedClient }) {
+function Clients({ clients, selectedClient, setSelectedClient, currentOrder }) {
   const { t } = useTranslation();
 
   const handleClientSelect = (index) => {
