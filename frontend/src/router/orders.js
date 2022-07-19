@@ -25,6 +25,9 @@ const Overview = Loader(
 const CreateOrder = Loader(
   lazy(() => import("src/customComponents/orders/create/index"))
 );
+const OrderDetails = Loader(
+  lazy(() => import("src/customComponents/orders/details/index"))
+);
 
 const ordersRoutes = [
   {
@@ -44,8 +47,12 @@ const ordersRoutes = [
     element: <CreateOrder />,
   },
   {
-    path: ":orderID",
-    element: <Gantt />,
+    path: "/:orderID",
+    element: <OrderDetails />,
+  },
+  {
+    path: "edit/:orderID",
+    element: <CreateOrder />,
   },
 ];
 

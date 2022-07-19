@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 import {
   Typography,
@@ -15,7 +16,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-function Clients({ clients, selectedClient, setSelectedClient }) {
+function Clients({ clients, selectedClient, setSelectedClient, currentOrder }) {
   const { t } = useTranslation();
 
   const handleClientSelect = (index) => {
@@ -73,7 +74,16 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 marginRight: "1rem",
               }}
             >
-              {t("Edit client")}
+              <Link
+                to={`/clients/details/${selectedClient._id}`}
+                style={{
+                  textDecoration: "none",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                {t("Edit client")}
+              </Link>
             </Button>
             <Button
               aria-label="Delete"
