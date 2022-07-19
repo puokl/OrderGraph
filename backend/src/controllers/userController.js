@@ -85,6 +85,23 @@ const deleteUser = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc      Delete multiple users
+// @route     DELETE /api/v1/user/deleteMany
+// @access    Private/Admin
+const deleteMany = asyncHandler(async (req, res, next) => {
+  const { ids } = req.body;
+  await User.deleteMany({ _id: { $in: ids } });
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
+// body req = {
+//     "ids": ["62be9fbc0c4e72b07b692720", "62d01fac83c3f94bee559b03"]
+
+// }
+
 module.exports = {
   getUsers,
   getUser,
@@ -92,4 +109,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getUsersInOrg,
+  deleteMany,
 };
