@@ -9,7 +9,7 @@ import {
   MenuItem,
   InputLabel,
 } from "@mui/material";
-import React, { forwardRef, useState, useCallback } from "react";
+import React, { forwardRef, useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { Formik, useField, Field } from "formik";
@@ -24,9 +24,20 @@ function ClientDetails({
   values,
   errors,
   name,
+  clientToEdit,
+  setValues,
+  setShowContact
 }) {
   const { t } = useTranslation();
   const projectTags = [{ title: "Person" }, { title: "Company" }];
+
+  useEffect(() => {
+    console.log("hi");
+    setValues({ ...clientToEdit });
+    if(clientToEdit.clientType === 'Company'){
+      setShowContact(true)
+    }
+  }, [clientToEdit]);
 
   /* Autocomplete Start */
 

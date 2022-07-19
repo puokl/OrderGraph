@@ -15,6 +15,7 @@ const Loader = (Component) => (props) =>
 const AddClient = Loader(
   lazy(() => import("src/customComponents/clients/addClient"))
 );
+
 const ClientDetails = Loader(
   lazy(() => import("src/customComponents/clients/ClientPage"))
 );
@@ -28,6 +29,12 @@ const clientsRoutes = [
     path: "add",
     element: <AddClient />,
   },
+
+  {
+    path: "/edit/:clientId",
+    element: <AddClient />,
+  },
+
   {
     path: "/details",
     element: <ClientDetails />,
@@ -38,7 +45,7 @@ const clientsRoutes = [
   },
 
   {
-    path: "/details/:clientID",
+    path: "/details/:clientId",
     element: <ClientDetails />,
   },
 ];
