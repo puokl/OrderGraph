@@ -198,7 +198,6 @@ function AddClient() {
   const [formData, setFormData] = useState("");
   const [controlState, setControlState] = useState(false);
   const [clientToEdit, setClientToEdit] = useState({
-    /* Client Details */
     clientType: "",
     clientName: "",
     clientEMail: "",
@@ -343,59 +342,63 @@ function AddClient() {
           height: ${theme.spacing(5)};
   `
   );
-  const handleGetClient = async () => {
-    setControlState(true);
-    const response = await axios.get("/api/v1/client/" + clientId);
-    console.log(response);
-    setClientToEdit({
-      /* Client Details */
-      clientType: response.data.data.clientType,
-      clientName: response.data.data.clientName,
-      clientEMail: response.data.data.clientEMail,
-      clientPhoneNumber: response.data.data.clientPhoneNumber,
-      /* Billing Address */
-      billingAddress: {
-        Address: "",
-        Zip: "",
-        City: "",
-        State: "",
-        AdditionalInformation: "",
-      },
-      /* Shipping Address */
-      shippingAddress: {
-        Address: "",
-        Zip: "",
-        City: "",
-        State: "",
-        AdditionalInformation: "",
-      },
-      /* Financial */
-      financials: {
-        registrationNumber: "",
-        fiscalNumber: "",
-        IBAN: "",
-        bankName: "",
-      },
-      /* Contact Person */
-      contact: [
-        {
-          contactName: "",
-          contactRole: "",
-          contactDepartment: "",
-          contactPhoneNumber: "",
-          contactEMail: "",
+  const handleGetClient = async (clientId) => {
+    try {
+      const response = await axios.get("/api/v1/client/" + clientId);
+      console.log(response);
+      const testtest = {
+        /* Client Details */
+        clientType: response.data.data.clientType,
+        clientName: response.data.data.clientName,
+        clientEMail: response.data.data.clientEMail,
+        clientPhoneNumber: response.data.data.clientPhoneNumber,
+        /* Billing Address */
+        billingAddress: {
+          Address: response.data.data.billingAddress.Address,
+          Zip: response.data.data.billingAddress.Zip,
+          City: response.data.data.billingAddress.City,
+          State: response.data.data.billingAddress.State,
+          AdditionalInformation:
+            response.data.data.billingAddress.AdditionalInformation,
         },
-      ],
+        /* Shipping Address */
+        shippingAddress: {
+          Address: response.data.data.shippingAddress.Address,
+          Zip: response.data.data.shippingAddress.Zip,
+          City: response.data.data.shippingAddress.City,
+          State: response.data.data.shippingAddress.State,
+          AdditionalInformation:
+            response.data.data.shippingAddress.AdditionalInformation,
+        },
+        /* Financial */
+        financials: {
+          registrationNumber: response.data.data.financials.registrationNumber,
+          fiscalNumber: response.data.data.financials.fiscalNumber,
+          IBAN: response.data.data.financials.IBAN,
+          bankName: response.data.data.financials.bankName,
+        },
+        /* Contact Person */
+        contact: [
+          {
+            contactName: response.data.data.contact.contactName,
+            contactRole: response.data.data.contact.contactRole,
+            contactDepartment: response.data.data.contact.contactDepartment,
+            contactPhoneNumber: response.data.data.contact.contactPhoneNumber,
+            contactEMail: response.data.data.contact.contactEMail,
+          },
+        ],
 
-      /* Shipping Address same Adress as Billing Adress */
-      SaSameAsBa: false,
-    });
+        /* Shipping Address same Adress as Billing Adress */
+        SaSameAsBa: false,
+      };
+      setClientToEdit({ ...response.data.data });
+    } catch (err) {
+      console.error(err);
+    }
   };
   useEffect(() => {
-    if (clientId) {
-      handleGetClient();
-      console.log("CTE: ", clientToEdit);
-    }
+    handleGetClient(clientId);
+    console.log("CTE: ", clientToEdit);
   }, []);
 
   const handleCreateClient = async (values) => {
@@ -441,13 +444,7 @@ function AddClient() {
         <PageHeader />
       </PageTitleWrapper>
       <Formik
-        initialValues={
-          clientId
-            ? { ...clientToEdit }
-            : {
-                ...INITIAL_FORM_STATE,
-              }
-        }
+        initialValues={{ ...clientToEdit }}
         validationSchema={
           showContact ? COMPANY_FORM_VALIDATION : PERSON_FORM_VALIDATION
         }
@@ -468,6 +465,7 @@ function AddClient() {
           setFieldValue,
           values,
           validateForm,
+          setValues,
         }) => (
           <Form>
             <Grid
@@ -496,7 +494,11 @@ function AddClient() {
                     errors={errors}
                     setFieldValue={setFieldValue}
                     handleChange={handleChange}
+                    clientToEdit={clientToEdit}
+                    setValues={setValues}
+                    setShowContact={setShowContact}
                   />
+
                   <BillingAdress
                     getIn={getIn}
                     updateFields={updateFields}
@@ -533,6 +535,7 @@ function AddClient() {
                         setFieldValue={setFieldValue}
                         handleChange={handleChange}
                       />
+
                       {cArray.map((item, index) => (
                         <ContactPerson
                           touched={touched}
