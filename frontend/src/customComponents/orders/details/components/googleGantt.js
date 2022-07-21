@@ -46,10 +46,25 @@ function GoogleGantt({ currentOrder }) {
           completion,
           null,
         ]);
-      } else {
+      } else if (index2 === 1) {
         const start =
           Date.parse(task.startDate) +
           Number(item.tasks[index2 - 1].duration) * 24 * 60 * 60 * 1000;
+        items[index].push([
+          taskID,
+          task.taskName,
+          `Task ${index2}`,
+          new Date(start),
+          null,
+          task.duration * 24 * 60 * 60 * 1000,
+          completion,
+          JSON.stringify(taskID - items[index].length),
+        ]);
+      } else {
+        const start =
+          Date.parse(task.startDate) +
+          Number(item.tasks[index2 - 1].duration) * 24 * 60 * 60 * 1000 +
+          Number(item.tasks[index2 - 2].duration) * 24 * 60 * 60 * 1000;
         items[index].push([
           taskID,
           task.taskName,
@@ -83,11 +98,28 @@ function GoogleGantt({ currentOrder }) {
             subCompletion,
             null,
           ]);
-        } else if (index3 === 0) {
+        } else if (index3 === 0 && index2 === 1) {
           const subtaskID = nextId();
           const start =
             Date.parse(task.startDate) +
             Number(item.tasks[index2 - 1].duration) * 24 * 60 * 60 * 1000;
+
+          items[index].push([
+            subtaskID,
+            subtask.description,
+            `Task ${index2}`,
+            new Date(start),
+            null,
+            Number(subtask.timeEstimate) * 24 * 60 * 60 * 1000,
+            subCompletion,
+            null,
+          ]);
+        } else if (index3 === 0) {
+          const subtaskID = nextId();
+          const start =
+            Date.parse(task.startDate) +
+            Number(item.tasks[index2 - 1].duration) * 24 * 60 * 60 * 1000 +
+            Number(item.tasks[index2 - 2]?.duration) * 24 * 60 * 60 * 1000;
 
           items[index].push([
             subtaskID,
@@ -115,10 +147,11 @@ function GoogleGantt({ currentOrder }) {
       });
     });
   });
-  console.log(items);
+
+  const graphHeight = items[0].length * 65;
 
   const options = {
-    height: "100%",
+    height: `${graphHeight}px`,
     gantt: {
       defaultStartDateMillis: new Date(2015, 3, 28),
       sortTasks: false,
@@ -137,7 +170,7 @@ function GoogleGantt({ currentOrder }) {
             <Chart
               chartType="Gantt"
               width="100%"
-              height="300px"
+              height={`${graphHeight}px`}
               data={data}
               options={options}
             />

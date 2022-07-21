@@ -51,15 +51,25 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
     currentOrder.status = "upcoming";
     currentOrder.draft = true;
 
+    let response;
+
     try {
-      const response = await axios.post(
-        "/api/v1/order/neworder/" + user.organization,
-        currentOrder
-      );
+      if (currentOrder._id) {
+        response = await axios.put(
+          "/api/v1/order/" + currentOrder._id,
+          currentOrder
+        );
+      } else {
+        response = await axios.post(
+          "/api/v1/order/neworder/" + user.organization,
+          currentOrder
+        );
+      }
+
       console.log(response);
 
       if (response.status === 200) {
-        enqueueSnackbar(t("The order was created successfully"), {
+        enqueueSnackbar(t("The order was successfully saved as a draft."), {
           variant: "success",
           anchorOrigin: {
             vertical: "top",
@@ -67,17 +77,17 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
           },
           TransitionComponent: Zoom,
         });
-      } else {
-        enqueueSnackbar(t("other status"), {
-          variant: "error",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
       }
+      navigate("/orders/edit/" + response.data.data._id, { replace: true });
     } catch (err) {
+      enqueueSnackbar(t("There was an error saving the draft order"), {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+        TransitionComponent: Zoom,
+      });
       console.error(err);
     }
   };
@@ -99,11 +109,20 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
         }
       });
     });
+    let response;
+
     try {
-      const response = await axios.post(
-        "/api/v1/order/neworder/" + user.organization,
-        currentOrder
-      );
+      if (currentOrder._id) {
+        response = await axios.put(
+          "/api/v1/order/" + currentOrder._id,
+          currentOrder
+        );
+      } else {
+        response = await axios.post(
+          "/api/v1/order/neworder/" + user.organization,
+          currentOrder
+        );
+      }
       console.log(response);
 
       if (response.status === 200) {
@@ -115,21 +134,20 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
           },
           TransitionComponent: Zoom,
         });
-      } else {
-        enqueueSnackbar(
-          t("There was an error activating the order, please try again"),
-          {
-            variant: "error",
-            anchorOrigin: {
-              vertical: "top",
-              horizontal: "right",
-            },
-            TransitionComponent: Zoom,
-          }
-        );
       }
       navigate("/orders/" + response.data.data._id, { replace: true });
     } catch (err) {
+      enqueueSnackbar(
+        t("There was an error activating the order, please try again"),
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        }
+      );
       console.error(err);
     }
   };
@@ -310,7 +328,7 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
               isReady
                 ? t("Activate this order")
                 : t(
-                    "Please complete all required part of the order to activate it"
+                    "Please complete all required parts of the order to activate it"
                   )
             }
           >

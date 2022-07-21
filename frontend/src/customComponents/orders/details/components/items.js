@@ -31,13 +31,29 @@ function ItemEditDialog(props) {
     orderToUpdate,
   } = props;
 
+  const DialogBox = styled(Box)(
+    ({ theme }) => `
+            overflowY: scroll;
+            maxHeight: 90%;
+
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            
+            &::-webkit-scrollbar {
+              display: none;
+            }
+    `
+  );
+
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="md">
-      <ItemForm
-        itemToEdit={finishedItem ? finishedItem : unfinishedItem}
-        onClose={onClose}
-        orderToUpdate={orderToUpdate}
-      />
+      <DialogBox>
+        <ItemForm
+          itemToEdit={finishedItem ? finishedItem : unfinishedItem}
+          onClose={onClose}
+          orderToUpdate={orderToUpdate}
+        />
+      </DialogBox>
     </Dialog>
   );
 }
