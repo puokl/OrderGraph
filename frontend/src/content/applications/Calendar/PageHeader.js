@@ -2,9 +2,16 @@ import { Typography, Button, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import EventTwoToneIcon from "@mui/icons-material/EventTwoTone";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 const PageHeader = ({ handleCreateEvent }) => {
   const { t } = useTranslation();
+
+  let navigate = useNavigate();
+  const navigateToCreatOrder = () => {
+    let path = `/orders/create`;
+    navigate(path);
+  };
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -21,7 +28,7 @@ const PageHeader = ({ handleCreateEvent }) => {
           sx={{
             mt: { xs: 2, md: 0 },
           }}
-          onClick={handleCreateEvent}
+          onClick={navigateToCreatOrder}
           variant="contained"
           color="primary"
           startIcon={<EventTwoToneIcon fontSize="small" />}

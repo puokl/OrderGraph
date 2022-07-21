@@ -31,6 +31,7 @@ function CreateOrder() {
       setSelectedClient(
         clients.find((client) => client._id === response.data.data.client)
       );
+      console.log();
       setStartDate(response.data.data.startDate);
       setOrderItems(response.data.data.items);
     } catch (err) {
@@ -53,6 +54,7 @@ function CreateOrder() {
     if (orderID) {
       getOrder(orderID);
     }
+    console.log(selectedClient);
   }, []);
 
   return (
@@ -105,7 +107,11 @@ function CreateOrder() {
               {t("Items")}
             </Typography>
             {/* Below is the add items component, currently only the button is done, not the form component to add items */}
-            <Items orderItems={orderItems} setOrderItems={setOrderItems} currentOrder={currentOrder}/>
+            <Items
+              orderItems={orderItems}
+              setOrderItems={setOrderItems}
+              currentOrder={currentOrder}
+            />
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Invoices")}
             </Typography>

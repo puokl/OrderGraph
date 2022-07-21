@@ -180,7 +180,7 @@ function Status({ currentOrder }) {
           </Typography>
         </Box>
       </Box>
-      <Box
+      {/* <Box
         style={{
           display: "flex",
           flexDirection: "column",
@@ -216,7 +216,7 @@ function Status({ currentOrder }) {
             </Button>
           </div>
         </Tooltip>
-      </Box>
+      </Box> */}
     </Card>
   );
 }

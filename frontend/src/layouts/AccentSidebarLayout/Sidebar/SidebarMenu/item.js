@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
-import { NavLink as RouterLink } from "react-router-dom";
+// import { NavLink as RouterLink } from "react-router-dom";
+import { RouterLink2, ClonedElementWithMoreProps } from "./RouterLink";
 import clsx from "clsx";
 import { SidebarContext } from "src/contexts/SidebarContext";
 
@@ -90,7 +91,7 @@ const SidebarMenuItem = ({
       <Button
         disableRipple
         activeClassName="Mui-active"
-        component={RouterLink}
+        component={RouterLink2}
         onClick={closeSidebar}
         to={link}
         startIcon={Icon && <Icon />}

@@ -60,7 +60,7 @@ const CardAddAction = styled(Card)(
 
 const filter = createFilterOptions();
 
-function Items({ orderItems, setOrderItems,currentOrder }) {
+function Items({ orderItems, setOrderItems, currentOrder }) {
   const { t } = useTranslation();
 
   const [items, setItems] = useState([]);
@@ -116,6 +116,7 @@ function Items({ orderItems, setOrderItems,currentOrder }) {
           setSelectedItem={setSelectedItem}
           orderItems={orderItems}
           setOrderItems={setOrderItems}
+          getItems={getItems}
         />
       ))}
       <Tooltip arrow title={t("Click to add a new item")}>

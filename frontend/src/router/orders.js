@@ -35,10 +35,6 @@ const ordersRoutes = [
     element: <Calendar />,
   },
   {
-    path: "gantt",
-    element: <FullGantt />,
-  },
-  {
     path: "overview",
     element: <Overview />,
   },

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import useAuth from "src/hooks/useAuth";
-
+import { useNavigate } from "react-router-dom";
 import { DateTimePicker } from "@mui/lab";
 
 function Status({
@@ -21,11 +21,13 @@ function Status({
   orderItems,
   selectedClient,
   currentOrder,
+  orderID,
 }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [isReady, setReady] = useState(false);
+  let navigate = useNavigate();
 
   const multipleExist = (arr, values) => {
     return values.every((value) => {
@@ -133,15 +135,19 @@ function Status({
           TransitionComponent: Zoom,
         });
       } else {
-        enqueueSnackbar(t("There was an error activating the order, please try again"), {
-          variant: "error",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
+        enqueueSnackbar(
+          t("There was an error activating the order, please try again"),
+          {
+            variant: "error",
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right",
+            },
+            TransitionComponent: Zoom,
+          }
+        );
       }
+      navigate("/orders/" + response.data.data._id, { replace: true });
     } catch (err) {
       console.error(err);
     }
@@ -250,7 +256,9 @@ function Status({
               py: 1,
             }}
           >
-            {t("Draft / Active")}
+            {currentOrder?.status
+              ? t(`${currentOrder.status}`)
+              : t("Unsaved order")}
           </Typography>
           <DateTimePicker
             value={startDate}
@@ -268,42 +276,49 @@ function Status({
           />
         </Box>
       </Box>
-      <Box
-        style={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Button
-          variant="outlined"
-          color="secondary"
-          sx={{ mb: 1 }}
-          onClick={() => saveDraft()}
+
+      {currentOrder?.draft === false ? (
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-          Save draft
-        </Button>
-        <Tooltip
-          arrow
-          title={
-            isReady
-              ? t("Activate this order")
-              : t(
-                  "Please complete all required part of the order to activate it"
-                )
-          }
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{ mb: 1 }}
+            onClick={() => updateOrder()}
+          >
+            Update
+          </Button>
+        </Box>
+      ) : (
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-          <div>
-            {currentOrder ? (
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                disabled={isReady ? false : true}
-                onClick={() => activateOrder()}
-              >
-                Update
-              </Button>
-            ) : (
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{ mb: 1 }}
+            onClick={() => saveDraft()}
+          >
+            Save draft
+          </Button>
+          <Tooltip
+            arrow
+            title={
+              isReady
+                ? t("Activate this order")
+                : t(
+                    "Please complete all required part of the order to activate it"
+                  )
+            }
+          >
+            <div>
               <Button
                 fullWidth
                 variant="contained"
@@ -313,10 +328,10 @@ function Status({
               >
                 Activate
               </Button>
-            )}
-          </div>
-        </Tooltip>
-      </Box>
+            </div>
+          </Tooltip>
+        </Box>
+      )}
     </Card>
   );
 }

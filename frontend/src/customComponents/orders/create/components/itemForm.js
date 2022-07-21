@@ -35,6 +35,7 @@ function ItemForm({
   orderItems,
   setOrderItems,
   currentOrder,
+  getItems,
 }) {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
@@ -75,6 +76,7 @@ function ItemForm({
         }
       );
     }
+    getItems();
   };
 
   const handleItemTemplateUpdate = async () => {
@@ -532,8 +534,13 @@ function ItemForm({
                 const newOption = { ...orderItems[index] };
 
                 newOption.tasks[0].taskName = e.target.value;
-                if (!newOption.tasks[0].subTasks.length) {
-                  newOption.tasks[0].subTasks = [];
+                // if (newOption.tasks[0].subTasks.length === 0) {
+                //   newOption.tasks[0].subTasks = [];
+                // }
+                {
+                  newOption.tasks[0].subTasks
+                    ? null
+                    : (newOption.tasks[0].subTasks = []);
                 }
 
                 const newOrderItems = orderItems.fill(
@@ -599,7 +606,7 @@ function ItemForm({
                         }}
                         key={index3}
                       >
-                        <Checkbox />
+                        <Checkbox disabled />
                         <TextField
                           variant="standard"
                           placeholder="Add a subtask..."
@@ -686,7 +693,7 @@ function ItemForm({
                         justifyContent: "space-between",
                       }}
                     >
-                      <Checkbox />
+                      <Checkbox disabled />
                       <TextField
                         variant="standard"
                         placeholder="Add a subtask..."
