@@ -28,6 +28,9 @@ const CreateOrder = Loader(
 const OrderDetails = Loader(
   lazy(() => import("src/customComponents/orders/details/index"))
 );
+const EditOrder = Loader(
+  lazy(() => import("src/customComponents/orders/create/index"))
+);
 
 const ordersRoutes = [
   {
@@ -48,7 +51,7 @@ const ordersRoutes = [
   },
   {
     path: "edit/:orderID",
-    element: <CreateOrder />,
+    element: <EditOrder />,
   },
 ];
 

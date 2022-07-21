@@ -19,14 +19,14 @@ function GoogleGantt({ currentOrder }) {
     { type: "string", label: "Dependencies" },
   ];
 
-    const items = [];
+  const items = [];
 
   currentOrder.items.forEach((item, index) => {
     items.push([]);
 
     item.tasks.forEach((task, index2) => {
       let completion =
-        (task.subTasks.filter((subtask) => subtask.finished === true).length *
+        (task.subTasks?.filter((subtask) => subtask.finished === true).length *
           100) /
         task.subTasks.length;
 

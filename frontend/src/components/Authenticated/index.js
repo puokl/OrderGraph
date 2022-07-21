@@ -9,9 +9,7 @@ import TopNavigationLayout from "src/layouts/TopNavigationLayout";
 
 const Authenticated = (props) => {
   const { children } = props;
-  console.log(children);
   const auth = useAuth();
-  console.log(auth);
   const location = useLocation();
   const [requestedLocation, setRequestedLocation] = useState(null);
 

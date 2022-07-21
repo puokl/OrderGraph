@@ -15,62 +15,46 @@ import useAuth from "src/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { DateTimePicker } from "@mui/lab";
 
-function Status({
-  startDate,
-  setStartDate,
-  orderItems,
-  selectedClient,
-  currentOrder,
-  orderID,
-}) {
+function Status({ currentOrder, setCurrentOrder, orderID }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [isReady, setReady] = useState(false);
   let navigate = useNavigate();
 
-  const multipleExist = (arr, values) => {
-    return values.every((value) => {
-      return arr.includes(value);
-    });
-  };
-
-  const taskArray = [];
-
-  const fullOrder = {
-    ...(orderItems.length > 0 ? { items: orderItems } : null),
-    ...(selectedClient ? { client: selectedClient._id } : null),
-    ...(startDate ? { startDate: startDate } : null),
-
-    status: "upcoming",
-    draft: true,
-    ...(orderItems[0]?.tasks?.length > 0 ? { tasks: taskArray } : null),
-    createdByUser: user._id,
-    createdByOrganization: user.organization,
-  };
-
   useEffect(() => {
-    console.log(isReady);
     if (
-      multipleExist(Object.keys(fullOrder), [
-        "items",
-        "client",
-        "startDate",
-        "tasks",
-      ])
+      currentOrder.client !== "" &&
+      currentOrder.items[0] &&
+      currentOrder.startDate !== null
     ) {
       setReady(true);
     }
-  }, [fullOrder]);
+    console.log(currentOrder.items.every((item) => item.tasks[0].taskName));
+  }, [currentOrder]);
 
   const saveDraft = async () => {
-    fullOrder.items?.tasks?.forEach((item) => (item.startDate = startDate));
-    orderItems.forEach((item) => taskArray.push(...item.tasks));
+    currentOrder.items.forEach((item) => {
+      item.tasks?.forEach((task) => {
+        task.startDate = currentOrder.startDate;
+        let duration = 0;
+        task.subTasks.forEach(
+          (subtask) => (duration = duration + Number(subtask.timeEstimate))
+        );
+        {
+          duration === 0
+            ? (task.duration = duration + 1)
+            : (task.duration = duration);
+        }
+      });
+    });
+    currentOrder.status = "upcoming";
+    currentOrder.draft = true;
 
     try {
       const response = await axios.post(
         "/api/v1/order/neworder/" + user.organization,
-        fullOrder
+        currentOrder
       );
       console.log(response);
 
@@ -99,13 +83,11 @@ function Status({
   };
 
   const activateOrder = async () => {
-    fullOrder.status = "active";
-    fullOrder.draft = false;
-    fullOrder.items.forEach((item) => {
-      console.log("hi");
+    currentOrder.status = "active";
+    currentOrder.draft = false;
+    currentOrder.items.forEach((item) => {
       item.tasks.forEach((task) => {
-        task.startDate = startDate;
-        console.log("hi2");
+        task.startDate = currentOrder.startDate;
         let duration = 0;
         task.subTasks.forEach(
           (subtask) => (duration = duration + Number(subtask.timeEstimate))
@@ -117,11 +99,10 @@ function Status({
         }
       });
     });
-    orderItems.forEach((item) => taskArray.push(...item.tasks));
     try {
       const response = await axios.post(
         "/api/v1/order/neworder/" + user.organization,
-        fullOrder
+        currentOrder
       );
       console.log(response);
 
@@ -154,13 +135,10 @@ function Status({
   };
 
   const updateOrder = async () => {
-    fullOrder.status = "active";
-    fullOrder.draft = false;
-    fullOrder.items.forEach((item) => {
-      console.log("hi");
+    currentOrder.items.forEach((item) => {
       item.tasks.forEach((task) => {
-        task.startDate = startDate;
-        console.log("hi2");
+        task.startDate = currentOrder.startDate;
+
         let duration = 0;
         task.subTasks.forEach(
           (subtask) => (duration = duration + Number(subtask.timeEstimate))
@@ -172,12 +150,11 @@ function Status({
         }
       });
     });
-    orderItems.forEach((item) => taskArray.push(...item.tasks));
 
     try {
       const response = await axios.put(
         "/api/v1/order/" + currentOrder._id,
-        fullOrder
+        currentOrder
       );
       console.log(response);
       if (response.status === 200) {
@@ -190,6 +167,7 @@ function Status({
           TransitionComponent: Zoom,
         });
       }
+      navigate("/orders/" + response.data.data._id, { replace: true });
     } catch (err) {
       enqueueSnackbar(t("There was an error"), {
         variant: "success",
@@ -261,8 +239,11 @@ function Status({
               : t("Unsaved order")}
           </Typography>
           <DateTimePicker
-            value={startDate}
-            onChange={(date) => setStartDate(date)}
+            value={currentOrder.startDate}
+            onChange={(date) => {
+              setCurrentOrder({ ...currentOrder, startDate: date });
+              console.log(currentOrder);
+            }}
             label={t("Start date and time...")}
             renderInput={(params) => (
               <TextField
@@ -284,14 +265,29 @@ function Status({
             flexDirection: "column",
           }}
         >
-          <Button
-            variant="outlined"
-            color="secondary"
-            sx={{ mb: 1 }}
-            onClick={() => updateOrder()}
+          <Tooltip
+            arrow
+            title={
+              !currentOrder.items.every((item) => item.tasks[0].taskName)
+                ? t("Please ensure all items in the order include tasks")
+                : t("Update this order")
+            }
           >
-            Update
-          </Button>
+            <div>
+              <Button
+                fullWidth
+                disabled={
+                  !currentOrder.items.every((item) => item.tasks[0].taskName)
+                }
+                variant="outlined"
+                color="secondary"
+                sx={{ mb: 1 }}
+                onClick={() => updateOrder()}
+              >
+                Update
+              </Button>
+            </div>
+          </Tooltip>
         </Box>
       ) : (
         <Box

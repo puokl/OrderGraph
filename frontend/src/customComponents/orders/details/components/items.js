@@ -174,7 +174,7 @@ function Items({ currentOrder, getOrder }) {
                     <span
                       style={{ fontWeight: "bold" }}
                     >{`${unfinishedItem.tasks.reduce(
-                      (prev, current) => prev + current.duration,
+                      (prev, current) => prev + Number(current.duration),
                       0
                     )} hours`}</span>
                   </Typography>

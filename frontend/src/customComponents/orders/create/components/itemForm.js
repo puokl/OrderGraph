@@ -30,28 +30,38 @@ const filter = createFilterOptions();
 function ItemForm({
   index,
   items,
-  selectedItem,
   setSelectedItem,
-  orderItems,
-  setOrderItems,
-  currentOrder,
   getItems,
+  currentOrder,
+  setCurrentOrder,
+  user,
 }) {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
 
   const removeItem = (index) => {
-    const orderItemsMinusRemoved = orderItems.filter((item, i) => i !== index);
-    setOrderItems(orderItemsMinusRemoved);
+    const orderItemsMinusRemoved = currentOrder.items.filter(
+      (item, i) => i !== index
+    );
+    setCurrentOrder({ ...currentOrder, items: orderItemsMinusRemoved });
   };
 
   const handleItemTemplate = async (index) => {
+    currentOrder.items[index].organization = user.organization;
+    console.log(currentOrder.items[index]);
     try {
       const response = await axios.post(
         "/api/v1/item/newitem",
-        orderItems[index]
+        currentOrder.items[index]
       );
       console.log(response);
+      const newOrderItems = currentOrder.items.fill(
+        response.data.data,
+        index,
+        index + 1
+      );
+      setCurrentOrder({ ...currentOrder, items: newOrderItems });
+
       if (response.status === 201) {
         enqueueSnackbar(t("Item template was saved successfully"), {
           variant: "success",
@@ -80,10 +90,11 @@ function ItemForm({
   };
 
   const handleItemTemplateUpdate = async () => {
+    currentOrder.items[index].organization = user.organization;
     try {
       const response = await axios.put(
-        "/api/v1/item/" + orderItems[index]._id,
-        orderItems[index]
+        "/api/v1/item/" + currentOrder.items[index]._id,
+        currentOrder.items[index]
       );
       console.log(response);
       if (response.status === 200) {
@@ -110,6 +121,7 @@ function ItemForm({
         }
       );
     }
+    getItems();
   };
 
   return (
@@ -122,12 +134,12 @@ function ItemForm({
         }}
       >
         <Autocomplete
-          value={orderItems[index].itemName}
+          value={currentOrder.items[index].itemName}
           onChange={(event, newValue, reason) => {
             console.log(reason);
             if (reason === "clear") {
-              setSelectedItem(newValue);
-              const newOrderItems = orderItems.fill(
+              // setSelectedItem(newValue);
+              const newOrderItems = currentOrder.items.fill(
                 {
                   description: "",
                   height: "",
@@ -141,9 +153,9 @@ function ItemForm({
                 index,
                 index + 1
               );
-              setOrderItems(() => newOrderItems);
+              setCurrentOrder({ ...currentOrder, items: newOrderItems });
             } else {
-              setSelectedItem(newValue);
+              // setSelectedItem(newValue);
               if (newValue.tasks.length === 0) {
                 newValue.tasks.push({
                   finished: false,
@@ -154,9 +166,13 @@ function ItemForm({
                   subTasks: [],
                 });
               }
-              const newOrderItems = orderItems.fill(newValue, index, index + 1);
-              setOrderItems(() => newOrderItems);
-              console.log(orderItems);
+              const newOrderItems = currentOrder.items.fill(
+                newValue,
+                index,
+                index + 1
+              );
+              setCurrentOrder({ ...currentOrder, items: newOrderItems });
+              console.log(currentOrder);
             }
           }}
           filterOptions={(options, params) => {
@@ -200,7 +216,12 @@ function ItemForm({
             return option.itemName;
           }}
           renderOption={(props, option) => {
-            const newOrderItems = orderItems.fill(option, index, index + 1);
+            props.key = props.id;
+            const newOrderItems = currentOrder.items.fill(
+              option,
+              index,
+              index + 1
+            );
             if (option.inputValue) {
               return <li {...props}>{option.inputValue}</li>;
             }
@@ -209,7 +230,7 @@ function ItemForm({
               <li
                 {...props}
                 onClick={(event) => {
-                  setOrderItems(newOrderItems);
+                  setCurrentOrder({ ...currentOrder, items: newOrderItems });
                   props.onClick(event);
                 }}
               >
@@ -223,7 +244,7 @@ function ItemForm({
             <TextField {...params} label="Item name..." />
           )}
         />
-        {orderItems[index]._id ? (
+        {currentOrder.items[index].organization ? (
           <Button
             aria-label="Update Template"
             size="small"
@@ -331,18 +352,18 @@ function ItemForm({
             style={{ margin: ".5rem 0" }}
             fullWidth
             placeholder={t("Item description")}
-            value={orderItems[index].description}
+            value={currentOrder.items[index].description}
             onChange={(e) => {
-              setSelectedItem(e);
-              const newOption = { ...orderItems[index] };
-              newOption.description = e.target.value;
-              const newOrderItems = orderItems.fill(
-                newOption,
+              // setSelectedItem(e);
+              const currentItem = { ...currentOrder.items[index] };
+              currentItem.description = e.target.value;
+              const newOrderItems = currentOrder.items.fill(
+                currentItem,
                 index,
                 index + 1
               );
-              setOrderItems(() => newOrderItems);
-              console.log(orderItems);
+              setCurrentOrder({ ...currentOrder, items: newOrderItems });
+              console.log(currentOrder);
             }}
           />
           <Box
@@ -355,36 +376,36 @@ function ItemForm({
             <TextField
               style={{ margin: ".5rem .5rem .5rem 0" }}
               placeholder={t("Height")}
-              value={orderItems[index].height}
+              value={currentOrder.items[index].height}
               onChange={(e) => {
-                setSelectedItem(e);
-                const newOption = { ...orderItems[index] };
-                newOption.height = e.target.value;
-                const newOrderItems = orderItems.fill(
-                  newOption,
+                // setSelectedItem(e);
+                const currentItem = { ...currentOrder.items[index] };
+                currentItem.height = e.target.value;
+                const newOrderItems = currentOrder.items.fill(
+                  currentItem,
                   index,
                   index + 1
                 );
-                setOrderItems(() => newOrderItems);
-                console.log(orderItems);
+                setCurrentOrder({ ...currentOrder, items: newOrderItems });
+                console.log(currentOrder);
               }}
             />
             <span style={{ fontWeight: "bold", fontSize: "1.3rem" }}>x</span>
             <TextField
               style={{ margin: ".5rem 0 .5rem .5rem " }}
               placeholder={t("Width")}
-              value={orderItems[index].width}
+              value={currentOrder.items[index].width}
               onChange={(e) => {
-                setSelectedItem(e);
-                const newOption = { ...orderItems[index] };
-                newOption.width = e.target.value;
-                const newOrderItems = orderItems.fill(
-                  newOption,
+                // setSelectedItem(e);
+                const currentItem = { ...currentOrder.items[index] };
+                currentItem.width = e.target.value;
+                const newOrderItems = currentOrder.items.fill(
+                  currentItem,
                   index,
                   index + 1
                 );
-                setOrderItems(() => newOrderItems);
-                console.log(orderItems);
+                setCurrentOrder({ ...currentOrder, items: newOrderItems });
+                console.log(currentOrder);
               }}
             />
           </Box>
@@ -392,53 +413,53 @@ function ItemForm({
           <TextField
             style={{ margin: ".5rem 1.8rem .5rem 0" }}
             placeholder={t("Quantity")}
-            value={orderItems[index].quantity}
+            value={currentOrder.items[index].quantity}
             onChange={(e) => {
-              setSelectedItem(e.target.value);
-              const newOption = { ...orderItems[index] };
-              newOption.quantity = e.target.value;
-              const newOrderItems = orderItems.fill(
-                newOption,
+              // setSelectedItem(e);
+              const currentItem = { ...currentOrder.items[index] };
+              currentItem.quantity = e.target.value;
+              const newOrderItems = currentOrder.items.fill(
+                currentItem,
                 index,
                 index + 1
               );
-              setOrderItems(() => newOrderItems);
-              console.log(orderItems);
+              setCurrentOrder({ ...currentOrder, items: newOrderItems });
+              console.log(currentOrder);
             }}
           />
           <TextField
             style={{ margin: ".5rem 0" }}
             placeholder={t("Measurement Units")}
-            value={orderItems[index].units}
+            value={currentOrder.items[index].units}
             onChange={(e) => {
-              setSelectedItem(e);
-              const newOption = { ...orderItems[index] };
-              newOption.units = e.target.value;
-              const newOrderItems = orderItems.fill(
-                newOption,
+              // setSelectedItem(e);
+              const currentItem = { ...currentOrder.items[index] };
+              currentItem.units = e.target.value;
+              const newOrderItems = currentOrder.items.fill(
+                currentItem,
                 index,
                 index + 1
               );
-              setOrderItems(() => newOrderItems);
-              console.log(orderItems);
+              setCurrentOrder({ ...currentOrder, items: newOrderItems });
+              console.log(currentOrder);
             }}
           />
           <TextField
             style={{ margin: ".5rem 0" }}
             fullWidth
             placeholder={t("Price / Unit")}
-            value={orderItems[index].unitPrice}
+            value={currentOrder.items[index].unitPrice}
             onChange={(e) => {
-              setSelectedItem(e.target.value);
-              const newOption = { ...orderItems[index] };
-              newOption.unitPrice = e.target.value;
-              const newOrderItems = orderItems.fill(
-                newOption,
+              // setSelectedItem(e);
+              const currentItem = { ...currentOrder.items[index] };
+              currentItem.unitPrice = e.target.value;
+              const newOrderItems = currentOrder.items.fill(
+                currentItem,
                 index,
                 index + 1
               );
-              setOrderItems(() => newOrderItems);
-              console.log(orderItems);
+              setCurrentOrder({ ...currentOrder, items: newOrderItems });
+              console.log(currentOrder);
             }}
           />
         </Box>
@@ -491,7 +512,7 @@ function ItemForm({
                 minWidth: 0,
               }}
             >
-              {orderItems[index].tasks[0]?.taskName ? (
+              {currentOrder.items[index].tasks[0]?.taskName ? (
                 <CalendarTodayOutlinedIcon
                   color="primary"
                   // onClick={}
@@ -500,19 +521,18 @@ function ItemForm({
                 <AddTwoToneIcon
                   color="primary"
                   onClick={(e) => {
-                    console.log("hi");
-                    setSelectedItem(e);
-                    const newOption = { ...orderItems[index] };
-                    newOption.tasks[0] = {
+                    // setSelectedItem(e);
+                    const currentItem = { ...currentOrder.items[index] };
+                    currentItem.tasks[0] = {
                       taskName: "New Task",
                       subTasks: [],
                     };
-                    const newOrderItems = orderItems.fill(
-                      newOption,
+                    const newOrderItems = currentOrder.items.fill(
+                      currentItem,
                       index,
                       index + 1
                     );
-                    setOrderItems(() => newOrderItems);
+                    setCurrentOrder({ ...currentOrder, items: newOrderItems });
                   }}
                 />
               )}
@@ -525,34 +545,33 @@ function ItemForm({
               }}
               sx={{ ml: 1 }}
               value={
-                orderItems[index].tasks[0]?.taskName
-                  ? orderItems[index].tasks[0]?.taskName
+                currentOrder.items[index].tasks[0]?.taskName
+                  ? currentOrder.items[index].tasks[0]?.taskName
                   : ""
               }
               onChange={(e) => {
-                setSelectedItem(e);
-                const newOption = { ...orderItems[index] };
+                // setSelectedItem(e);
+                const currentItem = { ...currentOrder.items[index] };
 
-                newOption.tasks[0].taskName = e.target.value;
+                currentItem.tasks[0].taskName = e.target.value;
                 // if (newOption.tasks[0].subTasks.length === 0) {
                 //   newOption.tasks[0].subTasks = [];
                 // }
                 {
-                  newOption.tasks[0].subTasks
+                  currentItem.tasks[0].subTasks
                     ? null
-                    : (newOption.tasks[0].subTasks = []);
+                    : (currentItem.tasks[0].subTasks = []);
                 }
 
-                const newOrderItems = orderItems.fill(
-                  newOption,
+                const newOrderItems = currentOrder.items.fill(
+                  currentItem,
                   index,
                   index + 1
                 );
-                setOrderItems(() => newOrderItems);
-                console.log(orderItems);
+                setCurrentOrder({ ...currentOrder, items: newOrderItems });
               }}
             />
-            {orderItems[index].tasks[0].taskName ? (
+            {currentOrder.items[index].tasks[0].taskName ? (
               <Button
                 aria-label="Delete"
                 size="small"
@@ -566,28 +585,28 @@ function ItemForm({
                   marginLeft: "auto",
                 }}
                 onClick={(e) => {
-                  setSelectedItem(e);
-                  const newOption = { ...orderItems[index] };
-                  if (newOption.tasks.length > 1) {
-                    newOption.tasks.shift();
+                  // setSelectedItem(e);
+                  const currentItem = { ...currentOrder.items[index] };
+                  if (currentItem.tasks.length > 1) {
+                    currentItem.tasks.shift();
                   } else {
-                    newOption.tasks[0] = {};
+                    currentItem.tasks[0] = {};
                   }
 
-                  const newOrderItems = orderItems.fill(
-                    newOption,
+                  const newOrderItems = currentOrder.items.fill(
+                    currentItem,
                     index,
                     index + 1
                   );
-                  setOrderItems(() => newOrderItems);
+                  setCurrentOrder({ ...currentOrder, items: newOrderItems });
                 }}
               >
                 <CloseIcon color="primary" fontSize="small" />
               </Button>
             ) : null}
           </Box>
-          {orderItems[index].tasks[0].taskName
-            ? orderItems[index].tasks?.map((task, index2) => (
+          {currentOrder.items[index].tasks[0].taskName
+            ? currentOrder.items[index].tasks?.map((task, index2) => (
                 <div key={index2}>
                   <Box
                     style={{
@@ -616,18 +635,22 @@ function ItemForm({
                           style={{ width: "10rem" }}
                           value={subtask.description}
                           onChange={(e) => {
-                            setSelectedItem(e);
-                            const newOption = { ...orderItems[index] };
-                            newOption.tasks[index2].subTasks[
+                            // setSelectedItem(e);
+                            const currentItem = {
+                              ...currentOrder.items[index],
+                            };
+                            currentItem.tasks[index2].subTasks[
                               index3
                             ].description = e.target.value;
-                            const newOrderItems = orderItems.fill(
-                              newOption,
+                            const newOrderItems = currentOrder.items.fill(
+                              currentItem,
                               index,
                               index + 1
                             );
-                            setOrderItems(() => newOrderItems);
-                            console.log(orderItems);
+                            setCurrentOrder({
+                              ...currentOrder,
+                              items: newOrderItems,
+                            });
                           }}
                           autoFocus={subtask.description !== "" ? true : false}
                         />
@@ -641,18 +664,22 @@ function ItemForm({
                           style={{ width: "10rem" }}
                           value={subtask.timeEstimate}
                           onChange={(e) => {
-                            setSelectedItem(e);
-                            const newOption = { ...orderItems[index] };
-                            newOption.tasks[index2].subTasks[
+                            // setSelectedItem(e);
+                            const currentItem = {
+                              ...currentOrder.items[index],
+                            };
+                            currentItem.tasks[index2].subTasks[
                               index3
                             ].timeEstimate = e.target.value;
-                            const newOrderItems = orderItems.fill(
-                              newOption,
+                            const newOrderItems = currentOrder.items.fill(
+                              currentItem,
                               index,
                               index + 1
                             );
-                            setOrderItems(() => newOrderItems);
-                            console.log(orderItems);
+                            setCurrentOrder({
+                              ...currentOrder,
+                              items: newOrderItems,
+                            });
                           }}
                           autoFocus={subtask.timeEstimate !== "" ? true : false}
                         />
@@ -668,17 +695,23 @@ function ItemForm({
                             borderRadius: "50%",
                           }}
                           onClick={(e) => {
-                            setSelectedItem(e);
-                            const newOption = { ...orderItems[index] };
-                            newOption.tasks[index2].subTasks = newOption.tasks[
-                              index2
-                            ].subTasks.filter((item, i) => i !== index3);
-                            const newOrderItems = orderItems.fill(
-                              newOption,
+                            // setSelectedItem(e);
+                            const currentItem = {
+                              ...currentOrder.items[index],
+                            };
+                            currentItem.tasks[index2].subTasks =
+                              currentItem.tasks[index2].subTasks.filter(
+                                (item, i) => i !== index3
+                              );
+                            const newOrderItems = currentOrder.items.fill(
+                              currentItem,
                               index,
                               index + 1
                             );
-                            setOrderItems(() => newOrderItems);
+                            setCurrentOrder({
+                              ...currentOrder,
+                              items: newOrderItems,
+                            });
                           }}
                         >
                           <CloseIcon color="primary" fontSize="small" />
@@ -704,19 +737,21 @@ function ItemForm({
                         value=""
                         onChange={(e) => {
                           setSelectedItem(e);
-                          const newOption = { ...orderItems[index] };
-                          newOption.tasks[index2].subTasks.push({
+                          const currentItem = { ...currentOrder.items[index] };
+                          currentItem.tasks[index2].subTasks.push({
                             description: e.target.value,
                             timeEstimate: "",
                             finished: false,
                           });
-                          const newOrderItems = orderItems.fill(
-                            newOption,
+                          const newOrderItems = currentOrder.items.fill(
+                            currentItem,
                             index,
                             index + 1
                           );
-                          setOrderItems(() => newOrderItems);
-                          console.log(orderItems);
+                          setCurrentOrder({
+                            ...currentOrder,
+                            items: newOrderItems,
+                          });
                         }}
                       />
                       <TimerTwoToneIcon color="disabled" />
@@ -729,20 +764,23 @@ function ItemForm({
                         value=""
                         style={{ width: "10rem" }}
                         onChange={(e) => {
-                          setSelectedItem(e);
-                          const newOption = { ...orderItems[index] };
-                          newOption.tasks[index2].subTasks.push({
+                          // setSelectedItem(e);
+                          const currentItem = { ...currentOrder.items[index] };
+                          currentItem.tasks[index2].subTasks.push({
                             description: "",
                             timeEstimate: e.target.value,
                             finished: false,
                           });
-                          const newOrderItems = orderItems.fill(
-                            newOption,
+                          const newOrderItems = currentOrder.items.fill(
+                            currentItem,
                             index,
                             index + 1
                           );
-                          setOrderItems(() => newOrderItems);
-                          console.log(orderItems);
+
+                          setCurrentOrder({
+                            ...currentOrder,
+                            items: newOrderItems,
+                          });
                         }}
                       />
                       <Box style={{ width: "1.3rem" }}></Box>
@@ -767,7 +805,7 @@ function ItemForm({
                         minWidth: 0,
                       }}
                     >
-                      {orderItems[index].tasks[index2 + 1]?.taskName ? (
+                      {currentOrder.items[index].tasks[index2 + 1]?.taskName ? (
                         <CalendarTodayOutlinedIcon
                           color="primary"
                           // onClick={}
@@ -776,19 +814,23 @@ function ItemForm({
                         <AddTwoToneIcon
                           color="primary"
                           onClick={(e) => {
-                            console.log("hi");
-                            setSelectedItem(e);
-                            const newOption = { ...orderItems[index] };
-                            newOption.tasks[index2 + 1] = {
+                            // setSelectedItem(e);
+                            const currentItem = {
+                              ...currentOrder.items[index],
+                            };
+                            currentItem.tasks[index2 + 1] = {
                               taskName: "New Task",
                               subTasks: [],
                             };
-                            const newOrderItems = orderItems.fill(
-                              newOption,
+                            const newOrderItems = currentOrder.items.fill(
+                              currentItem,
                               index,
                               index + 1
                             );
-                            setOrderItems(() => newOrderItems);
+                            setCurrentOrder({
+                              ...currentOrder,
+                              items: newOrderItems,
+                            });
                           }}
                         />
                       )}
@@ -801,15 +843,16 @@ function ItemForm({
                       }}
                       sx={{ ml: 1 }}
                       value={
-                        orderItems[index].tasks[index2 + 1]?.taskName
-                          ? orderItems[index].tasks[index2 + 1]?.taskName
+                        currentOrder.items[index].tasks[index2 + 1]?.taskName
+                          ? currentOrder.items[index].tasks[index2 + 1]
+                              ?.taskName
                           : ""
                       }
                       onChange={(e) => {
                         setSelectedItem(e);
-                        const newOption = { ...orderItems[index] };
-                        if (!orderItems[index].tasks[index2 + 1]) {
-                          newOption.tasks.push({
+                        const currentItem = { ...currentOrder.items[index] };
+                        if (!currentOrder.items[index].tasks[index2 + 1]) {
+                          currentItem.tasks.push({
                             finished: false,
                             halted: false,
                             startDate: "",
@@ -818,19 +861,20 @@ function ItemForm({
                             subTasks: [],
                           });
                         }
-                        newOption.tasks[index2 + 1].taskName = e.target.value;
+                        currentItem.tasks[index2 + 1].taskName = e.target.value;
 
-                        console.log(newOption);
-                        const newOrderItems = orderItems.fill(
-                          newOption,
+                        const newOrderItems = currentOrder.items.fill(
+                          currentItem,
                           index,
                           index + 1
                         );
-                        setOrderItems(() => newOrderItems);
-                        console.log(orderItems);
+                        setCurrentOrder({
+                          ...currentOrder,
+                          items: newOrderItems,
+                        });
                       }}
                     />
-                    {orderItems[index].tasks[index2 + 1]?.taskName ? (
+                    {currentOrder.items[index].tasks[index2 + 1]?.taskName ? (
                       <Button
                         aria-label="Delete"
                         size="small"
@@ -844,17 +888,20 @@ function ItemForm({
                           marginLeft: "auto",
                         }}
                         onClick={(e) => {
-                          setSelectedItem(e);
-                          const newOption = { ...orderItems[index] };
-                          newOption.tasks = newOption.tasks.filter(
+                          // setSelectedItem(e);
+                          const currentItem = { ...currentOrder.items[index] };
+                          currentItem.tasks = currentItem.tasks.filter(
                             (item, i) => i !== index2 + 1
                           );
-                          const newOrderItems = orderItems.fill(
-                            newOption,
+                          const newOrderItems = currentOrder.items.fill(
+                            currentItem,
                             index,
                             index + 1
                           );
-                          setOrderItems(() => newOrderItems);
+                          setCurrentOrder({
+                            ...currentOrder,
+                            items: newOrderItems,
+                          });
                         }}
                       >
                         <CloseIcon color="primary" fontSize="small" />
