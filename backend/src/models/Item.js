@@ -1,12 +1,23 @@
 const mongoose = require("mongoose");
 
 const taskSchema = mongoose.Schema({
-  finished: { type: Boolean },
-  halted: { type: Boolean },
-  startDate: { type: String },
-  haltReason: { type: String },
+  startDate: {},
   taskName: { type: String },
-  subTasks: { type: Array },
+  finished: {
+    type: Boolean,
+    default: false,
+  },
+  halted: {
+    type: Boolean,
+    default: false,
+  },
+  haltReason: {
+    type: String,
+  },
+  subTasks: {
+    type: Array,
+  },
+  duration: { type: String },
 });
 
 const ItemSchema = new mongoose.Schema(
@@ -22,7 +33,9 @@ const ItemSchema = new mongoose.Schema(
     height: String,
     width: String,
     units: String,
+    quantity: String,
     unitPrice: String,
+    organization: String,
     tasks: [taskSchema],
   },
   { timestamps: true }

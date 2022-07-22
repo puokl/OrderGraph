@@ -43,7 +43,6 @@ const clientsRoutes = [
     path: "/overview",
     element: <ClientOverview />,
   },
-
   {
     path: "/details/:clientId",
     element: <ClientDetails />,

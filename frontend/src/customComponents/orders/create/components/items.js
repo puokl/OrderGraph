@@ -60,31 +60,40 @@ const CardAddAction = styled(Card)(
 
 const filter = createFilterOptions();
 
-function Items({ orderItems, setOrderItems,currentOrder }) {
+function Items({
+  orderItems,
+  setOrderItems,
+  currentOrder,
+  setCurrentOrder,
+  user,
+}) {
   const { t } = useTranslation();
 
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
 
   const addItem = () => {
-    setOrderItems([
-      ...orderItems,
-      {
-        description: "",
-        height: "",
-        itemName: "",
-        quantity: "",
-        tasks: [{}],
-        unitPrice: "",
-        units: "",
-        width: "",
-      },
-    ]);
+    setCurrentOrder({
+      ...currentOrder,
+      items: [
+        ...currentOrder.items,
+        {
+          description: "",
+          height: "",
+          itemName: "",
+          quantity: "",
+          tasks: [{}],
+          unitPrice: "",
+          units: "",
+          width: "",
+        },
+      ],
+    });
   };
 
   const getItems = async () => {
     try {
-      const response = await axios.get("/api/v1/item");
+      const response = await axios.get("/api/v1/item/all/" + user.organization);
       console.log(response);
       setItems(response.data.data);
     } catch (err) {
@@ -107,7 +116,7 @@ function Items({ orderItems, setOrderItems,currentOrder }) {
         mb: "1.5rem",
       }}
     >
-      {orderItems?.map((item, index) => (
+      {currentOrder.items?.map((item, index) => (
         <ItemForm
           key={index}
           items={items}
@@ -116,6 +125,10 @@ function Items({ orderItems, setOrderItems,currentOrder }) {
           setSelectedItem={setSelectedItem}
           orderItems={orderItems}
           setOrderItems={setOrderItems}
+          getItems={getItems}
+          currentOrder={currentOrder}
+          setCurrentOrder={setCurrentOrder}
+          user={user}
         />
       ))}
       <Tooltip arrow title={t("Click to add a new item")}>

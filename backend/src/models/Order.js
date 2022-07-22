@@ -1,17 +1,10 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
-const itemSchema = mongoose.Schema({
+const subtaskSchema = mongoose.Schema({
   description: { type: String },
-  height: { type: String },
-  itemName: { type: String },
-  public: { type: Boolean },
-  quantity: { type: String },
-  tasks: { type: Array },
-  unitPrice: { type: String },
-  units: { type: String },
-  width: { type: String },
-  id: { type: String },
+  finished: { type: Boolean },
+  timeEstimate: { type: String },
 });
 
 const taskSchema = mongoose.Schema({
@@ -28,8 +21,21 @@ const taskSchema = mongoose.Schema({
   haltReason: {
     type: String,
   },
-  subTasks: [],
+  subTasks: [subtaskSchema],
   duration: { type: String },
+});
+
+const itemSchema = mongoose.Schema({
+  description: { type: String },
+  height: { type: String },
+  itemName: { type: String },
+  public: { type: Boolean },
+  quantity: { type: String },
+  tasks: [taskSchema],
+  unitPrice: { type: String },
+  units: { type: String },
+  width: { type: String },
+  id: { type: String },
 });
 
 const OrderSchema = new mongoose.Schema(
