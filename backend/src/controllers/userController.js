@@ -89,12 +89,14 @@ const deleteUser = asyncHandler(async (req, res, next) => {
 // @route     DELETE /api/v1/user/deleteMany
 // @access    Private/Admin
 const deleteMany = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
   const { ids } = req.body;
-  await User.deleteMany({ _id: { $in: ids } });
+  console.log(ids);
+  const toDelele = await User.deleteMany({ _id: { $in: ids } });
 
   res.status(200).json({
     success: true,
-    data: {},
+    data: toDelele,
   });
 });
 // body req = {
