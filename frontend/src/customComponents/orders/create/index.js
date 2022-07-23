@@ -20,6 +20,7 @@ function CreateOrder() {
   const { user } = useAuth();
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState({});
+  const [urlList, setUrlList] = useState([]);
 
   const { orderID } = useParams("");
   const [currentOrder, setCurrentOrder] = useState({
@@ -39,6 +40,7 @@ function CreateOrder() {
       const response = await axios.get("/api/v1/order/" + orderID);
       console.log(response);
       setCurrentOrder({ ...response.data.data });
+      setUrlList([...response.data.data.documents]);
     } catch (err) {
       console.error(err);
     }
@@ -138,7 +140,13 @@ function CreateOrder() {
               currentOrder={currentOrder}
               setCurrentOrder={setCurrentOrder}
             />
-            <Documents />
+            <Documents
+              orderID={orderID}
+              currentOrder={currentOrder}
+              setCurrentOrder={setCurrentOrder}
+              urlList={urlList}
+              setUrlList={setUrlList}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} lg={8}></Grid>
