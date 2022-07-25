@@ -197,6 +197,7 @@ function Documents({
             }}
           >
             <a
+              target="_blank"
               href={urlList[index]}
               alt={`${doc.name}`}
               style={{

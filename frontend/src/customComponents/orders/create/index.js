@@ -19,7 +19,17 @@ function CreateOrder() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [clients, setClients] = useState([]);
-  const [selectedClient, setSelectedClient] = useState({});
+  const [selectedClient, setSelectedClient] = useState({
+    billingAddress: {},
+    clientEMail: "",
+    clientName: "",
+    clientPhoneNumber: "",
+    clientType: "",
+    contact: [],
+    financials: {},
+    orders: [],
+    shippingAddress: {},
+  });
   const [urlList, setUrlList] = useState([]);
   const [invoiceUrlList, setInvoiceUrlList] = useState([]);
 
