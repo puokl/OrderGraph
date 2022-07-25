@@ -11,7 +11,6 @@ import {
   Divider,
   Button,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import UploadTwoToneIcon from "@mui/icons-material/UploadTwoTone";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfTwoTone";
 import CloseIcon from "@mui/icons-material/Close";
@@ -22,8 +21,6 @@ import useAuth from "src/hooks/useAuth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   getDownloadURL,
-  listAll,
-  list,
   ref,
   uploadBytesResumable,
   getMetadata,

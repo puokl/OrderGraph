@@ -21,6 +21,7 @@ function CreateOrder() {
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState({});
   const [urlList, setUrlList] = useState([]);
+  const [invoiceUrlList, setInvoiceUrlList] = useState([]);
 
   const { orderID } = useParams("");
   const [currentOrder, setCurrentOrder] = useState({
@@ -41,6 +42,7 @@ function CreateOrder() {
       console.log(response);
       setCurrentOrder({ ...response.data.data });
       setUrlList([...response.data.data.documents]);
+      setInvoiceUrlList([...response.data.data.invoices]);
     } catch (err) {
       console.error(err);
     }
@@ -127,7 +129,13 @@ function CreateOrder() {
               {t("Invoices")}
             </Typography>
             {/* Below is the add invoices component, currently only the button is done, no functionality yet, we need to get a library for drag and drop */}
-            <Invoices />
+            <Invoices
+              setCurrentOrder={setCurrentOrder}
+              currentOrder={currentOrder}
+              orderID={orderID}
+              invoiceUrlList={invoiceUrlList}
+              setInvoiceUrlList={setInvoiceUrlList}
+            />
           </Grid>
 
           <Grid item xs={8} sm={4} lg={4}>
