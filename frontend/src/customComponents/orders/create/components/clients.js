@@ -16,13 +16,33 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-function Clients({ clients, selectedClient, setSelectedClient }) {
+function Clients({
+  clients,
+  selectedClient,
+  setSelectedClient,
+  currentOrder,
+  setCurrentOrder,
+  orderID,
+}) {
   const { t } = useTranslation();
+  console.log(selectedClient);
 
   const handleClientSelect = (index) => {
     setSelectedClient(clients[index]);
     console.log(selectedClient);
   };
+
+  useEffect(() => {
+    if (currentOrder._id) {
+      setSelectedClient(
+        clients.find((client) => client._id === currentOrder.client)
+      );
+    }
+  }, [currentOrder]);
+
+  useEffect(() => {
+    setCurrentOrder({ ...currentOrder, client: selectedClient._id });
+  }, [selectedClient]);
 
   return (
     <Card sx={{ p: "1.5rem", mb: "1.5rem" }}>
@@ -32,7 +52,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
         </InputLabel>
         <Select
           label={t("Select client...")}
-          value={selectedClient ? selectedClient.clientName : ""}
+          value={selectedClient.clientName ? selectedClient.clientName : ""}
           // onChange={(e) => {
           //   handleClientSelect(e);
           // }}
@@ -50,7 +70,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
           ))}
         </Select>
       </FormControl>
-      {selectedClient ? (
+      {selectedClient.clientName ? (
         <Card sx={{ mt: "1rem" }}>
           <Chip
             color="success"
@@ -75,7 +95,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
               }}
             >
               <Link
-                to={`/clients/details/${selectedClient._id}`}
+                to={`/clients/edit/${selectedClient._id}`}
                 style={{
                   textDecoration: "none",
                   fontWeight: "bold",
@@ -98,7 +118,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
             >
               <CloseIcon
                 color="primary"
-                onClick={() => setSelectedClient("")}
+                onClick={() => setSelectedClient({})}
               />
             </Button>
           </Box>
@@ -197,11 +217,11 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.billingAddress.Address +
+                {selectedClient.billingAddress?.Address +
                   ", " +
-                  selectedClient.billingAddress.City +
+                  selectedClient.billingAddress?.City +
                   ", " +
-                  selectedClient.billingAddress.Zip}
+                  selectedClient.billingAddress?.Zip}
               </Typography>
               <Typography
                 variant="h5"
@@ -210,11 +230,11 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.shippingAddress.Address +
+                {selectedClient.shippingAddress?.Address +
                   ", " +
-                  selectedClient.shippingAddress.City +
+                  selectedClient.shippingAddress?.City +
                   ", " +
-                  selectedClient.shippingAddress.Zip}
+                  selectedClient.shippingAddress?.Zip}
               </Typography>
             </Box>
           </Box>

@@ -27,14 +27,26 @@ import { handleBreakpoints } from "@mui/system";
 
 function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
   const { t } = useTranslation();
-  const itemCopy = { ...itemToEdit };
   const [selectedItem, setSelectedItem] = useState({ ...itemToEdit });
-  console.log(selectedItem);
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSaveItem = async () => {
-    console.log(orderToUpdate.items[orderToUpdate.items.indexOf(itemToEdit)]);
     orderToUpdate.items[orderToUpdate.items.indexOf(itemToEdit)] = selectedItem;
+
+    orderToUpdate.items.forEach((item) => {
+      item.tasks.forEach((task) => {
+        let duration = 0;
+        task.startDate = orderToUpdate.startDate;
+        task.subTasks.forEach(
+          (subtask) => (duration = duration + Number(subtask.timeEstimate))
+        );
+        {
+          duration === 0
+            ? (task.duration = duration + 1)
+            : (task.duration = duration);
+        }
+      });
+    });
 
     try {
       const response = await axios.put(
@@ -66,6 +78,69 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
     onClose();
   };
 
+  const handleItemTemplate = async () => {
+    try {
+      const response = await axios.post("/api/v1/item/newitem", selectedItem);
+      console.log(response);
+      if (response.status === 201) {
+        enqueueSnackbar(t("Item template was saved successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(
+        t("There was an error saving the item template, please try again"),
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        }
+      );
+    }
+  };
+
+  const handleItemTemplateUpdate = async () => {
+    try {
+      const response = await axios.put(
+        "/api/v1/item/" + selectedItem._id,
+        selectedItem
+      );
+      console.log(response);
+      if (response.status === 200) {
+        enqueueSnackbar(t("Item template was updated successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(
+        t("There was an error updating the item template, please try again"),
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        }
+      );
+    }
+  };
+
   return (
     <Card sx={{ m: "1rem", p: 2, mb: "1rem" }}>
       <Box
@@ -81,10 +156,38 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
           placeholder={t("Item name...")}
           value={selectedItem.itemName}
           onChange={(e) => {
+            const itemCopy = { ...selectedItem };
             itemCopy.itemName = e.target.value;
             setSelectedItem({ ...itemCopy });
           }}
         />
+        {selectedItem._id ? (
+          <Button
+            aria-label="Update Template"
+            size="small"
+            color="primary"
+            style={{
+              backgroundColor: "rgba(85, 105, 255, 0.1)",
+              minWidth: "2rem",
+            }}
+            onClick={() => handleItemTemplateUpdate()}
+          >
+            {t("Update item template")}
+          </Button>
+        ) : (
+          <Button
+            aria-label="Save Template"
+            size="small"
+            color="primary"
+            style={{
+              backgroundColor: "rgba(85, 105, 255, 0.1)",
+              minWidth: "2rem",
+            }}
+            onClick={() => handleItemTemplate()}
+          >
+            {t("Save item as template")}
+          </Button>
+        )}
         <Button
           aria-label="Delete"
           color="primary"
@@ -169,6 +272,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
             placeholder={t("Item description")}
             value={selectedItem.description}
             onChange={(e) => {
+              const itemCopy = { ...selectedItem };
               itemCopy.description = e.target.value;
               setSelectedItem({ ...itemCopy });
             }}
@@ -185,6 +289,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
               placeholder={t("Height")}
               value={selectedItem.height}
               onChange={(e) => {
+                const itemCopy = { ...selectedItem };
                 itemCopy.height = e.target.value;
                 setSelectedItem({ ...itemCopy });
               }}
@@ -195,6 +300,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
               placeholder={t("Width")}
               value={selectedItem.width}
               onChange={(e) => {
+                const itemCopy = { ...selectedItem };
                 itemCopy.width = e.target.value;
                 setSelectedItem({ ...itemCopy });
               }}
@@ -206,6 +312,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
             placeholder={t("Quantity")}
             value={selectedItem.quantity}
             onChange={(e) => {
+              const itemCopy = { ...selectedItem };
               itemCopy.quantity = e.target.value;
               setSelectedItem({ ...itemCopy });
             }}
@@ -215,6 +322,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
             placeholder={t("Measurement Units")}
             value={selectedItem.units}
             onChange={(e) => {
+              const itemCopy = { ...selectedItem };
               itemCopy.units = e.target.value;
               setSelectedItem({ ...itemCopy });
             }}
@@ -225,6 +333,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
             placeholder={t("Price / Unit")}
             value={selectedItem.unitPrice}
             onChange={(e) => {
+              const itemCopy = { ...selectedItem };
               itemCopy.unitPrice = e.target.value;
               setSelectedItem({ ...itemCopy });
             }}
@@ -289,6 +398,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                 <AddTwoToneIcon
                   color="primary"
                   onClick={(e) => {
+                    const itemCopy = { ...selectedItem };
                     itemCopy.tasks[0] = {
                       taskName: "New Task",
                       subTasks: [],
@@ -311,6 +421,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                   : ""
               }
               onChange={(e) => {
+                const itemCopy = { ...selectedItem };
                 itemCopy.tasks[0].taskName = e.target.value;
                 setSelectedItem({ ...itemCopy });
               }}
@@ -329,6 +440,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                   marginLeft: "auto",
                 }}
                 onClick={(e) => {
+                  const itemCopy = { ...selectedItem };
                   if (itemCopy.tasks.length > 1) {
                     itemCopy.tasks.shift();
                   } else {
@@ -374,6 +486,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                           style={{ width: "10rem" }}
                           value={subtask.description}
                           onChange={(e) => {
+                            const itemCopy = { ...selectedItem };
                             itemCopy.tasks[index2].subTasks[
                               index3
                             ].description = e.target.value;
@@ -391,6 +504,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                           style={{ width: "10rem" }}
                           value={subtask.timeEstimate}
                           onChange={(e) => {
+                            const itemCopy = { ...selectedItem };
                             itemCopy.tasks[index2].subTasks[
                               index3
                             ].timeEstimate = e.target.value;
@@ -405,11 +519,12 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                           style={{
                             backgroundColor: "rgba(85, 105, 255, 0.1)",
                             minWidth: 0,
-                            width: "1.3rem",
-                            height: "1.3rem",
+                            width: "1.5rem",
+                            height: "1.5rem",
                             borderRadius: "50%",
                           }}
                           onClick={(e) => {
+                            const itemCopy = { ...selectedItem };
                             itemCopy.tasks[index2].subTasks = itemCopy.tasks[
                               index2
                             ].subTasks.filter((item, i) => i !== index3);
@@ -438,12 +553,13 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                         style={{ width: "10rem" }}
                         value=""
                         onChange={(e) => {
+                          const itemCopy = { ...selectedItem };
                           itemCopy.tasks[index2].subTasks.push({
                             description: e.target.value,
                             timeEstimate: "",
                             finished: false,
                           });
-
+                          console.log(itemCopy);
                           setSelectedItem({ ...itemCopy });
                         }}
                       />
@@ -457,12 +573,13 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                         value=""
                         style={{ width: "10rem" }}
                         onChange={(e) => {
+                          const itemCopy = { ...selectedItem };
                           itemCopy.tasks[index2].subTasks.push({
                             description: "",
                             timeEstimate: e.target.value,
                             finished: false,
                           });
-
+                          console.log(itemCopy);
                           setSelectedItem({ ...itemCopy });
                         }}
                       />
@@ -497,6 +614,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                         <AddTwoToneIcon
                           color="primary"
                           onClick={(e) => {
+                            const itemCopy = { ...selectedItem };
                             itemCopy.tasks[index2 + 1] = {
                               taskName: "New Task",
                               subTasks: [],
@@ -520,6 +638,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                           : ""
                       }
                       onChange={(e) => {
+                        const itemCopy = { ...selectedItem };
                         if (!selectedItem.tasks[index2 + 1]) {
                           itemCopy.tasks.push({
                             finished: false,
@@ -548,6 +667,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                           marginLeft: "auto",
                         }}
                         onClick={(e) => {
+                          const itemCopy = { ...selectedItem };
                           itemCopy.tasks = itemCopy.tasks.filter(
                             (item, i) => i !== index2 + 1
                           );

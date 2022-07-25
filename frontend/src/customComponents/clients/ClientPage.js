@@ -4,6 +4,7 @@ import {
   Typography,
   Card,
   CardHeader,
+  TextField,
   Divider,
   Grid,
   Avatar,
@@ -23,21 +24,19 @@ function ClientDetails() {
   const { t } = useTranslation();
   const [clients, setClients] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
-  const { clientID } = useParams();
+  const { clientId } = useParams();
+  const [disabled, setDisabled] = useState(true);
+  const [name, setName] = useState("");
 
   // Fetch Data
 
   const getClient = async () => {
     try {
-      const response = await axios.get("/api/v1/client/", {
-        params: {
-          clientID,
-        },
-      });
+      const response = await axios.get("/api/v1/client/" + clientId);
       console.log("res: ", response);
       console.log("res2: ", response.data.data[1]);
 
-      setClients(response.data.data[10]);
+      setClients(response.data.data);
       setDataLoaded(true);
     } catch (err) {
       console.error(err);
@@ -88,7 +87,7 @@ function ClientDetails() {
               </Grid>
               <Grid item xs={12} sm={6} lg={6} sx={{ ml: "auto" }}>
                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Button href="#text-buttons">Edit</Button>
+                  <Button href="#text-buttons" /* onClick={}  */>Edit</Button>
                 </Box>
               </Grid>
             </Grid>
@@ -112,14 +111,16 @@ function ClientDetails() {
                     </Typography>
                   </Grid>
                   <Grid item xs={8} sm={8} lg={8}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="bold"
+                    <TextField
+                      /*      variant="h5"
+                      fontWeight="bold" */
+                      variant="standard"
                       clients={clients}
                       sx={{ ml: "20px" }}
-                    >
-                      {clients.clientName}
-                    </Typography>
+                      disabled={disabled}
+                      value={dataLoaded ? clients.clientName : ""}
+                    />
+                    {/*                       {dataLoaded ? clients.clientName : ""} */}
                   </Grid>
                 </Grid>
                 {/* Client Name End */}

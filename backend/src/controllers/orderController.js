@@ -33,28 +33,37 @@ const getAllOrder = asyncHandler(async (req, res, next) => {
 
 //dotnotation
 const updateOrder = asyncHandler(async (req, res, next) => {
-  let order = await Order.findById(req.params.orderID);
+  // let order = await Order.findById(req.params.orderID);
 
   // dot notation is needed in order to update an embedded document
-  function convertToDotNotation(obj, newObj = {}, prefix = "") {
-    for (let key in obj) {
-      if (typeof obj[key] === "object") {
-        convertToDotNotation(obj[key], newObj, prefix + key + ".");
-      } else {
-        newObj[prefix + key] = obj[key];
-      }
+  // function convertToDotNotation(obj, newObj = {}, prefix = "") {
+  //   for (let key in obj) {
+  //     if (typeof obj[key] === "object") {
+  //       convertToDotNotation(obj[key], newObj, prefix + key + ".");
+  //     } else {
+  //       newObj[prefix + key] = obj[key];
+  //     }
+  //   }
+
+  //   return newObj;
+  // }
+
+  // const dotNotated = convertToDotNotation(req.body);
+  // console.log(dotNotated);
+
+  // order = await Order.findByIdAndUpdate(req.params.orderID, dotNotated, {
+  //   new: true,
+  // });
+
+  let updatedOrder = await Order.findByIdAndUpdate(
+    req.params.orderID,
+    { $set: req.body },
+    {
+      new: true,
     }
+  );
 
-    return newObj;
-  }
-
-  const dotNotated = convertToDotNotation(req.body);
-
-  order = await Order.findByIdAndUpdate(req.params.orderID, dotNotated, {
-    new: true,
-  });
-
-  res.status(200).json({ success: true, data: order });
+  res.status(200).json({ success: true, data: updatedOrder });
 });
 
 // @desc    Delete single order

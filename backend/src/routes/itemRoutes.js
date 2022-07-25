@@ -6,6 +6,7 @@ const {
   getAllItem,
   updateItem,
   deleteItem,
+  getAllItemsInOrg,
 } = require("../controllers/itemController");
 
 const { protect, authorize } = require("../middleware/auth");
@@ -16,5 +17,6 @@ const { protect, authorize } = require("../middleware/auth");
 router.route("/:itemId").get(getItem).put(updateItem).delete(deleteItem);
 router.post("/newitem", newItem);
 router.get("/", getAllItem);
+router.get("/all/:orgID", getAllItemsInOrg);
 
 module.exports = router;

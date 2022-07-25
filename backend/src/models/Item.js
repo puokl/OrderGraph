@@ -1,5 +1,25 @@
 const mongoose = require("mongoose");
 
+const taskSchema = mongoose.Schema({
+  startDate: {},
+  taskName: { type: String },
+  finished: {
+    type: Boolean,
+    default: false,
+  },
+  halted: {
+    type: Boolean,
+    default: false,
+  },
+  haltReason: {
+    type: String,
+  },
+  subTasks: {
+    type: Array,
+  },
+  duration: { type: String },
+});
+
 const ItemSchema = new mongoose.Schema(
   {
     orgId: {
@@ -13,8 +33,10 @@ const ItemSchema = new mongoose.Schema(
     height: String,
     width: String,
     units: String,
+    quantity: String,
     unitPrice: String,
-    tasks: [],
+    organization: String,
+    tasks: [taskSchema],
   },
   { timestamps: true }
 );

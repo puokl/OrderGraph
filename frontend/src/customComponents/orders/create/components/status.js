@@ -12,90 +12,31 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import useAuth from "src/hooks/useAuth";
-
+import { useNavigate } from "react-router-dom";
 import { DateTimePicker } from "@mui/lab";
 
-function Status({ startDate, setStartDate, orderItems, selectedClient }) {
+function Status({ currentOrder, setCurrentOrder, orderID }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [isReady, setReady] = useState(false);
+  let navigate = useNavigate();
 
-  const multipleExist = (arr, values) => {
-    return values.every((value) => {
-      return arr.includes(value);
-    });
-  };
-
-  const taskArray = [];
-
-  const fullOrder = {
-    ...(orderItems.length > 0 ? { items: orderItems } : null),
-    ...(selectedClient ? { client: selectedClient._id } : null),
-    ...(startDate ? { startDate: startDate } : null),
-    status: "upcoming",
-    draft: true,
-    ...(orderItems[0]?.tasks?.length > 0 ? { tasks: taskArray } : null),
-    createdByUser: user._id,
-    createdByOrganization: user.organization,
-  };
   useEffect(() => {
-    console.log(isReady);
     if (
-      multipleExist(Object.keys(fullOrder), [
-        "items",
-        "client",
-        "startDate",
-        "tasks",
-      ])
+      currentOrder.client !== "" &&
+      currentOrder.items[0] &&
+      currentOrder.startDate !== null
     ) {
       setReady(true);
     }
-  }, [fullOrder]);
+    console.log(currentOrder.items.every((item) => item.tasks[0].taskName));
+  }, [currentOrder]);
 
   const saveDraft = async () => {
-    fullOrder.items?.tasks?.forEach((item) => (item.startDate = startDate));
-    orderItems.forEach((item) => taskArray.push(...item.tasks));
-
-    try {
-      const response = await axios.post(
-        "/api/v1/order/neworder/" + user.organization,
-        fullOrder
-      );
-      console.log(response);
-
-      if (response.status === 200) {
-        enqueueSnackbar(t("The order was created successfully"), {
-          variant: "success",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
-      } else {
-        enqueueSnackbar(t("other status"), {
-          variant: "error",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-          TransitionComponent: Zoom,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const activateOrder = async () => {
-    fullOrder.status = "active";
-    fullOrder.draft = false;
-    fullOrder.items.forEach((item) => {
-      console.log("hi");
-      item.tasks.forEach((task) => {
-        task.startDate = startDate;
-        console.log("hi2");
+    currentOrder.items.forEach((item) => {
+      item.tasks?.forEach((task) => {
+        task.startDate = currentOrder.startDate;
         let duration = 0;
         task.subTasks.forEach(
           (subtask) => (duration = duration + Number(subtask.timeEstimate))
@@ -107,12 +48,81 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
         }
       });
     });
-    orderItems.forEach((item) => taskArray.push(...item.tasks));
+    currentOrder.status = "upcoming";
+    currentOrder.draft = true;
+
+    let response;
+
     try {
-      const response = await axios.post(
-        "/api/v1/order/neworder/" + user.organization,
-        fullOrder
-      );
+      if (currentOrder._id) {
+        response = await axios.put(
+          "/api/v1/order/" + currentOrder._id,
+          currentOrder
+        );
+      } else {
+        response = await axios.post(
+          "/api/v1/order/neworder/" + user.organization,
+          currentOrder
+        );
+      }
+
+      console.log(response);
+
+      if (response.status === 200) {
+        enqueueSnackbar(t("The order was successfully saved as a draft."), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+      navigate("/orders/edit/" + response.data.data._id, { replace: true });
+    } catch (err) {
+      enqueueSnackbar(t("There was an error saving the draft order"), {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+        TransitionComponent: Zoom,
+      });
+      console.error(err);
+    }
+  };
+
+  const activateOrder = async () => {
+    currentOrder.status = "active";
+    currentOrder.draft = false;
+    currentOrder.items.forEach((item) => {
+      item.tasks.forEach((task) => {
+        task.startDate = currentOrder.startDate;
+        let duration = 0;
+        task.subTasks.forEach(
+          (subtask) => (duration = duration + Number(subtask.timeEstimate))
+        );
+        {
+          duration === 0
+            ? (task.duration = duration + 1)
+            : (task.duration = duration);
+        }
+      });
+    });
+    let response;
+
+    try {
+      if (currentOrder._id) {
+        response = await axios.put(
+          "/api/v1/order/" + currentOrder._id,
+          currentOrder
+        );
+      } else {
+        response = await axios.post(
+          "/api/v1/order/neworder/" + user.organization,
+          currentOrder
+        );
+      }
       console.log(response);
 
       if (response.status === 200) {
@@ -124,9 +134,50 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
           },
           TransitionComponent: Zoom,
         });
-      } else {
-        enqueueSnackbar(t("other status"), {
+      }
+      navigate("/orders/" + response.data.data._id, { replace: true });
+    } catch (err) {
+      enqueueSnackbar(
+        t("There was an error activating the order, please try again"),
+        {
           variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        }
+      );
+      console.error(err);
+    }
+  };
+
+  const updateOrder = async () => {
+    currentOrder.items.forEach((item) => {
+      item.tasks.forEach((task) => {
+        task.startDate = currentOrder.startDate;
+
+        let duration = 0;
+        task.subTasks.forEach(
+          (subtask) => (duration = duration + Number(subtask.timeEstimate))
+        );
+        {
+          duration === 0
+            ? (task.duration = duration + 1)
+            : (task.duration = duration);
+        }
+      });
+    });
+
+    try {
+      const response = await axios.put(
+        "/api/v1/order/" + currentOrder._id,
+        currentOrder
+      );
+      console.log(response);
+      if (response.status === 200) {
+        enqueueSnackbar(t("The item was saved successfully"), {
+          variant: "success",
           anchorOrigin: {
             vertical: "top",
             horizontal: "right",
@@ -134,7 +185,16 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
           TransitionComponent: Zoom,
         });
       }
+      navigate("/orders/" + response.data.data._id, { replace: true });
     } catch (err) {
+      enqueueSnackbar(t("There was an error"), {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+        TransitionComponent: Zoom,
+      });
       console.error(err);
     }
   };
@@ -192,11 +252,16 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
               py: 1,
             }}
           >
-            {t("Draft / Active")}
+            {currentOrder?.status
+              ? t(`${currentOrder.status}`)
+              : t("Unsaved order")}
           </Typography>
           <DateTimePicker
-            value={startDate}
-            onChange={(date) => setStartDate(date)}
+            value={currentOrder.startDate}
+            onChange={(date) => {
+              setCurrentOrder({ ...currentOrder, startDate: date });
+              console.log(currentOrder);
+            }}
             label={t("Start date and time...")}
             renderInput={(params) => (
               <TextField
@@ -210,43 +275,77 @@ function Status({ startDate, setStartDate, orderItems, selectedClient }) {
           />
         </Box>
       </Box>
-      <Box
-        style={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Button
-          variant="outlined"
-          color="secondary"
-          sx={{ mb: 1 }}
-          onClick={() => saveDraft()}
+
+      {currentOrder?.draft === false ? (
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-          Save draft
-        </Button>
-        <Tooltip
-          arrow
-          title={
-            isReady
-              ? t("Activate this order")
-              : t(
-                  "Please complete all required part of the order to activate it"
-                )
-          }
+          <Tooltip
+            arrow
+            title={
+              !currentOrder.items.every((item) => item.tasks[0].taskName)
+                ? t("Please ensure all items in the order include tasks")
+                : t("Update this order")
+            }
+          >
+            <div>
+              <Button
+                fullWidth
+                disabled={
+                  !currentOrder.items.every((item) => item.tasks[0].taskName)
+                }
+                variant="outlined"
+                color="secondary"
+                sx={{ mb: 1 }}
+                onClick={() => updateOrder()}
+              >
+                Update
+              </Button>
+            </div>
+          </Tooltip>
+        </Box>
+      ) : (
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-          <div>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              disabled={isReady ? false : true}
-              onClick={() => activateOrder()}
-            >
-              Activate
-            </Button>
-          </div>
-        </Tooltip>
-      </Box>
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{ mb: 1 }}
+            onClick={() => saveDraft()}
+          >
+            Save draft
+          </Button>
+          <Tooltip
+            arrow
+            title={
+              isReady
+                ? t("Activate this order")
+                : t(
+                    "Please complete all required parts of the order to activate it"
+                  )
+            }
+          >
+            <div>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                disabled={isReady ? false : true}
+                onClick={() => activateOrder()}
+              >
+                Activate
+              </Button>
+            </div>
+          </Tooltip>
+        </Box>
+      )}
     </Card>
   );
 }
