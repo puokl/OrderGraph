@@ -192,7 +192,7 @@ const OrderOverview = () => {
           <Card margin={1}>
             <Grid container>
               <Grid item xs={12}>
-                <OrderTable orders={orders} clients={clients} loaded={loaded} rowLength={rowLength} setRowLength={setRowLength}/>
+                <OrderTable orders={orders} clients={clients} loaded={loaded} rowLength={rowLength} setRowLength={setRowLength} getOrders={getOrders}/>
               </Grid>
             </Grid>
           </Card>

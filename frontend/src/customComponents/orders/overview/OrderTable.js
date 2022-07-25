@@ -3,31 +3,23 @@ import { DataGrid } from "@mui/x-data-grid";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import {
-  InputAdornment,
-  Typography,
-  Link,
   Dialog,
   Zoom,
   styled,
 } from "@mui/material";
-import { TextField } from "@mui/material";
-import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import { useTranslation } from "react-i18next";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useSnackbar } from "notistack";
-// import axios from "axios";
 import axios from "src/utils/axios2";
 
 export default function OrderTable(props) {
-  const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(0);
   const { t } = useTranslation();
-  const { orders, clients, loaded, rowLength, setRowLength } = props;
-  searchQuery ? orders.filter((order) => searchQuery === order) : orders;
+  const { orders, clients, loaded, rowLength, setRowLength, getOrders } = props;
   orders ? setRowLength(orders.length) : setRowLength(0);
   const { enqueueSnackbar } = useSnackbar();
-
+  const data = getOrders
   const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
   });
@@ -54,6 +46,7 @@ export default function OrderTable(props) {
           },
           TransitionComponent: Zoom,
         });
+        getOrders()
       } else {
         enqueueSnackbar(t("An error occured, please try deleting again."), {
           variant: "error",
@@ -158,44 +151,21 @@ export default function OrderTable(props) {
     }));
   }
 
-  const handlePageChange = (newPage) => {
-    // We have the cursor, we can allow the page transition.
-    if (newPage === 0 || mapPageToNextCursor.current[newPage - 1]) {
-      setPage(newPage);
-    }
-  };
+  
   return (
     <div className="dataGridContainer" style={{ height: 400, width: "100%" }}>
-      <TextField
-        sx={{
-          m: 2,
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchTwoToneIcon color="primary" />
-            </InputAdornment>
-          ),
-        }}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search users..."
-        size="small"
-        margin="normal"
-        variant="outlined"
-      />
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[5, 10, 20, 50]}
-        pagination
-        paginationMode="server"
-        onPageChange={handlePageChange}
         page={page}
+        pageSize={pageSize}
+        onPageChange={(newPage) => setPage(newPage)}
+        onPageSizeChange={(newPage) => setPageSize(newPage)}
+        rowsPerPageOptions={[5, 10, 20, 50]}
         loading={!loaded}
         rowLength={rowLength}
         checkboxSelection
+        {...data}
         sx={{}}
       />
     </div>
