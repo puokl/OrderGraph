@@ -19,7 +19,19 @@ function CreateOrder() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [clients, setClients] = useState([]);
-  const [selectedClient, setSelectedClient] = useState({});
+  const [selectedClient, setSelectedClient] = useState({
+    billingAddress: {},
+    clientEMail: "",
+    clientName: "",
+    clientPhoneNumber: "",
+    clientType: "",
+    contact: [],
+    financials: {},
+    orders: [],
+    shippingAddress: {},
+  });
+  const [urlList, setUrlList] = useState([]);
+  const [invoiceUrlList, setInvoiceUrlList] = useState([]);
 
   const { orderID } = useParams("");
   const [currentOrder, setCurrentOrder] = useState({
@@ -39,6 +51,8 @@ function CreateOrder() {
       const response = await axios.get("/api/v1/order/" + orderID);
       console.log(response);
       setCurrentOrder({ ...response.data.data });
+      setUrlList([...response.data.data.documents]);
+      setInvoiceUrlList([...response.data.data.invoices]);
     } catch (err) {
       console.error(err);
     }
@@ -125,7 +139,13 @@ function CreateOrder() {
               {t("Invoices")}
             </Typography>
             {/* Below is the add invoices component, currently only the button is done, no functionality yet, we need to get a library for drag and drop */}
-            <Invoices />
+            <Invoices
+              setCurrentOrder={setCurrentOrder}
+              currentOrder={currentOrder}
+              orderID={orderID}
+              invoiceUrlList={invoiceUrlList}
+              setInvoiceUrlList={setInvoiceUrlList}
+            />
           </Grid>
 
           <Grid item xs={8} sm={4} lg={4}>
@@ -138,7 +158,13 @@ function CreateOrder() {
               currentOrder={currentOrder}
               setCurrentOrder={setCurrentOrder}
             />
-            <Documents />
+            <Documents
+              orderID={orderID}
+              currentOrder={currentOrder}
+              setCurrentOrder={setCurrentOrder}
+              urlList={urlList}
+              setUrlList={setUrlList}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} lg={8}></Grid>
