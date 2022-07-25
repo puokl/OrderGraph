@@ -15,7 +15,8 @@ import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import { useTranslation } from "react-i18next";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useSnackbar } from "notistack";
-import axios from "axios";
+// import axios from "axios";
+import axios from "src/utils/axios2";
 
 export default function OrderTable(props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,10 +42,10 @@ export default function OrderTable(props) {
     console.log(`hi ${id} u gone bye bye`);
 
     try {
-      const response = await axios.delete(`/api/v1/order/delete/${id}`);
+      const response = await axios.delete(`/api/v1/order/${id}`);
       console.log(response);
-      
-      if (response.success === true) {
+
+      if (response.data.success === true) {
         enqueueSnackbar(t("Successfully deleted."), {
           variant: "success",
           anchorOrigin: {
@@ -123,7 +124,10 @@ export default function OrderTable(props) {
             <DeleteTwoToneIcon
               index={params.row.id}
               color="error"
-              onClick={removeClient(params.row.id)}
+              // onClick={removeClient(params.row.id)}
+              onClick={() => {
+                removeClient(params.row.id);
+              }}
               style={{ cursor: "pointer" }}
             />
           </>
