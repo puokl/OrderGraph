@@ -12,6 +12,7 @@ const OrderOverview = () => {
   const [loaded, setLoaded] = useState(false);
   const [orders, setOrders] = useState([]);
   const [clients, setClients] = useState([]);
+  const [rowLength, setRowLength] = useState(0)
 
   const getOrders = async () => {
     try {
@@ -191,7 +192,7 @@ const OrderOverview = () => {
           <Card margin={1}>
             <Grid container>
               <Grid item xs={12}>
-                <OrderTable orders={orders} clients={clients} loaded={loaded} />
+                <OrderTable orders={orders} clients={clients} loaded={loaded} rowLength={rowLength} setRowLength={setRowLength}/>
               </Grid>
             </Grid>
           </Card>

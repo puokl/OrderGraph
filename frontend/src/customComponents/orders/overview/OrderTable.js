@@ -1,25 +1,81 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import { InputAdornment } from "@mui/material";
+import {
+  InputAdornment,
+  Typography,
+  Link,
+  Dialog,
+  Zoom,
+  styled,
+} from "@mui/material";
 import { TextField } from "@mui/material";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
+import { useTranslation } from "react-i18next";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useSnackbar } from "notistack";
+import axios from "axios";
 
 export default function OrderTable(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(0);
-  const { orders, clients, loaded } = props;
+  const { t } = useTranslation();
+  const { orders, clients, loaded, rowLength, setRowLength } = props;
   searchQuery ? orders.filter((order) => searchQuery === order) : orders;
-  
-  const removeClient = (id) => {
-  };
-  const editClient = (id) => {
+  orders ? setRowLength(orders.length) : setRowLength(0);
+  const { enqueueSnackbar } = useSnackbar();
 
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+  });
+  const DialogWrapper = styled(Dialog)(
+    () => `
+      .MuiDialog-paper {
+        overflow: visible;
+      }
+`
+  );
+  const removeClient = async (id) => {
+    console.log(`hi ${id} u gone bye bye`);
+
+    try {
+      const response = await axios.delete(`/api/v1/order/delete/${id}`);
+      console.log(response);
+      
+      if (response.success === true) {
+        enqueueSnackbar(t("Successfully deleted."), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      } else {
+        enqueueSnackbar(t("An error occured, please try deleting again."), {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(t("yada yada"), {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+        TransitionComponent: Zoom,
+      });
+    }
   };
-  
+
   const columns = [
     { field: "clientName", headerName: "CLIENT", width: 200 },
     { field: "status", headerName: "STATUS", width: 200 },
@@ -59,8 +115,10 @@ export default function OrderTable(props) {
             <EditTwoToneIcon
               index={params.row.id}
               color="primary"
-              onClick={editClient(params.row.id)}
               style={{ cursor: "pointer" }}
+              onClick={() =>
+                (window.location.href = `/orders/edit/${params.row.id}`)
+              }
             />
             <DeleteTwoToneIcon
               index={params.row.id}
@@ -80,7 +138,7 @@ export default function OrderTable(props) {
       status: "not loaded",
       timeLeft: "not loaded",
       progress: 0,
-      actions: null
+      actions: null,
     },
   ];
   if (loaded) {
@@ -132,6 +190,7 @@ export default function OrderTable(props) {
         onPageChange={handlePageChange}
         page={page}
         loading={!loaded}
+        rowLength={rowLength}
         checkboxSelection
         sx={{}}
       />
