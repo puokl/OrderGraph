@@ -57,17 +57,25 @@ function Clients({
           //   handleClientSelect(e);
           // }}
         >
-          {clients.map((client, index) => (
-            <MenuItem
-              key={client._id}
-              value={client.clientName}
-              onClick={(e) => {
-                handleClientSelect(index);
-              }}
-            >
-              {client.clientName}
+          {clients.length > 0 ? (
+            clients.map((client, index) => (
+              <MenuItem
+                key={client._id}
+                value={client.clientName}
+                onClick={(e) => {
+                  handleClientSelect(index);
+                }}
+              >
+                {client.clientName}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem>
+              <a href="/clients/add" alt="create a client">
+                Add a Client
+              </a>
             </MenuItem>
-          ))}
+          )}
         </Select>
       </FormControl>
       {selectedClient.clientName ? (

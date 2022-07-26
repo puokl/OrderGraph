@@ -18,7 +18,7 @@ import useAuth from "src/hooks/useAuth";
 import useRefMounted from "src/hooks/useRefMounted";
 import { useTranslation } from "react-i18next";
 
-const LoginJWT = () => {
+const LoginJWT = ({ setWrongLogin }) => {
   const { login } = useAuth();
   const isMountedRef = useRefMounted();
   const { t } = useTranslation();
@@ -38,6 +38,8 @@ const LoginJWT = () => {
           setStatus({ success: true });
           setSubmitting(false);
         }
+      } else {
+        setWrongLogin(true);
       }
     } catch (err) {
       console.error(err);
@@ -46,6 +48,7 @@ const LoginJWT = () => {
         setErrors({ submit: err.message });
         setSubmitting(false);
       }
+      setWrongLogin(true);
     }
   };
 
@@ -91,7 +94,7 @@ const LoginJWT = () => {
             value={values.email}
             variant="outlined"
             inputRef={inputEmail}
-            sx={{width: 'fitContent'}}
+            sx={{ width: "fitContent" }}
           />
           <TextField
             error={Boolean(touched.password && errors.password)}

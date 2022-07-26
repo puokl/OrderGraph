@@ -1,13 +1,14 @@
-import { useState, useRef, useEffect } from 'react';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Helmet } from 'react-helmet-async';
-import Footer from 'src/components/Footer';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import listPlugin from '@fullcalendar/list';
-
+import { useState, useRef, useEffect } from "react";
+import PageTitleWrapper from "src/components/PageTitleWrapper";
+import { Helmet } from "react-helmet-async";
+import Footer from "src/components/Footer";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+import useAuth from "src/hooks/useAuth";
+import axios from "src/utils/axios2";
 import {
   Grid,
   Drawer,
@@ -16,22 +17,22 @@ import {
   Divider,
   useMediaQuery,
   styled,
-  useTheme
-} from '@mui/material';
+  useTheme,
+} from "@mui/material";
 
-import { useDispatch, useSelector } from 'src/store';
+import { useDispatch, useSelector } from "src/store";
 import {
   getEvents,
   updateEvent,
   selectEvent,
   selectRange,
   openDrawerPanel,
-  closeDrawerPanel
-} from 'src/slices/calendar';
-import PageHeader from './PageHeader';
+  closeDrawerPanel,
+} from "src/slices/calendar";
+import PageHeader from "./PageHeader";
 
-import Actions from './Actions';
-import EventDrawer from './EventDrawer';
+import Actions from "./Actions";
+import EventDrawer from "./EventDrawer";
 
 const FullCalendarWrapper = styled(Box)(
   ({ theme }) => `
@@ -128,14 +129,18 @@ function ApplicationsCalendar() {
   const theme = useTheme();
 
   const calendarRef = useRef(null);
-  const mobile = useMediaQuery(theme.breakpoints.down('md'));
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useDispatch();
   const { events, isDrawerOpen, selectedRange } = useSelector(
     (state) => state.calendar
   );
   const selectedEvent = useSelector(selectedEventSelector);
   const [date, setDate] = useState(new Date());
-  const [view, setView] = useState(mobile ? 'listWeek' : 'dayGridMonth');
+  const [view, setView] = useState(mobile ? "listWeek" : "dayGridMonth");
+
+  const [orders, setOrders] = useState([]);
+
+  const { user } = useAuth();
 
   const handleDateToday = () => {
     const calItem = calendarRef.current;
@@ -207,7 +212,7 @@ function ApplicationsCalendar() {
         updateEvent(event.id, {
           allDay: event.allDay,
           start: event.start,
-          end: event.end
+          end: event.end,
         })
       );
     } catch (err) {
@@ -221,7 +226,7 @@ function ApplicationsCalendar() {
         updateEvent(event.id, {
           allDay: event.allDay,
           start: event.start,
-          end: event.end
+          end: event.end,
         })
       );
     } catch (err) {
@@ -233,16 +238,49 @@ function ApplicationsCalendar() {
     dispatch(closeDrawerPanel());
   };
 
+  // useEffect(() => {
+  //   dispatch(getEvents());
+  // }, [dispatch]);
+
+  // Fetch Data
+
+  const getOrders = async () => {
+    try {
+      const response = await axios.get(
+        "/api/v1/order/all/" + user.organization
+      );
+      console.log(response);
+
+      const eventArray = [];
+
+      response.data.data.forEach((order) => {
+        eventArray.push({
+          id: order._id,
+          allDay: true,
+          color: "#57CA22",
+          description: "",
+          end: new Date(Date.parse(order.startDate) + 10 * 24 * 60 * 60 * 1000),
+          start: new Date(order.startDate),
+          title: "Order",
+        });
+      });
+
+      setOrders([...eventArray]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    dispatch(getEvents());
-  }, [dispatch]);
+    getOrders();
+  }, []);
 
   useEffect(() => {
     const calItem = calendarRef.current;
 
     if (calItem) {
       const calApi = calItem.getApi();
-      const changedView = mobile ? 'listWeek' : 'dayGridMonth';
+      const changedView = mobile ? "listWeek" : "dayGridMonth";
 
       calApi.changeView(changedView);
       setView(changedView);
@@ -255,11 +293,12 @@ function ApplicationsCalendar() {
         <title>Calendar - Applications</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader handleCreateEvent={handleAddClick} />
+        {/* <PageHeader handleCreateEvent={handleAddClick} /> */}
+        <PageHeader />
       </PageTitleWrapper>
       <Grid
         sx={{
-          px: 4
+          px: 4,
         }}
         container
         direction="row"
@@ -293,7 +332,7 @@ function ApplicationsCalendar() {
                 dayMaxEventRows={4}
                 eventResizableFromStart
                 eventResize={handleEventResize}
-                events={events}
+                events={orders}
                 headerToolbar={false}
                 height={660}
                 ref={calendarRef}
@@ -305,7 +344,7 @@ function ApplicationsCalendar() {
                   dayGridPlugin,
                   timeGridPlugin,
                   interactionPlugin,
-                  listPlugin
+                  listPlugin,
                 ]}
               />
             </FullCalendarWrapper>
@@ -313,9 +352,9 @@ function ApplicationsCalendar() {
         </Grid>
       </Grid>
       <Footer />
-      <Drawer
+      {/* <Drawer
         variant="temporary"
-        anchor={theme.direction === 'rtl' ? 'left' : 'right'}
+        anchor={theme.direction === "rtl" ? "left" : "right"}
         onClose={closeDrawer}
         open={isDrawerOpen}
         elevation={9}
@@ -330,7 +369,7 @@ function ApplicationsCalendar() {
             onEditComplete={closeDrawer}
           />
         )}
-      </Drawer>
+      </Drawer> */}
     </>
   );
 }

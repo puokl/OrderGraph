@@ -19,6 +19,7 @@ import suppliersRoutes from "./suppliers";
 import organizationRoutes from "./organization";
 import usersRoutes from "./users";
 import PhuocUsers from "src/customComponents/phuoc/index";
+import WorkerView from "src/customComponents/workerView/index";
 
 const router = [
   {
@@ -100,23 +101,11 @@ const router = [
     children: [
       {
         path: "/",
-        element: <Navigate to="dashboards" replace />,
+        element: <Navigate to="orderview" replace />,
       },
       {
-        path: "dashboards",
-        children: dashboardsRoutes,
-      },
-      {
-        path: "blocks",
-        children: blocksRoutes,
-      },
-      {
-        path: "applications",
-        children: applicationsRoutes,
-      },
-      {
-        path: "management",
-        children: managementRoutes,
+        path: "/orderview",
+        element: <WorkerView />,
       },
     ],
   },

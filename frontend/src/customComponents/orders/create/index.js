@@ -60,7 +60,9 @@ function CreateOrder() {
 
   const getClients = async () => {
     try {
-      const response = await axios.get("/api/v1/client");
+      const response = await axios.get(
+        "/api/v1/client/all/" + user.organization
+      );
       console.log(response);
       if (response !== undefined) {
         setClients(response.data.data);

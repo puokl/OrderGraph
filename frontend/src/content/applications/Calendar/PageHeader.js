@@ -3,12 +3,14 @@ import { useTranslation } from "react-i18next";
 import EventTwoToneIcon from "@mui/icons-material/EventTwoTone";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import useAuth from "src/hooks/useAuth";
 
 const PageHeader = ({ handleCreateEvent }) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   let navigate = useNavigate();
-  const navigateToCreatOrder = () => {
+  const navigateToCreateOrder = () => {
     let path = `/orders/create`;
     navigate(path);
   };
@@ -24,17 +26,19 @@ const PageHeader = ({ handleCreateEvent }) => {
         </Typography>
       </Grid>
       <Grid item>
-        <Button
-          sx={{
-            mt: { xs: 2, md: 0 },
-          }}
-          onClick={navigateToCreatOrder}
-          variant="contained"
-          color="primary"
-          startIcon={<EventTwoToneIcon fontSize="small" />}
-        >
-          {t("Create Order")}
-        </Button>
+        {user.role === "admin" ? (
+          <Button
+            sx={{
+              mt: { xs: 2, md: 0 },
+            }}
+            onClick={navigateToCreateOrder}
+            variant="contained"
+            color="primary"
+            startIcon={<EventTwoToneIcon fontSize="small" />}
+          >
+            {t("Create Order")}
+          </Button>
+        ) : null}
       </Grid>
     </Grid>
   );
