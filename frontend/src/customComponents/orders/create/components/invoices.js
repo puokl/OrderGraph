@@ -10,11 +10,14 @@ import {
   Avatar,
   Box,
   Typography,
+  Button,
 } from "@mui/material";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import UploadTwoToneIcon from "@mui/icons-material/UploadTwoTone";
+import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfTwoTone";
+import CloseIcon from "@mui/icons-material/Close";
 import useAuth from "src/hooks/useAuth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
@@ -155,109 +158,168 @@ function Invoices({
       <Grid
         sx={{
           minWidth: "100%",
-          justifyContent: "space-around",
+          justifyContent: "flex-start",
         }}
         container
       >
-        <Grid
-          item
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-          xs={6}
-          sm={6}
-          lg={6}
-        >
-          <Tooltip arrow title={t("Click to create a new invoice")}>
-            <CardAddAction
+        {invoiceList.map((invoice, index) => (
+          <Grid
+            item
+            key={index}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+            xs={6}
+            sm={6}
+            lg={6}
+          >
+            <Card
               sx={{
-                m: 1,
+                py: "1rem",
+                my: "1rem",
+                mx: 1,
+                px: "1.5rem",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                width: "100%",
               }}
             >
-              <CardActionArea
-                onClick={(e) => {
-                  console.log("hi");
+              <a
+                target="_blank"
+                href={invoiceUrlList[index]}
+                alt={`${invoice.name}`}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "flex-start",
                 }}
               >
-                <CardContent xs={12} sm={6} lg={3}>
-                  <AvatarAddWrapper>
-                    <AddTwoToneIcon fontSize="medium" />
-                  </AvatarAddWrapper>
-                </CardContent>
-              </CardActionArea>
-            </CardAddAction>
-          </Tooltip>
-        </Grid>
-        <Grid
-          item
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-          xs={6}
-          sm={6}
-          lg={6}
-        >
-          <Dropzone
-            onDrop={(acceptedFiles, event) => {
-              console.log(acceptedFiles);
-              handleSubmit(acceptedFiles, event);
-            }}
-            maxFiles={1}
-            style={{ width: "100%" }}
-          >
-            {({ getRootProps, getInputProps }) => (
-              <div {...getRootProps({ style })}>
-                <input {...getInputProps()} />
-                <Tooltip
-                  arrow
-                  title={t("Click to attach an invoice from your computer")}
-                >
-                  <CardAddAction style={{ backgroundColor: "lightgrey" }}>
-                    <CardActionArea>
-                      <CardContent
-                        xs={12}
-                        sm={6}
-                        lg={8}
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
-                        <AvatarAddWrapper>
-                          <UploadTwoToneIcon
-                            color="primary"
-                            fontSize="medium"
-                          />
-                        </AvatarAddWrapper>
-                        {loading ? (
-                          <span>{progresspercent}%</span>
-                        ) : (
-                          <Typography
-                            variant="subtitle1"
-                            gutterBottom
-                            sx={{
-                              py: 0.5,
-                            }}
-                          >
-                            {t("drag & drop files here")}
-                          </Typography>
-                        )}
-                      </CardContent>
-                    </CardActionArea>
-                  </CardAddAction>
-                </Tooltip>
-              </div>
-            )}
-          </Dropzone>
-        </Grid>
-        {invoiceList.map((invoice, index) => (
-          <Grid item key={index}>
-            <p>{`${invoice.name}`}</p>
+                <PictureAsPdfTwoToneIcon
+                  color="disabled"
+                  fontSize="medium"
+                  sx={{ mr: "1rem" }}
+                />
+                <span>{`${invoice.name}`}</span>
+              </a>
+              <Button
+                aria-label="Delete"
+                size="small"
+                color="primary"
+                style={{
+                  backgroundColor: "rgba(85, 105, 255, 0.1)",
+                  minWidth: 0,
+                  width: "1.5rem",
+                  height: "1.5rem",
+                  borderRadius: "50%",
+                  marginLeft: "auto",
+                }}
+                onClick={(event) => {
+                  deleteFile(index);
+                }}
+              >
+                <CloseIcon color="disabled" fontSize="small" />
+              </Button>
+            </Card>
           </Grid>
         ))}
+        <Grid container>
+          <Grid
+            item
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+            xs={6}
+            sm={6}
+            lg={6}
+          >
+            <Tooltip arrow title={t("Click to create a new invoice")}>
+              <CardAddAction
+                sx={{
+                  m: 1,
+                }}
+              >
+                <CardActionArea
+                  onClick={(e) => {
+                    console.log("hi");
+                  }}
+                >
+                  <CardContent xs={12} sm={6} lg={3}>
+                    <AvatarAddWrapper>
+                      <AddTwoToneIcon fontSize="medium" />
+                    </AvatarAddWrapper>
+                  </CardContent>
+                </CardActionArea>
+              </CardAddAction>
+            </Tooltip>
+          </Grid>
+          <Grid
+            item
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+            xs={6}
+            sm={6}
+            lg={6}
+          >
+            <Dropzone
+              onDrop={(acceptedFiles, event) => {
+                console.log(acceptedFiles);
+                handleSubmit(acceptedFiles, event);
+              }}
+              maxFiles={1}
+              style={{ width: "100%" }}
+            >
+              {({ getRootProps, getInputProps }) => (
+                <div {...getRootProps({ style })}>
+                  <input {...getInputProps()} />
+                  <Tooltip
+                    arrow
+                    title={t("Click to attach an invoice from your computer")}
+                  >
+                    <CardAddAction style={{ backgroundColor: "lightgrey" }}>
+                      <CardActionArea>
+                        <CardContent
+                          xs={12}
+                          sm={6}
+                          lg={8}
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                          }}
+                        >
+                          <AvatarAddWrapper>
+                            <UploadTwoToneIcon
+                              color="primary"
+                              fontSize="medium"
+                            />
+                          </AvatarAddWrapper>
+                          {loading ? (
+                            <span>{progresspercent}%</span>
+                          ) : (
+                            <Typography
+                              variant="subtitle1"
+                              gutterBottom
+                              sx={{
+                                py: 0.5,
+                              }}
+                            >
+                              {t("drag & drop files here")}
+                            </Typography>
+                          )}
+                        </CardContent>
+                      </CardActionArea>
+                    </CardAddAction>
+                  </Tooltip>
+                </div>
+              )}
+            </Dropzone>
+          </Grid>
+        </Grid>
       </Grid>
     </Card>
   );
