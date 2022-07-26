@@ -9,6 +9,7 @@ import {
   Tooltip,
   CircularProgress,
   Box,
+  Zoom,
 } from "@mui/material";
 import useAuth from "src/hooks/useAuth";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
@@ -29,6 +30,7 @@ import RemoveTwoToneIcon from "@mui/icons-material/RemoveTwoTone";
 import axios from "src/utils/axios2";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { useSnackbar } from "notistack";
 
 const INITIAL_FORM_STATE = {
   /* Client Details */
@@ -197,6 +199,7 @@ function AddClient() {
   const [cArray, setCArray] = useState([1]);
   const [formData, setFormData] = useState("");
   const [controlState, setControlState] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const [clientToEdit, setClientToEdit] = useState({
     clientType: "",
     clientName: "",
@@ -407,10 +410,23 @@ function AddClient() {
     try {
       const response = await axios.post("/api/v1/client/newclient", dataToSend);
       if (response.status === 201) {
-        console.log("Backend Create client response: ", response);
-        /*         navigateToClientOverview(); */
+        enqueueSnackbar(t("The client was created successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
       } else {
-        console.log("error");
+        enqueueSnackbar(t("error creating client"), {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
       }
     } catch (err) {
       console.error(err);
@@ -425,11 +441,24 @@ function AddClient() {
         "/api/v1/client/" + clientId,
         dataToSend
       );
-      if (response.status === 201) {
-        console.log("Backend Create client response: ", response);
-        /*         navigateToClientOverview(); */
+      if (response.status === 200) {
+        enqueueSnackbar(t("The client was updated successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
       } else {
-        console.log("error");
+        enqueueSnackbar(t("error updating client"), {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
       }
     } catch (err) {
       console.error(err);
