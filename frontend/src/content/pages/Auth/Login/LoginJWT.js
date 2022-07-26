@@ -55,8 +55,8 @@ const LoginJWT = ({ setWrongLogin }) => {
   return (
     <Formik
       initialValues={{
-        email: "demo@example.com",
-        password: "TokyoPass1@",
+        email: "",
+        password: "",
         terms: true,
         submit: null,
       }}
@@ -84,7 +84,6 @@ const LoginJWT = ({ setWrongLogin }) => {
             error={Boolean(touched.email && errors.email)}
             fullWidth
             margin="normal"
-            autoFocus
             helperText={touched.email && errors.email}
             label={t("Email address")}
             name="email"
