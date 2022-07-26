@@ -29,11 +29,17 @@ const getItem = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/item/:orgID
 // @access    Private/Admin
 const getAllItemsInOrg = asyncHandler(async (req, res, next) => {
-  const items = await Item.find({ organization: "62b1bbdd9a9f40fc08dcd2d3" });
+  const items = await Item.find();
+
+  const org = req.params.orgID;
+
+  const itemsInOrg = items.filter((item) => {
+    return item.organization === org;
+  });
 
   res.status(200).json({
     success: true,
-    data: items,
+    data: itemsInOrg,
   });
 });
 

@@ -1,8 +1,8 @@
-import { Box, List, styled } from '@mui/material';
-import { useLocation, matchPath } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import NavigationMenuItem from './item';
-import menuItems from './items';
+import { Box, List, styled } from "@mui/material";
+import { useLocation, matchPath } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import NavigationMenuItem from "./item";
+import menuItems from "./items";
 
 const MenuWrapper = styled(Box)(
   () => `
@@ -16,6 +16,7 @@ const MenuWrapper = styled(Box)(
     & > .MuiList-root {
       display: flex;
       flex-direction: row;
+      justify-content: flex-start;
       width: 100%;
       flex-wrap: wrap;
     }
@@ -40,9 +41,7 @@ const SubMenuWrapper = styled(Box)(
         justify-content: center;
         width: auto;
 
-        &:last-child {
-          margin-left: auto;
-        }
+       
     
         .MuiIconButton-root {
           display: flex;
@@ -56,7 +55,7 @@ const SubMenuWrapper = styled(Box)(
           color: ${theme.colors.alpha.trueWhite[100]};
 
           .name-wrapper {
-            transition: ${theme.transitions.create(['color'])};
+            transition: ${theme.transitions.create(["color"])};
           }
 
           .MuiBadge-root {
@@ -74,7 +73,7 @@ const SubMenuWrapper = styled(Box)(
           }
   
           .MuiSvgIcon-root {
-            transition: ${theme.transitions.create(['color'])};
+            transition: ${theme.transitions.create(["color"])};
             font-size: ${theme.typography.pxToRem(24)};
             margin-right: ${theme.spacing(1)};
             color: ${theme.colors.alpha.trueWhite[50]};
@@ -109,7 +108,7 @@ const reduceChildRoutes = ({ ev, path, item }) => {
     ? !!matchPath(
         {
           path: item.link,
-          end: true
+          end: true,
         },
         path
       )
@@ -120,7 +119,7 @@ const reduceChildRoutes = ({ ev, path, item }) => {
       ? !!matchPath(
           {
             path: item.link,
-            end: false
+            end: false,
           },
           path
         )
@@ -138,7 +137,7 @@ const reduceChildRoutes = ({ ev, path, item }) => {
       >
         {renderNavigationMenuItems({
           path,
-          items: item.items
+          items: item.items,
         })}
       </NavigationMenuItem>
     );
@@ -168,7 +167,7 @@ function NavigationMenu() {
           <List component="div">
             {renderNavigationMenuItems({
               items: section.items,
-              path: location.pathname
+              path: location.pathname,
             })}
           </List>
         </MenuWrapper>

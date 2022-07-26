@@ -67,7 +67,6 @@ const menuItems = [
           {
             name: "Add Supplier",
             link: "suppliers/add",
-            badge: "",
             badgeTooltip: "Add a supplier",
           },
         ],

@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   Card,
@@ -11,34 +11,34 @@ import {
   ListItemIcon,
   IconButton,
   Typography,
-  styled
-} from '@mui/material';
-import { Helmet } from 'react-helmet-async';
-import useAuth from 'src/hooks/useAuth';
-import { useTranslation } from 'react-i18next';
-import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
-import Scrollbar from 'src/components/Scrollbar';
-import Logo from 'src/components/LogoSign';
-import SwiperCore, { Navigation, Pagination } from 'swiper';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import 'swiper/components/navigation/navigation.min.css';
-import 'swiper/components/pagination/pagination.min.css';
+  styled,
+} from "@mui/material";
+import { Helmet } from "react-helmet-async";
+import useAuth from "src/hooks/useAuth";
+import { useTranslation } from "react-i18next";
+import CheckCircleOutlineTwoToneIcon from "@mui/icons-material/CheckCircleOutlineTwoTone";
+import Scrollbar from "src/components/Scrollbar";
+import Logo from "src/components/LogoSign";
+import SwiperCore, { Navigation, Pagination } from "swiper";
+import ChevronRightTwoToneIcon from "@mui/icons-material/ChevronRightTwoTone";
+import ChevronLeftTwoToneIcon from "@mui/icons-material/ChevronLeftTwoTone";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper.min.css";
+import "swiper/components/navigation/navigation.min.css";
+import "swiper/components/pagination/pagination.min.css";
 
-import Auth0Register from '../RegisterAuth0';
-import FirebaseAuthRegister from '../RegisterFirebaseAuth';
-import JWTRegister from '../RegisterJWT';
-import AmplifyRegister from '../RegisterAmplify';
+import Auth0Register from "../RegisterAuth0";
+import FirebaseAuthRegister from "../RegisterFirebaseAuth";
+import JWTRegister from "../RegisterJWT";
+import AmplifyRegister from "../RegisterAmplify";
 
 SwiperCore.use([Navigation, Pagination]);
 
 const icons = {
-  Auth0: '/static/images/logo/auth0.svg',
-  FirebaseAuth: '/static/images/logo/firebase.svg',
-  JWT: '/static/images/logo/jwt.svg',
-  Amplify: '/static/images/logo/amplify.svg'
+  Auth0: "/static/images/logo/auth0.svg",
+  FirebaseAuth: "/static/images/logo/firebase.svg",
+  JWT: "/static/images/logo/jwt.svg",
+  Amplify: "/static/images/logo/amplify.svg",
 };
 
 const Content = styled(Box)(
@@ -85,7 +85,7 @@ const CardImg = styled(Card)(
     justify-content: center;
     position: relative;
     border: 11px solid ${theme.colors.alpha.trueWhite[10]};
-    transition: ${theme.transitions.create(['border'])};
+    transition: ${theme.transitions.create(["border"])};
     width: ${theme.spacing(16)};
     height: ${theme.spacing(16)};
     margin-bottom: ${theme.spacing(3)};
@@ -98,7 +98,7 @@ const SwipeIndicator = styled(IconButton)(
         width: ${theme.spacing(6)};
         height: ${theme.spacing(6)};
         border-radius: 100px;
-        transition: ${theme.transitions.create(['background', 'color'])};
+        transition: ${theme.transitions.create(["background", "color"])};
 
         &:hover {
           color: ${theme.colors.alpha.trueWhite[100]};
@@ -173,7 +173,7 @@ function RegisterCover() {
         <title>Register - Cover</title>
       </Helmet>
       <Content>
-        <SidebarWrapper
+        {/* <SidebarWrapper
           sx={{
             display: { xs: 'none', md: 'inline-block' }
           }}
@@ -381,11 +381,11 @@ function RegisterCover() {
               </Box>
             </SidebarContent>
           </Scrollbar>
-        </SidebarWrapper>
+        </SidebarWrapper> */}
         <MainContent>
           <LogoWrapper
             sx={{
-              display: { xs: 'none', sm: 'inline-block' }
+              display: { xs: "none", sm: "inline-block" },
             }}
           >
             <Logo />
@@ -394,33 +394,33 @@ function RegisterCover() {
             <Card
               sx={{
                 p: 4,
-                my: 4
+                my: 4,
               }}
             >
               <Box textAlign="center">
                 <Typography
                   variant="h2"
                   sx={{
-                    mb: 1
+                    mb: 1,
                   }}
                 >
-                  {t('Create account')}
+                  {t("Create account")}
                 </Typography>
                 <Typography
                   variant="h4"
                   color="text.secondary"
                   fontWeight="normal"
                   sx={{
-                    mb: 3
+                    mb: 3,
                   }}
                 >
-                  {t('Fill in the fields below to sign up for an account.')}
+                  {t("Fill in the fields below to sign up for an account.")}
                 </Typography>
               </Box>
-              {method === 'Auth0' && <Auth0Register />}
-              {method === 'FirebaseAuth' && <FirebaseAuthRegister />}
-              {method === 'JWT' && <JWTRegister />}
-              {method === 'Amplify' && <AmplifyRegister />}
+              {method === "Auth0" && <Auth0Register />}
+              {method === "FirebaseAuth" && <FirebaseAuthRegister />}
+              {method === "JWT" && <JWTRegister />}
+              {method === "Amplify" && <AmplifyRegister />}
               <Box mt={4}>
                 <Typography
                   component="span"
@@ -428,10 +428,10 @@ function RegisterCover() {
                   color="text.primary"
                   fontWeight="bold"
                 >
-                  {t('Already have an account?')}
-                </Typography>{' '}
+                  {t("Already have an account?")}
+                </Typography>{" "}
                 <Link component={RouterLink} to="/account/login">
-                  <b>{t('Sign in here')}</b>
+                  <b>{t("Sign in here")}</b>
                 </Link>
               </Box>
             </Card>
