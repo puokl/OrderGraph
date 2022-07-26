@@ -25,8 +25,13 @@ function ClientDetails() {
   const [clients, setClients] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const { clientId } = useParams();
-  const [disabled, setDisabled] = useState(true);
+  const { orderID } = useParams();
   const [name, setName] = useState("");
+  const [orders, setOrders] = useState([]);
+  const [activeOrders, setActiveOrders] = useState([]);
+  const [upcomingOrders, setUpcomingOrders] = useState([]);
+  const [finishedOrders, setFinishedOrders] = useState([]);
+  let newOrders = [];
 
   // Fetch Data
 
@@ -46,6 +51,43 @@ function ClientDetails() {
   useEffect(() => {
     getClient();
   }, []);
+
+  const getOrder = async () => {
+    try {
+      const response = await axios.get("/api/v1/order/");
+      const clientOrders = response.data.data.filter(
+        (order) => order.client === clientId
+      );
+      setOrders([...clientOrders]);
+
+      const activeClientOrders = clientOrders.filter(
+        (order) => order.status === "active"
+      );
+      setActiveOrders(activeClientOrders);
+
+      const upcomingClientOrders = clientOrders.filter(
+        (order) => order.status === "upcoming"
+      );
+      setUpcomingOrders(upcomingClientOrders);
+
+      const previousClientOrders = clientOrders.filter(
+        (order) => order.status === "finished"
+      );
+      setfinishedOrders(previousClientOrders);
+
+      console.log("ORDERS: ", response.data.data);
+      console.log("CLIENT ORDERS :", clientOrders);
+      console.log("ACTIVE ORDERS :", activeClientOrders);
+      console.log("UPCOMING ORDERS :", upcomingClientOrders);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getOrder();
+    console.log(orders);
+  }, [dataLoaded]);
 
   const addresses = {
     delivery: 12,
@@ -111,16 +153,14 @@ function ClientDetails() {
                     </Typography>
                   </Grid>
                   <Grid item xs={8} sm={8} lg={8}>
-                    <TextField
-                      /*      variant="h5"
-                      fontWeight="bold" */
-                      variant="standard"
+                    <Typography
+                      variant="h5"
+                      fontWeight="bold"
                       clients={clients}
                       sx={{ ml: "20px" }}
-                      disabled={disabled}
-                      value={dataLoaded ? clients.clientName : ""}
-                    />
-                    {/*                       {dataLoaded ? clients.clientName : ""} */}
+                    >
+                      {dataLoaded ? clients.clientName : ""}
+                    </Typography>
                   </Grid>
                 </Grid>
                 {/* Client Name End */}
@@ -276,7 +316,7 @@ function ClientDetails() {
                     sx={{
                       minHeight: { xs: 0, md: 243 },
                     }}
-                    p={2}
+                    px={2}
                   >
                     {/* Registration No  Start */}
                     <Grid container sx={{ mb: "20px" }}>
@@ -511,7 +551,7 @@ function ClientDetails() {
                               />
                             </Grid>
                           </Grid>
-                          <Box sx={{ ml: "10px" }}>
+                          {/*  <Box sx={{ ml: "10px" }}>
                             <Typography
                               variant="h5"
                               fontWeight="bold"
@@ -550,7 +590,7 @@ function ClientDetails() {
                                 ? clients.contact[1].contactDepartment
                                 : ""}
                             </Typography>
-                          </Box>
+                          </Box> */}
                         </Card>
                       </Box>
                     </Box>
@@ -611,7 +651,7 @@ function ClientDetails() {
                         fontWeight="bold"
                         sx={{ fontSize: 20, ml: "30px" }}
                       >
-                        12
+                        {orders.length}
                       </Typography>
                     </Grid>
                     <Grid item lg={2} sx={{ mt: "-30px" }}>
@@ -623,7 +663,7 @@ function ClientDetails() {
                         fontWeight="bold"
                         sx={{ fontSize: 20, ml: "30px" }}
                       >
-                        12
+                        {activeOrders.length}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -664,7 +704,7 @@ function ClientDetails() {
                         fontWeight="bold"
                         sx={{ fontSize: 20, ml: "30px" }}
                       >
-                        435
+                        {finishedOrders.length}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -704,7 +744,7 @@ function ClientDetails() {
                         fontWeight="bold"
                         sx={{ fontSize: 20, ml: "30px" }}
                       >
-                        1
+                        {upcomingOrders.lenght}
                       </Typography>
                     </Grid>
                   </Grid>
