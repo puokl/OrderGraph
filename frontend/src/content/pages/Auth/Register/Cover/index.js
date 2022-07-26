@@ -51,7 +51,7 @@ const Content = styled(Box)(
 
 const MainContent = styled(Box)(
   () => `
-    padding: 0 0 0 500px;
+
     width: 100%;
     display: flex;
     align-items: center;
