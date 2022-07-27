@@ -26,16 +26,19 @@ function ClientDetails({
   name,
   clientToEdit,
   setValues,
-  setShowContact
+  setShowContact,
 }) {
   const { t } = useTranslation();
   const projectTags = [{ title: "Person" }, { title: "Company" }];
 
+  
+
+  /* Use Effect to force Rerender of Comoonent after setShowContact is set to true. Get data as default Value on edit route */
   useEffect(() => {
     console.log("hi");
     setValues({ ...clientToEdit });
-    if(clientToEdit.clientType === 'Company'){
-      setShowContact(true)
+    if (clientToEdit.clientType === "Company") {
+      setShowContact(true);
     }
   }, [clientToEdit]);
 

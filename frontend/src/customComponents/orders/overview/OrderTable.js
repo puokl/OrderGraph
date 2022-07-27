@@ -1,28 +1,78 @@
-import React, { useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import React, { useState, forwardRef } from "react";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import { InputAdornment } from "@mui/material";
-import { TextField } from "@mui/material";
-import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
+import { Dialog, Zoom, styled, Chip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useSnackbar } from "notistack";
+import axios from "src/utils/axios2";
+import { KeyboardReturnSharp } from "@mui/icons-material";
 
 export default function OrderTable(props) {
-  const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(0);
-  const { orders, clients, loaded } = props;
-  searchQuery ? orders.filter((order) => searchQuery === order) : orders;
-  
-  const removeClient = (id) => {
-  };
-  const editClient = (id) => {
+  const { t } = useTranslation();
+  const { orders, clients, loaded, rowLength, setRowLength, getOrders } = props;
+  orders ? setRowLength(orders.length) : setRowLength(0);
+  const { enqueueSnackbar } = useSnackbar();
+  const data = getOrders;
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+  });
+  const DialogWrapper = styled(Dialog)(
+    () => `
+      .MuiDialog-paper {
+        overflow: visible;
+      }
+`
+  );
+  const removeClient = async (id) => {
+    console.log(`hi ${id} u gone bye bye`);
 
+    try {
+      const response = await axios.delete(`/api/v1/order/${id}`);
+      console.log(response);
+
+      if (response.data.success === true) {
+        enqueueSnackbar(t("Successfully deleted."), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+        getOrders();
+      } else {
+        enqueueSnackbar(t("An error occured, please try deleting again."), {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(t("yada yada"), {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+        TransitionComponent: Zoom,
+      });
+    }
   };
-  
+
   const columns = [
     { field: "clientName", headerName: "CLIENT", width: 200 },
-    { field: "status", headerName: "STATUS", width: 200 },
+    { field: "status", headerName: "STATUS", width: 200, renderCell: (params) => (
+      <Chip sx={{ width: 200}}label={params.row.status} color={params.row.status === "upcoming" ? "warning" : params.row.status ==="active" ? "primary" : "success"}/>
+
+    )},
     { field: "timeLeft", headerName: "TIME LEFT", width: 200 },
 
     {
@@ -39,6 +89,8 @@ export default function OrderTable(props) {
                 ? 100
                 : params.row.status === "in_progress"
                 ? 20
+                : params.row.status === "active"
+                ? 50
                 : params.row.status === "upcoming"
                 ? 75
                 : params.row.status === "draft"
@@ -59,13 +111,18 @@ export default function OrderTable(props) {
             <EditTwoToneIcon
               index={params.row.id}
               color="primary"
-              onClick={editClient(params.row.id)}
               style={{ cursor: "pointer" }}
+              onClick={() =>
+                (window.location.href = `/orders/edit/${params.row.id}`)
+              }
             />
             <DeleteTwoToneIcon
               index={params.row.id}
               color="error"
-              onClick={removeClient(params.row.id)}
+              // onClick={removeClient(params.row.id)}
+              onClick={() => {
+                removeClient(params.row.id);
+              }}
               style={{ cursor: "pointer" }}
             />
           </>
@@ -80,7 +137,7 @@ export default function OrderTable(props) {
       status: "not loaded",
       timeLeft: "not loaded",
       progress: 0,
-      actions: null
+      actions: null,
     },
   ];
   if (loaded) {
@@ -90,50 +147,55 @@ export default function OrderTable(props) {
         client._id === order.createdByUser ? client.clientName : null
       ),
       status: order.status,
-      timeLeft: order.createdAt ? order.createdAt : null,
+      timeLeft:
+        order.status != "finished" ? order.status === "active"? "2 weeks left" : order.status === "upcoming" ? "1 week left" 
+          : "finished" : "finished",
       progress: order.status,
       actions: order._id,
     }));
   }
+  // useEffect(() => {
+  //   loaded ?
+  //   orders.forEach((order) =>
+  //     order.status != "finished"
+  //       ? order.items.forEach((item) => {
+  //           console.log("1");
+  //           if (item.tasks.every((task) => task.finished === false)) {
+  //             item.tasks.forEach((task) => {
+  //               console.log("2");
+  //               return task.subTasks
+  //                 .filter((subTask) => subTask?.finished === false)
+  //                 .reduce(
+  //                   (prev, curr) =>
+  //                     Number(prev.tineEstimate) + Number(curr.tineEstimate),
+  //                   0
+  //                 );
+  //             });
+  //           } else {
+  //             return "finished";
+  //           }
+  //         })
+  //       : "tbd"
+  //       )
+  //       : console.log("no items");
+  // }, [loaded]);
 
-  const handlePageChange = (newPage) => {
-    // We have the cursor, we can allow the page transition.
-    if (newPage === 0 || mapPageToNextCursor.current[newPage - 1]) {
-      setPage(newPage);
-    }
-  };
   return (
     <div className="dataGridContainer" style={{ height: 400, width: "100%" }}>
-      <TextField
-        sx={{
-          m: 2,
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchTwoToneIcon color="primary" />
-            </InputAdornment>
-          ),
-        }}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search users..."
-        size="small"
-        margin="normal"
-        variant="outlined"
-      />
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[5, 10, 20, 50]}
-        pagination
-        paginationMode="server"
-        onPageChange={handlePageChange}
         page={page}
+        pageSize={pageSize}
+        onPageChange={(newPage) => setPage(newPage)}
+        onPageSizeChange={(newPage) => setPageSize(newPage)}
+        rowsPerPageOptions={[5, 10, 20, 50, 100]}
         loading={!loaded}
+        rowLength={rowLength}
         checkboxSelection
+        {...data}
         sx={{}}
+        components={{ Toolbar: GridToolbar }}
       />
     </div>
   );
