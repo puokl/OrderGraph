@@ -11,8 +11,6 @@ const ClientOverview = () => {
   const [rowLength, setRowLength] = useState(0);
   const [newClientsMonth, setNewClientsMonth] = useState(0);
 
-  clients ? setRowLength(clients.length) : setRowLength(0);
-
   const getClients = async () => {
     try {
       const response = await axios.get("/api/v1/client");
@@ -24,19 +22,20 @@ const ClientOverview = () => {
   
   useEffect(() => {
     getClients();
+    setRowLength(clients.length)
     setLoaded(true)
   }, []);
 
   const totalClients = clients.length;
   const today = new Date();
   const lastMonth = Date.parse(today) - 1000 * 60 * 60 * 24 * 30;
-  // useEffect(() => {
-  //   clients.forEach((c) =>
-  //     Date.parse(c.createdAt) > lastMonth
-  //       ? setNewClientsMonth((prev) => prev + 1)
-  //       : 0
-  //   );
-  // }, [clients]);
+  useEffect(() => {
+    clients.forEach((c) =>
+      Date.parse(c.createdAt) > lastMonth
+        ? setNewClientsMonth((prev) => prev + 1)
+        : 0
+    );
+  }, [clients]);
   const clientsWActiveOrdrs = 2;
   const clientsWORecentOrdrs = 33;
 
