@@ -1,16 +1,13 @@
 import React, { useState, forwardRef } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import {
-  Dialog,
-  Zoom,
-  styled,
-} from "@mui/material";
+import { Dialog, Zoom, styled, Chip } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useSnackbar } from "notistack";
 import axios from "src/utils/axios2";
+import { KeyboardReturnSharp } from "@mui/icons-material";
 
 export default function OrderTable(props) {
   const [pageSize, setPageSize] = useState(5);
@@ -19,7 +16,7 @@ export default function OrderTable(props) {
   const { orders, clients, loaded, rowLength, setRowLength, getOrders } = props;
   orders ? setRowLength(orders.length) : setRowLength(0);
   const { enqueueSnackbar } = useSnackbar();
-  const data = getOrders
+  const data = getOrders;
   const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
   });
@@ -46,7 +43,7 @@ export default function OrderTable(props) {
           },
           TransitionComponent: Zoom,
         });
-        getOrders()
+        getOrders();
       } else {
         enqueueSnackbar(t("An error occured, please try deleting again."), {
           variant: "error",
@@ -72,7 +69,10 @@ export default function OrderTable(props) {
 
   const columns = [
     { field: "clientName", headerName: "CLIENT", width: 200 },
-    { field: "status", headerName: "STATUS", width: 200 },
+    { field: "status", headerName: "STATUS", width: 200, renderCell: (params) => (
+      <Chip sx={{ width: 200}}label={params.row.status} color={params.row.status === "upcoming" ? "warning" : params.row.status ==="active" ? "primary" : "success"}/>
+
+    )},
     { field: "timeLeft", headerName: "TIME LEFT", width: 200 },
 
     {
@@ -89,6 +89,8 @@ export default function OrderTable(props) {
                 ? 100
                 : params.row.status === "in_progress"
                 ? 20
+                : params.row.status === "active"
+                ? 50
                 : params.row.status === "upcoming"
                 ? 75
                 : params.row.status === "draft"
@@ -145,13 +147,39 @@ export default function OrderTable(props) {
         client._id === order.createdByUser ? client.clientName : null
       ),
       status: order.status,
-      timeLeft: order.createdAt ? order.createdAt : null,
+      timeLeft:
+        order.status != "finished" ? order.status === "active"? "2 weeks left" : order.status === "upcoming" ? "1 week left" 
+          : "finished" : "finished",
       progress: order.status,
       actions: order._id,
     }));
   }
+  // useEffect(() => {
+  //   loaded ?
+  //   orders.forEach((order) =>
+  //     order.status != "finished"
+  //       ? order.items.forEach((item) => {
+  //           console.log("1");
+  //           if (item.tasks.every((task) => task.finished === false)) {
+  //             item.tasks.forEach((task) => {
+  //               console.log("2");
+  //               return task.subTasks
+  //                 .filter((subTask) => subTask?.finished === false)
+  //                 .reduce(
+  //                   (prev, curr) =>
+  //                     Number(prev.tineEstimate) + Number(curr.tineEstimate),
+  //                   0
+  //                 );
+  //             });
+  //           } else {
+  //             return "finished";
+  //           }
+  //         })
+  //       : "tbd"
+  //       )
+  //       : console.log("no items");
+  // }, [loaded]);
 
-  
   return (
     <div className="dataGridContainer" style={{ height: 400, width: "100%" }}>
       <DataGrid
@@ -161,12 +189,13 @@ export default function OrderTable(props) {
         pageSize={pageSize}
         onPageChange={(newPage) => setPage(newPage)}
         onPageSizeChange={(newPage) => setPageSize(newPage)}
-        rowsPerPageOptions={[5, 10, 20, 50]}
+        rowsPerPageOptions={[5, 10, 20, 50, 100]}
         loading={!loaded}
         rowLength={rowLength}
         checkboxSelection
         {...data}
         sx={{}}
+        components={{ Toolbar: GridToolbar }}
       />
     </div>
   );

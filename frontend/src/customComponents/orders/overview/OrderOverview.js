@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import OrderTable from "./OrderTable.js";
-import "./OrderOverview.css";
+import OrderTable from "./OrderTable";
 import { Grid, Card, Button, Typography } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
-import SearchIcon from "@mui/icons-material/Search";
-import LinearProgress from "@mui/material/LinearProgress";
-import Box from "@mui/material";
 import axios from "src/utils/axios2";
+
 const OrderOverview = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [orders, setOrders] = useState([]);
   const [clients, setClients] = useState([]);
-  const [rowLength, setRowLength] = useState(0)
+  const [rowLength, setRowLength] = useState(0);
+  const [newOrdersMonth, setNewOrdersMonth] = useState(0);
 
   const getOrders = async () => {
     try {
@@ -38,10 +35,18 @@ const OrderOverview = () => {
     getClients();
   }, []);
 
-  const totalClients = 42;
-  const newClientsMonth = 4;
-  const clientsWActiveOrdrs = 2;
-  const clientsWORecentOrdrs = 33;
+  const totalOrders = orders.length;
+  const today = new Date();
+  const lastMonth = Date.parse(today) - 1000 * 60 * 60 * 24 * 30;
+  useEffect(() => {
+    orders.forEach((o) =>
+      Date.parse(o.startDate) > lastMonth
+        ? setNewOrdersMonth((prev) => prev + 1)
+        : 0
+    );
+  }, [orders]);
+  const activeOrders = orders.filter((o) => o.status === "active").length;
+  const RecentOrdrs = orders.filter((o) => o.status === "finished").length;
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -87,7 +92,7 @@ const OrderOverview = () => {
                   </Grid>
                   <Grid item>
                     <Typography variant="h5" component="h5" gutterBottom>
-                      Total Clients
+                      Total Orders
                     </Typography>
                   </Grid>
                 </Grid>
@@ -98,7 +103,7 @@ const OrderOverview = () => {
                   component="h4"
                   gutterBottom
                 >
-                  {totalClients}
+                  {totalOrders}
                 </Typography>
               </Grid>
             </Grid>
@@ -114,7 +119,7 @@ const OrderOverview = () => {
                   </Grid>
                   <Grid item>
                     <Typography variant="h5" component="h5" gutterBottom>
-                      New Clients last month{" "}
+                      New Orders last month{" "}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -125,7 +130,7 @@ const OrderOverview = () => {
                   component="h4"
                   gutterBottom
                 >
-                  {newClientsMonth}
+                  {newOrdersMonth}
                 </Typography>
               </Grid>
             </Grid>
@@ -141,7 +146,7 @@ const OrderOverview = () => {
                   </Grid>
                   <Grid item>
                     <Typography variant="h5" component="h5" gutterBottom>
-                      Clients with active orders
+                      Active orders
                     </Typography>
                   </Grid>
                 </Grid>
@@ -152,7 +157,7 @@ const OrderOverview = () => {
                   component="h4"
                   gutterBottom
                 >
-                  {clientsWActiveOrdrs}
+                  {activeOrders}
                 </Typography>
               </Grid>
             </Grid>
@@ -168,7 +173,7 @@ const OrderOverview = () => {
                   </Grid>
                   <Grid item>
                     <Typography variant="h5" component="h5" gutterBottom>
-                      Clients without recent orders
+                      Finished orders
                     </Typography>
                   </Grid>
                 </Grid>
@@ -179,7 +184,7 @@ const OrderOverview = () => {
                   component="h4"
                   gutterBottom
                 >
-                  {clientsWORecentOrdrs}
+                  {RecentOrdrs}
                 </Typography>
               </Grid>
             </Grid>
@@ -192,7 +197,14 @@ const OrderOverview = () => {
           <Card margin={1}>
             <Grid container>
               <Grid item xs={12}>
-                <OrderTable orders={orders} clients={clients} loaded={loaded} rowLength={rowLength} setRowLength={setRowLength} getOrders={getOrders}/>
+                <OrderTable
+                  orders={orders}
+                  clients={clients}
+                  loaded={loaded}
+                  rowLength={rowLength}
+                  setRowLength={setRowLength}
+                  getOrders={getOrders}
+                />
               </Grid>
             </Grid>
           </Card>
