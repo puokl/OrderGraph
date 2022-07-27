@@ -383,14 +383,23 @@ function RegisterCover() {
           </Scrollbar>
         </SidebarWrapper> */}
         <MainContent>
-          <LogoWrapper
+          {/* <LogoWrapper
             sx={{
               display: { xs: "none", sm: "inline-block" },
             }}
           >
             <Logo />
-          </LogoWrapper>
-          <Container maxWidth="sm">
+          </LogoWrapper> */}
+          <Container
+            maxWidth="sm"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img src="/OG-logo.png" style={{ height: "15vh" }} />
             <Card
               sx={{
                 p: 4,

@@ -5,6 +5,7 @@ import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
 import { SidebarContext } from "src/contexts/SidebarContext";
 import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
 import Logo from "src/components/LogoSign";
+// import "public/OG-logo.png";
 
 import HeaderButtons from "./Buttons";
 import HeaderUserbox from "./Userbox";
@@ -42,7 +43,8 @@ function Header() {
             display: { lg: "none", xs: "inline-block" },
           }}
         >
-          <Logo />
+          {/* <Logo /> */}
+          <img src="/OG-logo.png" />
         </Box>
       </Box>
       <Box display="flex" alignItems="center">

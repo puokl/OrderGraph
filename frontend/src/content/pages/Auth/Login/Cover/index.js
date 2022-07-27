@@ -209,6 +209,8 @@ function LoginCover() {
             }}
             maxWidth="sm"
           >
+            {" "}
+            <img src="/OG-logo.png" style={{ height: "15vh" }} />
             <Card
               sx={{
                 p: 4,
