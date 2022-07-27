@@ -41,7 +41,7 @@ function Clients({
   }, [currentOrder]);
 
   useEffect(() => {
-    setCurrentOrder({ ...currentOrder, client: selectedClient._id });
+    setCurrentOrder({ ...currentOrder, client: selectedClient?._id });
   }, [selectedClient]);
 
   return (
@@ -52,7 +52,7 @@ function Clients({
         </InputLabel>
         <Select
           label={t("Select client...")}
-          value={selectedClient.clientName ? selectedClient.clientName : ""}
+          value={selectedClient?.clientName ? selectedClient?.clientName : ""}
           // onChange={(e) => {
           //   handleClientSelect(e);
           // }}
@@ -78,11 +78,11 @@ function Clients({
           )}
         </Select>
       </FormControl>
-      {selectedClient.clientName ? (
+      {selectedClient?.clientName ? (
         <Card sx={{ mt: "1rem" }}>
           <Chip
             color="success"
-            label={selectedClient.clientType}
+            label={selectedClient?.clientType}
             style={{ borderRadius: "0 0 16px 0" }}
           />
           <Box
@@ -138,7 +138,7 @@ function Clients({
             }}
             fontWeight="bold"
           >
-            {selectedClient.clientName}
+            {selectedClient?.clientName}
           </Typography>
           <Box
             p={2}
@@ -206,7 +206,7 @@ function Clients({
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.clientPhoneNumber}
+                {selectedClient?.clientPhoneNumber}
               </Typography>
 
               <Typography
@@ -216,7 +216,7 @@ function Clients({
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.clientEMail}
+                {selectedClient?.clientEMail}
               </Typography>
               <Typography
                 variant="h5"
@@ -225,11 +225,11 @@ function Clients({
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.billingAddress?.Address +
+                {selectedClient?.billingAddress?.Address +
                   ", " +
-                  selectedClient.billingAddress?.City +
+                  selectedClient?.billingAddress?.City +
                   ", " +
-                  selectedClient.billingAddress?.Zip}
+                  selectedClient?.billingAddress?.Zip}
               </Typography>
               <Typography
                 variant="h5"
@@ -238,15 +238,15 @@ function Clients({
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.shippingAddress?.Address +
+                {selectedClient?.shippingAddress?.Address +
                   ", " +
-                  selectedClient.shippingAddress?.City +
+                  selectedClient?.shippingAddress?.City +
                   ", " +
-                  selectedClient.shippingAddress?.Zip}
+                  selectedClient?.shippingAddress?.Zip}
               </Typography>
             </Box>
           </Box>
-          {selectedClient.clientType === "Company" ? (
+          {selectedClient?.clientType === "Company" ? (
             <>
               <Divider />
               <Typography
@@ -258,7 +258,7 @@ function Clients({
                 fontWeight="bold"
               >
                 {t("Contact Person")}
-              </Typography>
+               </Typography>
               <Box
                 p={2}
                 style={{
@@ -326,7 +326,7 @@ function Clients({
                     }}
                     fontWeight="normal"
                   >
-                    {selectedClient.contact[0].contactName}
+                    {selectedClient?.contact[0].contactName}
                   </Typography>
 
                   <Typography
@@ -336,7 +336,7 @@ function Clients({
                     }}
                     fontWeight="normal"
                   >
-                    {selectedClient.contact[0].contactPhoneNumber}
+                    {selectedClient?.contact[0].contactPhoneNumber}
                   </Typography>
                   <Typography
                     variant="h5"
@@ -345,7 +345,7 @@ function Clients({
                     }}
                     fontWeight="normal"
                   >
-                    {selectedClient.contact[0].contactEMail}
+                    {selectedClient?.contact[0].contactEMail}
                   </Typography>
                   <Typography
                     variant="h5"
@@ -354,7 +354,7 @@ function Clients({
                     }}
                     fontWeight="normal"
                   >
-                    {selectedClient.contact[0].contactRole}
+                    {selectedClient?.contact[0].contactRole}
                   </Typography>
                 </Box>
               </Box>

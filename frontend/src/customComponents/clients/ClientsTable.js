@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import { InputAdornment } from "@mui/material";
-import { TextField } from "@mui/material";
-import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
+import { useSnackbar } from "notistack";
+
 export default function ClientsTable(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(0);
-  const { clients, loaded } = props;
+  const { clients, loaded, rowLength, setRowLength, getClients } = props;
   searchQuery ? clients.filter((client) => searchQuery === client) : clients;
+  const data = getClients;
+  const { enqueueSnackbar } = useSnackbar();
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+  });
+  const DialogWrapper = styled(Dialog)(
+    () => `
+      .MuiDialog-paper {
+        overflow: visible;
+      }
+`
+  );
 
   const columns = [
     { field: "id", headerName: "ID", width: 20 },
@@ -54,9 +65,44 @@ export default function ClientsTable(props) {
       },
     },
   ];
-  const removeClient = () => {
-    console.log(`${client.clientName} with the ID ${client._id} removed`);
-  };
+  const removeClient = async (id) => {
+    console.log(`hi ${id} u gone bye bye`);
+
+    try {
+      const response = await axios.delete(`/api/v1/client/${id}`);
+      console.log(response);
+
+      if (response.data.success === true) {
+        enqueueSnackbar(t("Successfully deleted."), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+        getClients();
+      } else {
+        enqueueSnackbar(t("An error occured, please try deleting again."), {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(t("yada yada"), {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+        TransitionComponent: Zoom,
+      });
+    }  };
   const editClient = () => {
     console.log(`${client.clientName} with the ID ${client._id} edited`);
   };
@@ -89,37 +135,20 @@ export default function ClientsTable(props) {
   };
   return (
     <div className="dataGridContainer" style={{ height: 400, width: "100%" }}>
-      <TextField
-        sx={{
-          m: 2,
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchTwoToneIcon color="primary" />
-            </InputAdornment>
-          ),
-        }}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search users..."
-        size="small"
-        margin="normal"
-        variant="outlined"
-      />
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={pageSize}
-
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[5, 10, 20, 50]}
-        pagination
-        paginationMode="server"
-        onPageChange={handlePageChange}
         page={page}
+        pageSize={pageSize}
+        onPageChange={(newPage) => setPage(newPage)}
+        onPageSizeChange={(newPage) => setPageSize(newPage)}
+        rowsPerPageOptions={[5, 10, 20, 50, 100]}
         loading={!loaded}
+        rowLength={rowLength}
         checkboxSelection
+        {...data}
         sx={{}}
+        components={{ Toolbar: GridToolbar }}
       />
     </div>
   );
