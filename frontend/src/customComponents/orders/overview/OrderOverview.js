@@ -3,6 +3,7 @@ import OrderTable from "./OrderTable";
 import { Grid, Card, Button, Typography } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import axios from "src/utils/axios2";
+import "./OrderOverview.css"
 
 const OrderOverview = () => {
   const [loaded, setLoaded] = useState(false);

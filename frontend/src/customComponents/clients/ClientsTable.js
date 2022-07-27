@@ -1,17 +1,19 @@
 import React, { useState, forwardRef } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import { Dialog, Zoom, styled } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useSnackbar } from "notistack";
+import axios from "src/utils/axios2";
 
 export default function ClientsTable(props) {
-  const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(0);
   const { clients, loaded, rowLength, setRowLength, getClients } = props;
-  searchQuery ? clients.filter((client) => searchQuery === client) : clients;
   const data = getClients;
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation();
   const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
   });
@@ -51,13 +53,18 @@ export default function ClientsTable(props) {
             <EditTwoToneIcon
               index={params.row.id}
               color="primary"
-              onClick={editClient}
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = `/clients/edit/${params.row.id}`;
+              }}
               style={{ cursor: "pointer" }}
             />
             <DeleteTwoToneIcon
               index={params.row.id}
               color="error"
-              onClick={removeClient}
+              onClick={() => {
+                removeClient(params.row.id);
+              }}
               style={{ cursor: "pointer" }}
             />
           </>
@@ -102,10 +109,9 @@ export default function ClientsTable(props) {
         },
         TransitionComponent: Zoom,
       });
-    }  };
-  const editClient = () => {
-    console.log(`${client.clientName} with the ID ${client._id} edited`);
+    }
   };
+
   let rows = [
     {
       id: "id",

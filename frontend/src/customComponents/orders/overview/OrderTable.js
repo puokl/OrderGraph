@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useSnackbar } from "notistack";
 import axios from "src/utils/axios2";
-import { KeyboardReturnSharp } from "@mui/icons-material";
 
 export default function OrderTable(props) {
   const [pageSize, setPageSize] = useState(5);
@@ -27,7 +26,7 @@ export default function OrderTable(props) {
       }
 `
   );
-  const removeClient = async (id) => {
+  const removeOrder = async (id) => {
     console.log(`hi ${id} u gone bye bye`);
 
     try {
@@ -69,10 +68,24 @@ export default function OrderTable(props) {
 
   const columns = [
     { field: "clientName", headerName: "CLIENT", width: 200 },
-    { field: "status", headerName: "STATUS", width: 200, renderCell: (params) => (
-      <Chip sx={{ width: 200}}label={params.row.status} color={params.row.status === "upcoming" ? "warning" : params.row.status ==="active" ? "primary" : "success"}/>
-
-    )},
+    {
+      field: "status",
+      headerName: "STATUS",
+      width: 200,
+      renderCell: (params) => (
+        <Chip
+          sx={{ width: 200 }}
+          label={params.row.status}
+          color={
+            params.row.status === "upcoming"
+              ? "warning"
+              : params.row.status === "active"
+              ? "primary"
+              : "success"
+          }
+        />
+      ),
+    },
     { field: "timeLeft", headerName: "TIME LEFT", width: 200 },
 
     {
@@ -119,9 +132,8 @@ export default function OrderTable(props) {
             <DeleteTwoToneIcon
               index={params.row.id}
               color="error"
-              // onClick={removeClient(params.row.id)}
               onClick={() => {
-                removeClient(params.row.id);
+                removeOrder(params.row.id);
               }}
               style={{ cursor: "pointer" }}
             />
@@ -148,8 +160,13 @@ export default function OrderTable(props) {
       ),
       status: order.status,
       timeLeft:
-        order.status != "finished" ? order.status === "active"? "2 weeks left" : order.status === "upcoming" ? "1 week left" 
-          : "finished" : "finished",
+        order.status != "finished"
+          ? order.status === "active"
+            ? "2 weeks left"
+            : order.status === "upcoming"
+            ? "1 week left"
+            : "finished"
+          : "finished",
       progress: order.status,
       actions: order._id,
     }));
