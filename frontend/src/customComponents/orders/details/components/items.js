@@ -48,7 +48,7 @@ function ItemEditDialog(props) {
 
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="md">
-      <Scrollbar>
+      <Scrollbar style={{ width: "100%", height: "80vh" }}>
         <ItemForm
           itemToEdit={finishedItem ? finishedItem : unfinishedItem}
           onClose={onClose}
