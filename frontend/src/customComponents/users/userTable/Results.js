@@ -279,11 +279,11 @@ const Results = (props) => {
     console.log(usersToDelete);
     try {
       console.log("attempt");
-      const response = await axios.delete("/api/v1/users/delete", {
-        data: usersToDelete,
+      const response = await axios.delete("/api/v1/user/deleteMany", {
+        data: { ids: [...usersToDelete._id] },
       });
       console.log(response);
-      if (response.data.deletedCount > 0) {
+      if (response.data.data.deletedCount > 0) {
         enqueueSnackbar(t("Successfully deleted."), {
           variant: "success",
           anchorOrigin: {

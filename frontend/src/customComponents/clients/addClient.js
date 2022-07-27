@@ -9,6 +9,7 @@ import {
   Tooltip,
   CircularProgress,
   Box,
+  Zoom,
 } from "@mui/material";
 import useAuth from "src/hooks/useAuth";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
@@ -27,6 +28,9 @@ import ShippingAdress from "./formComponents/ShippingAdress";
 import PageHeader from "./PageHeader";
 import RemoveTwoToneIcon from "@mui/icons-material/RemoveTwoTone";
 import axios from "src/utils/axios2";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useSnackbar } from "notistack";
 
 const INITIAL_FORM_STATE = {
   /* Client Details */
@@ -71,6 +75,8 @@ const INITIAL_FORM_STATE = {
   /* Shipping Address same Adress as Billing Adress */
   SaSameAsBa: false,
 };
+
+const EDIT_FORM_STATE = {};
 
 /* Person Form Validation Start */
 
@@ -192,7 +198,54 @@ function AddClient() {
   const [contactPersonNo, setContactPersonNo] = useState(1);
   const [cArray, setCArray] = useState([1]);
   const [formData, setFormData] = useState("");
+  const [controlState, setControlState] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const [clientToEdit, setClientToEdit] = useState({
+    clientType: "",
+    clientName: "",
+    clientEMail: "",
+    clientPhoneNumber: "",
+    /* Billing Address */
+    billingAddress: {
+      Address: "",
+      Zip: "",
+      City: "",
+      State: "",
+      AdditionalInformation: "",
+    },
+    /* Shipping Address */
+    shippingAddress: {
+      Address: "",
+      Zip: "",
+      City: "",
+      State: "",
+      AdditionalInformation: "",
+    },
+    /* Financial */
+    financials: {
+      registrationNumber: "",
+      fiscalNumber: "",
+      IBAN: "",
+      bankName: "",
+    },
+    /* Contact Person */
+    contact: [
+      {
+        contactName: "",
+        contactRole: "",
+        contactDepartment: "",
+        contactPhoneNumber: "",
+        contactEMail: "",
+      },
+    ],
+
+    /* Shipping Address same Adress as Billing Adress */
+    SaSameAsBa: false,
+  });
+
   const [removeCp, setRemoveCp] = useState(false);
+  const { clientId } = useParams();
+  console.log(clientId);
   const updateFields = (fieldName, fieldValue) => {
     setFormData({ ...formData, fieldValue });
   };
@@ -292,6 +345,64 @@ function AddClient() {
           height: ${theme.spacing(5)};
   `
   );
+  const handleGetClient = async (clientId) => {
+    try {
+      const response = await axios.get("/api/v1/client/" + clientId);
+      console.log(response);
+      const testtest = {
+        /* Client Details */
+        clientType: response.data.data.clientType,
+        clientName: response.data.data.clientName,
+        clientEMail: response.data.data.clientEMail,
+        clientPhoneNumber: response.data.data.clientPhoneNumber,
+        /* Billing Address */
+        billingAddress: {
+          Address: response.data.data.billingAddress.Address,
+          Zip: response.data.data.billingAddress.Zip,
+          City: response.data.data.billingAddress.City,
+          State: response.data.data.billingAddress.State,
+          AdditionalInformation:
+            response.data.data.billingAddress.AdditionalInformation,
+        },
+        /* Shipping Address */
+        shippingAddress: {
+          Address: response.data.data.shippingAddress.Address,
+          Zip: response.data.data.shippingAddress.Zip,
+          City: response.data.data.shippingAddress.City,
+          State: response.data.data.shippingAddress.State,
+          AdditionalInformation:
+            response.data.data.shippingAddress.AdditionalInformation,
+        },
+        /* Financial */
+        financials: {
+          registrationNumber: response.data.data.financials.registrationNumber,
+          fiscalNumber: response.data.data.financials.fiscalNumber,
+          IBAN: response.data.data.financials.IBAN,
+          bankName: response.data.data.financials.bankName,
+        },
+        /* Contact Person */
+        contact: [
+          {
+            contactName: response.data.data.contact.contactName,
+            contactRole: response.data.data.contact.contactRole,
+            contactDepartment: response.data.data.contact.contactDepartment,
+            contactPhoneNumber: response.data.data.contact.contactPhoneNumber,
+            contactEMail: response.data.data.contact.contactEMail,
+          },
+        ],
+
+        /* Shipping Address same Adress as Billing Adress */
+        SaSameAsBa: false,
+      };
+      setClientToEdit({ ...response.data.data });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    handleGetClient(clientId);
+    console.log("CTE: ", clientToEdit);
+  }, []);
 
   const handleCreateClient = async (values) => {
     const dataToSend = { ...values, organization: user.organization };
@@ -299,16 +410,60 @@ function AddClient() {
     try {
       const response = await axios.post("/api/v1/client/newclient", dataToSend);
       if (response.status === 201) {
-        console.log("Backend Create client response: ", response);
-        /*         navigateToClientOverview(); */
+        enqueueSnackbar(t("The client was created successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
       } else {
-        console.log("error");
+        enqueueSnackbar(t("error creating client"), {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
       }
     } catch (err) {
       console.error(err);
     }
   };
 
+  const handleEditClient = async (values) => {
+    const dataToSend = { ...values, organization: user.organization };
+    console.log("DTS:", dataToSend);
+    try {
+      const response = await axios.put(
+        "/api/v1/client/" + clientId,
+        dataToSend
+      );
+      if (response.status === 200) {
+        enqueueSnackbar(t("The client was updated successfully"), {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      } else {
+        enqueueSnackbar(t("error updating client"), {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+          TransitionComponent: Zoom,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <>
       <Helmet>
@@ -318,15 +473,15 @@ function AddClient() {
         <PageHeader />
       </PageTitleWrapper>
       <Formik
-        initialValues={{
-          ...INITIAL_FORM_STATE,
-        }}
+        initialValues={{ ...clientToEdit }}
         validationSchema={
           showContact ? COMPANY_FORM_VALIDATION : PERSON_FORM_VALIDATION
         }
         /* Asyncronus Submission and Validation -- Check Formik Submit Documentation for more info */
         onSubmit={async (values) => {
-          await handleCreateClient(values);
+          clientId
+            ? await handleEditClient(values)
+            : await handleCreateClient(values);
         }}
       >
         {({
@@ -339,6 +494,7 @@ function AddClient() {
           setFieldValue,
           values,
           validateForm,
+          setValues,
         }) => (
           <Form>
             <Grid
@@ -367,7 +523,11 @@ function AddClient() {
                     errors={errors}
                     setFieldValue={setFieldValue}
                     handleChange={handleChange}
+                    clientToEdit={clientToEdit}
+                    setValues={setValues}
+                    setShowContact={setShowContact}
                   />
+
                   <BillingAdress
                     getIn={getIn}
                     updateFields={updateFields}
@@ -404,6 +564,7 @@ function AddClient() {
                         setFieldValue={setFieldValue}
                         handleChange={handleChange}
                       />
+
                       {cArray.map((item, index) => (
                         <ContactPerson
                           touched={touched}

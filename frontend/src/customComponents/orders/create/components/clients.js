@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 import {
   Typography,
@@ -15,13 +16,33 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-function Clients({ clients, selectedClient, setSelectedClient }) {
+function Clients({
+  clients,
+  selectedClient,
+  setSelectedClient,
+  currentOrder,
+  setCurrentOrder,
+  orderID,
+}) {
   const { t } = useTranslation();
+  console.log(selectedClient);
 
   const handleClientSelect = (index) => {
     setSelectedClient(clients[index]);
     console.log(selectedClient);
   };
+
+  useEffect(() => {
+    if (currentOrder._id) {
+      setSelectedClient(
+        clients.find((client) => client._id === currentOrder.client)
+      );
+    }
+  }, [currentOrder]);
+
+  useEffect(() => {
+    setCurrentOrder({ ...currentOrder, client: selectedClient?._id });
+  }, [selectedClient]);
 
   return (
     <Card sx={{ p: "1.5rem", mb: "1.5rem" }}>
@@ -31,29 +52,37 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
         </InputLabel>
         <Select
           label={t("Select client...")}
-          value={selectedClient ? selectedClient.clientName : ""}
+          value={selectedClient?.clientName ? selectedClient.clientName : ""}
           // onChange={(e) => {
           //   handleClientSelect(e);
           // }}
         >
-          {clients.map((client, index) => (
-            <MenuItem
-              key={client._id}
-              value={client.clientName}
-              onClick={(e) => {
-                handleClientSelect(index);
-              }}
-            >
-              {client.clientName}
+          {clients.length > 0 ? (
+            clients.map((client, index) => (
+              <MenuItem
+                key={client._id}
+                value={client.clientName}
+                onClick={(e) => {
+                  handleClientSelect(index);
+                }}
+              >
+                {client.clientName}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem>
+              <a href="/clients/add" alt="create a client">
+                Add a Client
+              </a>
             </MenuItem>
-          ))}
+          )}
         </Select>
       </FormControl>
-      {selectedClient ? (
+      {selectedClient?.clientName ? (
         <Card sx={{ mt: "1rem" }}>
           <Chip
             color="success"
-            label={selectedClient.clientType}
+            label={selectedClient?.clientType}
             style={{ borderRadius: "0 0 16px 0" }}
           />
           <Box
@@ -73,7 +102,16 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 marginRight: "1rem",
               }}
             >
-              {t("Edit client")}
+              <Link
+                to={`/clients/edit/${selectedClient._id}`}
+                style={{
+                  textDecoration: "none",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                {t("Edit client")}
+              </Link>
             </Button>
             <Button
               aria-label="Delete"
@@ -88,7 +126,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
             >
               <CloseIcon
                 color="primary"
-                onClick={() => setSelectedClient("")}
+                onClick={() => setSelectedClient({})}
               />
             </Button>
           </Box>
@@ -100,7 +138,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
             }}
             fontWeight="bold"
           >
-            {selectedClient.clientName}
+            {selectedClient?.clientName}
           </Typography>
           <Box
             p={2}
@@ -168,7 +206,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.clientPhoneNumber}
+                {selectedClient?.clientPhoneNumber}
               </Typography>
 
               <Typography
@@ -178,7 +216,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.clientEMail}
+                {selectedClient?.clientEMail}
               </Typography>
               <Typography
                 variant="h5"
@@ -187,11 +225,11 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.billingAddress.Address +
+                {selectedClient?.billingAddress?.Address +
                   ", " +
-                  selectedClient.billingAddress.City +
+                  selectedClient?.billingAddress?.City +
                   ", " +
-                  selectedClient.billingAddress.Zip}
+                  selectedClient?.billingAddress?.Zip}
               </Typography>
               <Typography
                 variant="h5"
@@ -200,15 +238,15 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 }}
                 fontWeight="normal"
               >
-                {selectedClient.shippingAddress.Address +
+                {selectedClient?.shippingAddress?.Address +
                   ", " +
-                  selectedClient.shippingAddress.City +
+                  selectedClient?.shippingAddress?.City +
                   ", " +
-                  selectedClient.shippingAddress.Zip}
+                  selectedClient?.shippingAddress?.Zip}
               </Typography>
             </Box>
           </Box>
-          {selectedClient.clientType === "Company" ? (
+          {selectedClient?.clientType === "Company" ? (
             <>
               <Divider />
               <Typography
@@ -220,7 +258,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                 fontWeight="bold"
               >
                 {t("Contact Person")}
-              </Typography>
+               </Typography>
               <Box
                 p={2}
                 style={{
@@ -288,7 +326,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                     }}
                     fontWeight="normal"
                   >
-                    {selectedClient.contact[0].contactName}
+                    {selectedClient?.contact[0].contactName}
                   </Typography>
 
                   <Typography
@@ -298,7 +336,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                     }}
                     fontWeight="normal"
                   >
-                    {selectedClient.contact[0].contactPhoneNumber}
+                    {selectedClient?.contact[0].contactPhoneNumber}
                   </Typography>
                   <Typography
                     variant="h5"
@@ -307,7 +345,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                     }}
                     fontWeight="normal"
                   >
-                    {selectedClient.contact[0].contactEMail}
+                    {selectedClient?.contact[0].contactEMail}
                   </Typography>
                   <Typography
                     variant="h5"
@@ -316,7 +354,7 @@ function Clients({ clients, selectedClient, setSelectedClient }) {
                     }}
                     fontWeight="normal"
                   >
-                    {selectedClient.contact[0].contactRole}
+                    {selectedClient?.contact[0].contactRole}
                   </Typography>
                 </Box>
               </Box>

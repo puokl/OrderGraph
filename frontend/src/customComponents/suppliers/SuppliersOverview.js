@@ -1,50 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import SuppliersTable from "./SuppliersTable.js";
+import SuppliersTable from "./SuppliersTable";
 import "./SuppliersOverview.css";
-import PropTypes from "prop-types";
-import {
-  Grid,
-  TextField,
-  Card,
-  CardHeader,
-  Button,
-  CardContent,
-  Typography,
-  InputBase,
-  IconButton,
-  Input,
-} from "@mui/material";
-import shadows from "@mui/system";
+import { Grid, Card, Button, Typography } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
-import SearchIcon from "@mui/icons-material/Search";
-import PageTitleWrapper from "src/components/PageTitleWrapper";
-import PageHeader from "./PageHeader";
 import axios from "src/utils/axios2";
 const SuppliersOverview = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [rowLength, setRowLength] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [suppliers, setSuppliers] = useState([]);
 
-  const getOrders = async () => {
+  const getSuppliers = async () => {
     console.log("hi");
     try {
       const response = await axios.get("/api/v1/supplier");
       setSuppliers(response.data.data);
-      setLoaded(true);
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    getOrders();
+    getSuppliers();
+    setRowLength(suppliers.length);
+    setLoaded(true);
   }, []);
-
-  const totalClients = 42;
-  const newClientsMonth = 4;
-  const clientsWActiveOrdrs = 2;
-  const clientsWORecentOrdrs = 33;
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -83,7 +62,13 @@ const SuppliersOverview = () => {
         <Card margin={1}>
           <Grid container>
             <Grid item xs={12}>
-              <SuppliersTable suppliers={suppliers} loaded={loaded} />
+              <SuppliersTable
+                suppliers={suppliers}
+                loaded={loaded}
+                getSuppliers={getSuppliers}
+                rowLength={rowLength}
+                setRowLength={setRowLength}
+              />
             </Grid>
           </Grid>
         </Card>

@@ -25,6 +25,24 @@ const getItem = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc      Get all items in Org
+// @route     GET /api/v1/item/:orgID
+// @access    Private/Admin
+const getAllItemsInOrg = asyncHandler(async (req, res, next) => {
+  const items = await Item.find();
+
+  const org = req.params.orgID;
+
+  const itemsInOrg = items.filter((item) => {
+    return item.organization === org;
+  });
+
+  res.status(200).json({
+    success: true,
+    data: itemsInOrg,
+  });
+});
+
 // @desc      Create item
 // @route     POST /api/v1/item
 // @access    Private/Admin
@@ -86,4 +104,5 @@ module.exports = {
   getAllItem,
   updateItem,
   deleteItem,
+  getAllItemsInOrg,
 };

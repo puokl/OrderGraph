@@ -17,7 +17,7 @@ ReactDOM.render(
   <HelmetProvider>
     <Provider store={store}>
       <SidebarProvider>
-        <BrowserRouter>
+        <BrowserRouter forceRefresh>
           <ScrollTop />
           <AuthProvider>
             <App />

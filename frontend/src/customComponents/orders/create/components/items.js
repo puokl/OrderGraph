@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/material/styles";
+import axios from "src/utils/axios2";
 import {
   Grid,
   CardActionArea,
@@ -8,9 +9,22 @@ import {
   Tooltip,
   Card,
   Avatar,
+  Divider,
+  Button,
+  Box,
+  Typography,
+  Checkbox,
 } from "@mui/material";
 
+import TextField from "@mui/material/TextField";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
+import CloseIcon from "@mui/icons-material/Close";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import TimerTwoToneIcon from "@mui/icons-material/TimerTwoTone";
+
+import ItemForm from "src/customComponents/orders/create/components/itemForm";
 
 const AvatarAddWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -44,8 +58,52 @@ const CardAddAction = styled(Card)(
   `
 );
 
-function Items() {
+const filter = createFilterOptions();
+
+function Items({
+  orderItems,
+  setOrderItems,
+  currentOrder,
+  setCurrentOrder,
+  user,
+}) {
   const { t } = useTranslation();
+
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState("");
+
+  const addItem = () => {
+    setCurrentOrder({
+      ...currentOrder,
+      items: [
+        ...currentOrder.items,
+        {
+          description: "",
+          height: "",
+          itemName: "",
+          quantity: "",
+          tasks: [{}],
+          unitPrice: "",
+          units: "",
+          width: "",
+        },
+      ],
+    });
+  };
+
+  const getItems = async () => {
+    try {
+      const response = await axios.get("/api/v1/item/all/" + user.organization);
+      console.log(response);
+      setItems(response.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getItems();
+  }, []);
 
   return (
     <Grid
@@ -58,6 +116,21 @@ function Items() {
         mb: "1.5rem",
       }}
     >
+      {currentOrder.items?.map((item, index) => (
+        <ItemForm
+          key={index}
+          items={items}
+          index={index}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+          orderItems={orderItems}
+          setOrderItems={setOrderItems}
+          getItems={getItems}
+          currentOrder={currentOrder}
+          setCurrentOrder={setCurrentOrder}
+          user={user}
+        />
+      ))}
       <Tooltip arrow title={t("Click to add a new item")}>
         <CardAddAction>
           <CardActionArea
@@ -65,7 +138,7 @@ function Items() {
               px: 1,
             }}
             onClick={(e) => {
-              console.log("hi");
+              addItem();
             }}
           >
             <CardContent xs={12} sm={6} lg={8}>

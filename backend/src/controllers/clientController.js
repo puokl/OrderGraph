@@ -13,6 +13,23 @@ const getAllClient = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc      Get all clients
+// @route     GET /api/v1/client/all/:orgID
+// @access    Private/Admin
+const getAllClientsInOrg = asyncHandler(async (req, res, next) => {
+  const allClients = await Client.find();
+
+  const org = req.params.orgID;
+  const allClientsInOrg = allClients.filter((client) => {
+    return client.organization === org;
+  });
+
+  res.status(200).json({
+    success: true,
+    data: allClientsInOrg,
+  });
+});
+
 // @desc      Get single client
 // @route     GET /api/v1/client/:clientId
 // @access    Private/Admin
@@ -86,4 +103,5 @@ module.exports = {
   getAllClient,
   updateClient,
   deleteClient,
+  getAllClientsInOrg,
 };

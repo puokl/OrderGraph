@@ -1,26 +1,15 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
-const itemSchema = mongoose.Schema({
-  id: Number,
-  item: {
-    itemName: String,
-    itemSize: String,
-    itemDescription: String,
-  },
-  measurementUnit: {
-    type: String,
-  },
-  quantity: {
-    type: String,
-  },
-  unityPriceNoVAT: {
-    type: String,
-  },
+const subtaskSchema = mongoose.Schema({
+  description: { type: String },
+  finished: { type: Boolean },
+  timeEstimate: { type: String },
 });
 
 const taskSchema = mongoose.Schema({
   startDate: {},
+  taskName: { type: String },
   finished: {
     type: Boolean,
     default: false,
@@ -32,7 +21,21 @@ const taskSchema = mongoose.Schema({
   haltReason: {
     type: String,
   },
-  subTasks: [],
+  subTasks: [subtaskSchema],
+  duration: { type: String },
+});
+
+const itemSchema = mongoose.Schema({
+  description: { type: String },
+  height: { type: String },
+  itemName: { type: String },
+  public: { type: Boolean },
+  quantity: { type: String },
+  tasks: [taskSchema],
+  unitPrice: { type: String },
+  units: { type: String },
+  width: { type: String },
+  id: { type: String },
 });
 
 const OrderSchema = new mongoose.Schema(
@@ -41,12 +44,17 @@ const OrderSchema = new mongoose.Schema(
     orderDetails: {
       type: String,
     },
-    company: {
+    createdByOrganization: {
       type: mongoose.Types.ObjectId,
       ref: "Organization",
       required: [true, "Please provide an organization"],
     },
-    client: {},
+    createdByUser: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: [true, "Please provide a user"],
+    },
+    client: { type: String },
     status: {
       type: String,
       required: [true, "Please add a status"],
@@ -58,11 +66,12 @@ const OrderSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    startDate: {},
+    startDate: { type: String },
 
     documents: [],
     items: [itemSchema],
     tasks: [taskSchema],
+    invoices: [],
   },
   { timestamps: true }
 );

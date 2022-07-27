@@ -1,82 +1,75 @@
 import React, { useState, useEffect } from "react";
 import ClientsTable from "./ClientsTable";
 import "./ClientOverview.css";
-import PropTypes from "prop-types";
-import {
-  Grid,
-  TextField,
-  Card,
-  CardHeader,
-  Button,
-  CardContent,
-  Typography,
-  InputBase,
-  IconButton,
-  Input,
-} from "@mui/material";
-import shadows from "@mui/system";
+import { Grid, Card, Button, Typography } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
-import SearchIcon from "@mui/icons-material/Search";
-import PageTitleWrapper from "src/components/PageTitleWrapper";
-import PageHeader from "./PageHeader";
 import axios from "src/utils/axios2";
+
 const ClientOverview = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [clients, setClients] = useState([]);
-  console.log(clients);
+  const [rowLength, setRowLength] = useState(0);
+  const [newClientsMonth, setNewClientsMonth] = useState(0);
 
   const getClients = async () => {
     try {
       const response = await axios.get("/api/v1/client");
       setClients(response.data.data);
-      setLoaded(true);
-      console.log(response.data);
     } catch (err) {
       console.error(err);
     }
   };
-
+  
   useEffect(() => {
     getClients();
+    setRowLength(clients.length)
+    setLoaded(true)
   }, []);
 
-  const totalClients = 42;
-  const newClientsMonth = 4;
+  const totalClients = clients.length;
+  const today = new Date();
+  const lastMonth = Date.parse(today) - 1000 * 60 * 60 * 24 * 30;
+  useEffect(() => {
+    clients.forEach((c) =>
+      Date.parse(c.createdAt) > lastMonth
+        ? setNewClientsMonth((prev) => prev + 1)
+        : 0
+    );
+  }, [clients]);
   const clientsWActiveOrdrs = 2;
   const clientsWORecentOrdrs = 33;
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "row",
-            width: "100%",
-            margin: "3rem",
-          }}
-        >
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <Typography variant="h3" component="h3" gutterBottom>
-              {"Clients Overview"}
-            </Typography>
-            <Typography variant="h5" component="h5" gutterBottom>
-              {"Take a look at your client list"}
-            </Typography>
-          </div>
-          <div style={{ display: "flex" }}>
-            <Button
-              variant="contained"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = "/clients/add";
-              }}
-            >
-              Add new client
-            </Button>
-          </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          width: "100%",
+          margin: "3rem",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Typography variant="h3" component="h3" gutterBottom>
+            {"Clients Overview"}
+          </Typography>
+          <Typography variant="h5" component="h5" gutterBottom>
+            {"Take a look at your client list"}
+          </Typography>
         </div>
+        <div style={{ display: "flex" }}>
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/clients/add";
+            }}
+          >
+            Add new client
+          </Button>
+        </div>
+      </div>
       {/* client overview cards START */}
       <Grid container spacing={4} margin={1}>
         <Grid item xs={3}>
@@ -194,7 +187,13 @@ const ClientOverview = () => {
           <Card margin={1}>
             <Grid container>
               <Grid item xs={12}>
-                <ClientsTable clients={clients} loaded={loaded} />
+                <ClientsTable
+                  clients={clients}
+                  loaded={loaded}
+                  getClients={getClients}
+                  rowLength={rowLength}
+                  setRowLength={setRowLength}
+                />
               </Grid>
             </Grid>
           </Card>

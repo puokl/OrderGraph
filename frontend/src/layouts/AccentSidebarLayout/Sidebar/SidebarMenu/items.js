@@ -34,11 +34,6 @@ const menuItems = [
             link: "orders/create",
             badgeTooltip: "Create a new order",
           },
-          {
-            name: "Gantt",
-            link: "orders/gantt",
-            badgeTooltip: "Gantt chart",
-          },
         ],
       },
       {
@@ -72,7 +67,6 @@ const menuItems = [
           {
             name: "Add Supplier",
             link: "suppliers/add",
-            badge: "",
             badgeTooltip: "Add a supplier",
           },
         ],

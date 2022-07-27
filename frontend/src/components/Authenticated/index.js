@@ -6,12 +6,11 @@ import Login from "src/content/pages/Auth/Login/Cover";
 import FinaliseRegisterWizard from "src/content/pages/Auth/FinaliseRegistration/index";
 import AccentSidebarLayout from "src/layouts/AccentSidebarLayout";
 import TopNavigationLayout from "src/layouts/TopNavigationLayout";
+import WorkerView from "src/customComponents/workerView/index";
 
 const Authenticated = (props) => {
   const { children } = props;
-  console.log(children);
   const auth = useAuth();
-  console.log(auth);
   const location = useLocation();
   const [requestedLocation, setRequestedLocation] = useState(null);
 
@@ -34,7 +33,11 @@ const Authenticated = (props) => {
     return <AccentSidebarLayout>{children}</AccentSidebarLayout>;
   }
   if (auth.role === "worker") {
-    return <TopNavigationLayout>{children}</TopNavigationLayout>;
+    return (
+      <TopNavigationLayout>
+        <WorkerView />
+      </TopNavigationLayout>
+    );
   }
 };
 

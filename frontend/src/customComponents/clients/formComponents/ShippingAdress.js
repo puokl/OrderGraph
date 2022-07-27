@@ -6,7 +6,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import React, { forwardRef, useState, useCallback } from "react";
+import React, { forwardRef, useState, useCallback, useEffect } from "react";
 
 function ShippingAdress({
   handleShowContact,
@@ -46,6 +46,13 @@ function ShippingAdress({
                   onClick={() => {
                     handleSameAsBilling();
                     handleShowShipping();
+                    values.shippingAddress.Address =
+                      values.billingAddress.Address;
+                    values.shippingAddress.Zip = values.billingAddress.Zip;
+                    values.shippingAddress.City = values.billingAddress.City;
+                    values.shippingAddress.State = values.billingAddress.State;
+                    values.shippingAddress.AdditionalInformation =
+                      values.billingAddress.AdditionalInformation;
                   }}
                 />
               }

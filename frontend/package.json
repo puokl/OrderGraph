@@ -36,7 +36,7 @@
     "create-react-app": "^5.0.1",
     "date-fns": "2.25.0",
     "dhtmlx-gantt": "^7.1.12",
-    "firebase": "^9.8.2",
+    "firebase": "^9.9.0",
     "formik": "^2.2.9",
     "formik-mui": "^4.0.0-alpha.3",
     "formik-mui-lab": "^1.0.0-alpha.3",
@@ -57,10 +57,13 @@
     "react-countup": "6.1.0",
     "react-custom-scrollbars-2": "4.4.0",
     "react-dom": "17.0.2",
-    "react-dropzone": "11.4.2",
+    "react-dropzone": "^11.4.2",
+    "react-firebase-hooks": "^5.0.3",
     "react-gauge-chart": "0.4.0",
+    "react-google-charts": "^4.0.0",
     "react-helmet-async": "1.1.2",
     "react-i18next": "11.14.2",
+    "react-id-generator": "^3.0.2",
     "react-quill": "^0.0.2",
     "react-redux": "7.2.6",
     "react-router": "6.0.0-beta.0",
@@ -105,6 +108,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.18.9",
+    "@babel/preset-react": "^7.18.6",
     "prettier": "^2.5.0"
   }
 }

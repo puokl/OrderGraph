@@ -6,6 +6,7 @@ const {
   getAllClient,
   updateClient,
   deleteClient,
+  getAllClientsInOrg,
 } = require("../controllers/clientController");
 
 const { protect, authorize } = require("../middleware/auth");
@@ -20,5 +21,6 @@ router
   .delete(deleteClient);
 router.post("/newclient", newClient);
 router.get("/", getAllClient);
+router.get("/all/:orgID", getAllClientsInOrg);
 
 module.exports = router;

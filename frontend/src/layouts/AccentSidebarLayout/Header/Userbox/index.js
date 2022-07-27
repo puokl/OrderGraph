@@ -158,33 +158,11 @@ function HeaderUserbox() {
               handleClose();
             }}
             button
-            to={`/${location.pathname.split("/")[1]}/management/users/single/1`}
+            to={"/account"}
             component={NavLink}
           >
             <AccountBoxTwoToneIcon fontSize="small" />
-            <ListItemText primary={t("Profile")} />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              handleClose();
-            }}
-            to="applications/mailbox/inbox"
-            component={NavLink}
-          >
-            <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary={t("Inbox")} />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              handleClose();
-            }}
-            to="applications/projects-board"
-            component={NavLink}
-          >
-            <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary={t("Projects")} />
+            <ListItemText primary={t("Account")} />
           </ListItem>
         </List>
         <Divider />
