@@ -242,6 +242,16 @@ function ApplicationsCalendar() {
   //   dispatch(getEvents());
   // }, [dispatch]);
 
+  const isEven = (index) => {
+    if (index % 2 == 0) {
+      return "#57CA22";
+    } else if (index % 3 == 0) {
+      return "#1975FF";
+    } else {
+      return "#f7b91b";
+    }
+  };
+
   // Fetch Data
 
   const getOrders = async () => {
@@ -253,15 +263,15 @@ function ApplicationsCalendar() {
 
       const eventArray = [];
 
-      response.data.data.forEach((order) => {
+      response.data.data.forEach((order, index) => {
         eventArray.push({
           id: order._id,
           allDay: true,
-          color: "#57CA22",
+          color: isEven(index),
           description: "",
           end: new Date(Date.parse(order.startDate) + 10 * 24 * 60 * 60 * 1000),
           start: new Date(order.startDate),
-          title: "Order",
+          title: `Order ${order._id}`,
         });
       });
 

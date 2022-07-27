@@ -20,6 +20,7 @@ import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import TimerTwoToneIcon from "@mui/icons-material/TimerTwoTone";
 import ItemForm from "src/customComponents/orders/details/components/itemForm";
+import Scrollbar from "src/components/Scrollbar";
 
 function ItemEditDialog(props) {
   const {
@@ -47,13 +48,13 @@ function ItemEditDialog(props) {
 
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="md">
-      <DialogBox>
+      <Scrollbar style={{ width: "100%", height: "80vh" }}>
         <ItemForm
           itemToEdit={finishedItem ? finishedItem : unfinishedItem}
           onClose={onClose}
           orderToUpdate={orderToUpdate}
         />
-      </DialogBox>
+      </Scrollbar>
     </Dialog>
   );
 }
