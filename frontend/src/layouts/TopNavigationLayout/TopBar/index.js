@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
 import {
   Box,
@@ -10,18 +10,16 @@ import {
   Divider,
   alpha,
   styled,
-  useTheme
-} from '@mui/material';
+  useTheme,
+} from "@mui/material";
 
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import { SidebarContext } from 'src/contexts/SidebarContext';
-import NavigationMenu from './NavigationMenu';
-import LanguageSwitcher from './LanguageSwitcher';
-import Notifications from './Notifications';
-import Userbox from './Userbox';
-import Search from './Search';
-import Logo from './Logo';
+import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
+import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
+import { SidebarContext } from "src/contexts/SidebarContext";
+import NavigationMenu from "./NavigationMenu";
+import Notifications from "./Notifications";
+import Userbox from "./Userbox";
+import Logo from "./Logo";
 
 const TopBarWrapper = styled(Card)(
   ({ theme }) => `
@@ -77,7 +75,7 @@ const IconButtonPrimary = styled(IconButton)(
     background-color: ${theme.colors.alpha.white[10]};
 
     .MuiSvgIcon-root {
-      transition: ${theme.transitions.create(['color'])};
+      transition: ${theme.transitions.create(["color"])};
       font-size: ${theme.typography.pxToRem(26)};
       color: ${theme.colors.alpha.trueWhite[50]};
     }
@@ -102,47 +100,38 @@ function TopBar() {
       <TopBarImage
         sx={{
           opacity: 0.7,
-          background: `${theme.colors.gradients.black1}`
+          background: `${theme.colors.gradients.black1}`,
         }}
       />
       <TopBarImage
         sx={{
           opacity: 0.5,
-          background: `${theme.colors.gradients.blue5}`
+          background: `${theme.colors.gradients.blue5}`,
         }}
       />
       <TopBarImage
         sx={{
           opacity: 0.15,
-          backgroundImage: 'url("/static/images/placeholders/covers/1.jpg")'
+          backgroundImage: 'url("/static/images/placeholders/covers/1.jpg")',
         }}
       />
       <Container
         sx={{
-          zIndex: 6
+          zIndex: 6,
         }}
         maxWidth="xl"
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex">
             <Logo />
-            <Box
-              component="span"
-              sx={{
-                display: { xs: 'none', md: 'inline-flex' }
-              }}
-            >
-              <Search />
-            </Box>
           </Box>
           <Box display="flex">
             <Box
               component="span"
               sx={{
-                display: { xs: 'none', sm: 'inline-flex' }
+                display: { xs: "none", sm: "inline-flex" },
               }}
             >
-              <LanguageSwitcher />
               <Box mx={1}>
                 <Notifications />
               </Box>
@@ -151,7 +140,7 @@ function TopBar() {
             <Box
               component="span"
               sx={{
-                display: { md: 'none', xs: 'inline-flex' }
+                display: { md: "none", xs: "inline-flex" },
               }}
             >
               <Tooltip arrow title="Toggle Menu">
@@ -164,16 +153,16 @@ function TopBar() {
         </Box>
         <DividerWrapper
           sx={{
-            display: { xs: 'none', md: 'flex' },
-            my: 4
+            display: { xs: "none", md: "flex" },
+            my: 4,
           }}
         />
         <Box
           display="flex"
           alignItems="center"
           sx={{
-            width: '100%',
-            display: { xs: 'none', md: 'inline-block' }
+            width: "100%",
+            display: { xs: "none", md: "inline-block" },
           }}
         >
           <NavigationMenu />

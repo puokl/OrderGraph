@@ -24,7 +24,21 @@ const getOrder = asyncHandler(async (req, res, next) => {
 // @access  Private
 const getAllOrder = asyncHandler(async (req, res, next) => {
   const allOrder = await Order.find();
+
   res.status(200).json({ success: true, data: allOrder });
+});
+
+// @desc    Get ALL orders
+// @route   GET /api/v1/order
+// @access  Private
+const getAllOrdersInOrg = asyncHandler(async (req, res, next) => {
+  const allOrders = await Order.find();
+  const org = req.params.orgID;
+
+  const ordersInOrg = allOrders.filter((x) => {
+    return x.createdByOrganization.toString() === org;
+  });
+  res.status(200).json({ success: true, data: ordersInOrg });
 });
 
 // @desc    Update an order
@@ -74,4 +88,11 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: {} });
 });
 
-module.exports = { newOrder, getOrder, getAllOrder, updateOrder, deleteOrder };
+module.exports = {
+  newOrder,
+  getOrder,
+  getAllOrder,
+  getAllOrdersInOrg,
+  updateOrder,
+  deleteOrder,
+};

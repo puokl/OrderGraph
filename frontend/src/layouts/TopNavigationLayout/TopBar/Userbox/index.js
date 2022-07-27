@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
-import useAuth from 'src/hooks/useAuth';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { useRef, useState } from "react";
+import useAuth from "src/hooks/useAuth";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 import {
   Avatar,
@@ -13,14 +13,14 @@ import {
   ListItemText,
   Popover,
   styled,
-  Typography
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone';
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+  Typography,
+} from "@mui/material";
+import { useTranslation } from "react-i18next";
+import InboxTwoToneIcon from "@mui/icons-material/InboxTwoTone";
+import UnfoldMoreTwoToneIcon from "@mui/icons-material/UnfoldMoreTwoTone";
+import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
+import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
+import AccountTreeTwoToneIcon from "@mui/icons-material/AccountTreeTwoTone";
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -31,7 +31,7 @@ const UserBoxButton = styled(Button)(
     border-radius: ${theme.general.borderRadiusLg};
 
     .MuiSvgIcon-root {
-      transition: ${theme.transitions.create(['color'])};
+      transition: ${theme.transitions.create(["color"])};
       font-size: ${theme.typography.pxToRem(24)};
       color: ${theme.colors.alpha.trueWhite[50]};
     }
@@ -121,7 +121,7 @@ function Userbox() {
     try {
       handleClose();
       await logout();
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -140,7 +140,7 @@ function Userbox() {
           <Box
             component="span"
             sx={{
-              display: { xs: 'none', md: 'inline-block' }
+              display: { xs: "none", md: "inline-block" },
             }}
           >
             <UserBoxText>
@@ -153,7 +153,7 @@ function Userbox() {
           <UnfoldMoreTwoToneIcon
             fontSize="small"
             sx={{
-              ml: 1
+              ml: 1,
             }}
           />
         </Box>
@@ -164,17 +164,17 @@ function Userbox() {
         onClose={handleClose}
         open={isOpen}
         anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'center'
+          vertical: "center",
+          horizontal: "center",
         }}
         transformOrigin={{
-          vertical: 'center',
-          horizontal: 'center'
+          vertical: "center",
+          horizontal: "center",
         }}
       >
         <MenuUserBox
           sx={{
-            minWidth: 210
+            minWidth: 210,
           }}
           display="flex"
         >
@@ -188,12 +188,12 @@ function Userbox() {
         </MenuUserBox>
         <Divider
           sx={{
-            mb: 0
+            mb: 0,
           }}
         />
         <List
           sx={{
-            p: 1
+            p: 1,
           }}
           component="nav"
         >
@@ -202,37 +202,11 @@ function Userbox() {
               handleClose();
             }}
             button
-            to={`/${location.pathname.split('/')[1]}/management/users/single/1`}
+            to={"/account"}
             component={NavLink}
           >
             <AccountBoxTwoToneIcon fontSize="small" />
-            <ListItemText primary={t('Profile')} />
-          </ListItem>
-          <ListItem
-            onClick={() => {
-              handleClose();
-            }}
-            button
-            to={`/${
-              location.pathname.split('/')[1]
-            }/applications/mailbox/inbox`}
-            component={NavLink}
-          >
-            <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary={t('Inbox')} />
-          </ListItem>
-          <ListItem
-            onClick={() => {
-              handleClose();
-            }}
-            button
-            to={`/${
-              location.pathname.split('/')[1]
-            }/applications/projects-board`}
-            component={NavLink}
-          >
-            <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary={t('Projects')} />
+            <ListItemText primary={t("Account")} />
           </ListItem>
         </List>
         <Divider />
@@ -240,10 +214,10 @@ function Userbox() {
           <Button color="primary" fullWidth onClick={handleLogout}>
             <LockOpenTwoToneIcon
               sx={{
-                mr: 1
+                mr: 1,
               }}
             />
-            {t('Sign out')}
+            {t("Sign out")}
           </Button>
         </Box>
       </Popover>
