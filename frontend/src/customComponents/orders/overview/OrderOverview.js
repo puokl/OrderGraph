@@ -3,7 +3,8 @@ import OrderTable from "./OrderTable";
 import { Grid, Card, Button, Typography } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import axios from "src/utils/axios2";
-import "./OrderOverview.css"
+import "./OrderOverview.css";
+import useAuth from "src/hooks/useAuth";
 
 const OrderOverview = () => {
   const [loaded, setLoaded] = useState(false);
@@ -11,10 +12,13 @@ const OrderOverview = () => {
   const [clients, setClients] = useState([]);
   const [rowLength, setRowLength] = useState(0);
   const [newOrdersMonth, setNewOrdersMonth] = useState(0);
+  const { user } = useAuth();
 
   const getOrders = async () => {
     try {
-      const response = await axios.get("/api/v1/order");
+      const response = await axios.get(
+        "/api/v1/order/all/" + user.organization
+      );
       setOrders(response.data.data);
       setLoaded(true);
     } catch (err) {

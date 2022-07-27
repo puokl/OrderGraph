@@ -4,26 +4,30 @@ import "./ClientOverview.css";
 import { Grid, Card, Button, Typography } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import axios from "src/utils/axios2";
+import useAuth from "src/hooks/useAuth";
 
 const ClientOverview = () => {
   const [loaded, setLoaded] = useState(false);
   const [clients, setClients] = useState([]);
   const [rowLength, setRowLength] = useState(0);
   const [newClientsMonth, setNewClientsMonth] = useState(0);
+  const { user } = useAuth();
 
   const getClients = async () => {
     try {
-      const response = await axios.get("/api/v1/client");
+      const response = await axios.get(
+        "/api/v1/client/all/" + user.organization
+      );
       setClients(response.data.data);
     } catch (err) {
       console.error(err);
     }
   };
-  
+
   useEffect(() => {
     getClients();
-    setRowLength(clients.length)
-    setLoaded(true)
+    setRowLength(clients.length);
+    setLoaded(true);
   }, []);
 
   const totalClients = clients.length;
