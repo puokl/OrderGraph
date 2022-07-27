@@ -52,7 +52,7 @@ function Clients({
         </InputLabel>
         <Select
           label={t("Select client...")}
-          value={selectedClient.clientName ? selectedClient.clientName : ""}
+          value={selectedClient?.clientName ? selectedClient.clientName : ""}
           // onChange={(e) => {
           //   handleClientSelect(e);
           // }}
@@ -78,7 +78,7 @@ function Clients({
           )}
         </Select>
       </FormControl>
-      {selectedClient.clientName ? (
+      {selectedClient?.clientName ? (
         <Card sx={{ mt: "1rem" }}>
           <Chip
             color="success"

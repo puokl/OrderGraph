@@ -96,7 +96,7 @@ function CreateOrder() {
           <title>Create Order</title>
         </Helmet>
         <PageTitleWrapper>
-          <PageHeader />
+          <PageHeader orderID={orderID} />
         </PageTitleWrapper>
 
         <Grid
@@ -108,12 +108,12 @@ function CreateOrder() {
           alignItems="flex-start"
           spacing={4}
         >
-          <Grid item xs={12} sm={6} lg={8}>
+          {/* <Grid item xs={12} sm={6} lg={8}>
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Calendar")}
             </Typography>
-            {/* This component is empty in the figma mock up, so nothing here */}
-          </Grid>
+             This component is empty in the figma mock up, so nothing here 
+          </Grid> */}
           <Grid item xs={12} sm={6} lg={8}>
             <Typography variant="h3" component="h3" gutterBottom>
               {t("Client")}
