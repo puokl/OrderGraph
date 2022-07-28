@@ -145,8 +145,19 @@ function FinaliseRegisterWizard(props) {
         <title>Register - Wizard</title>
       </Helmet>
       <MainContent>
-        <Container sx={{ my: 4 }} maxWidth="md">
-          <Logo />
+        <Container
+          sx={{
+            my: 4,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          maxWidth="md"
+        >
+          {/* <Logo /> */}
+
+          <img src="/OG-logo.png" style={{ width: "12vw" }} />
           <Box m={1}>
             <Button color="primary" fullWidth onClick={handleLogout}>
               <LockOpenTwoToneIcon
