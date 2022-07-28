@@ -25,11 +25,8 @@ export default function SuppliersTable(props) {
 `
   );
   const removeSupplier = async (id) => {
-    console.log(`hi ${id} u gone bye bye`);
-
     try {
       const response = await axios.delete(`/api/v1/supplier/${id}`);
-      console.log(response);
 
       if (response.data.success === true) {
         enqueueSnackbar(t("Successfully deleted."), {

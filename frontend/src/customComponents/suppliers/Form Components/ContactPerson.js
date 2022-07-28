@@ -58,7 +58,6 @@ function SupplierContactPerson({
         label={t("Role")}
         value={field.value}
         onChange={(e) => {
-          console.log(field.name);
           handleRoleSelect(e);
           setFieldValue(
             `contact[${contactPersonNo}].contactRole`,

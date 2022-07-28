@@ -10,7 +10,6 @@ const SuppliersOverview = () => {
   const [suppliers, setSuppliers] = useState([]);
 
   const getSuppliers = async () => {
-    console.log("hi");
     try {
       const response = await axios.get("/api/v1/supplier");
       setSuppliers(response.data.data);

@@ -37,8 +37,6 @@ function TestUsers() {
           clientId,
         },
       });
-
-      console.log(response);
     } catch (err) {
       console.error(err);
     }
@@ -57,7 +55,6 @@ function TestUsers() {
   useEffect(() => {
     // getUsers();
     getClients();
-    console.log(process.env.REACT_APP_BASE_URL);
   }, []);
 
   return (

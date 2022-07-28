@@ -28,7 +28,7 @@ function WorkerView() {
       const response = await axios.get(
         "/api/v1/order/all/" + user.organization
       );
-      console.log(response);
+
       setOrders([...response.data.data]);
     } catch (err) {
       console.error(err);

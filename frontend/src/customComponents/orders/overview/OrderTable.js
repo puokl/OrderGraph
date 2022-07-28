@@ -27,11 +27,8 @@ export default function OrderTable(props) {
 `
   );
   const removeOrder = async (id) => {
-    console.log(`hi ${id} u gone bye bye`);
-
     try {
       const response = await axios.delete(`/api/v1/order/${id}`);
-      console.log(response);
 
       if (response.data.success === true) {
         enqueueSnackbar(t("Successfully deleted."), {

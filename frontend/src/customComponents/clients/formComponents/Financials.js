@@ -48,10 +48,6 @@ function Financials({
               value={values.financials.registrationNumber}
               onChange={(e) => {
                 setFieldValue("financials.registrationNumber", e.target.value);
-                console.log(
-                  "Registration Number :",
-                  values.financials.registrationNumber
-                );
               }}
               placeholder="Registration Number ..."
               fullWidth

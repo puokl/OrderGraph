@@ -48,13 +48,13 @@ function ItemForm({
 
   const handleItemTemplate = async (index) => {
     currentOrder.items[index].organization = user.organization;
-    console.log(currentOrder.items[index]);
+
     try {
       const response = await axios.post(
         "/api/v1/item/newitem",
         currentOrder.items[index]
       );
-      console.log(response);
+
       const newOrderItems = currentOrder.items.fill(
         response.data.data,
         index,
@@ -96,7 +96,7 @@ function ItemForm({
         "/api/v1/item/" + currentOrder.items[index]._id,
         currentOrder.items[index]
       );
-      console.log(response);
+
       if (response.status === 200) {
         enqueueSnackbar(t("Item template was updated successfully"), {
           variant: "success",
@@ -136,7 +136,6 @@ function ItemForm({
         <Autocomplete
           value={currentOrder.items[index].itemName}
           onChange={(event, newValue, reason) => {
-            console.log(reason);
             if (reason === "clear") {
               // setSelectedItem(newValue);
               const newOrderItems = currentOrder.items.fill(
@@ -172,12 +171,11 @@ function ItemForm({
                 index + 1
               );
               setCurrentOrder({ ...currentOrder, items: newOrderItems });
-              console.log(currentOrder);
             }
           }}
           filterOptions={(options, params) => {
             const filtered = filter(options, params);
-            console.log(filtered);
+
             const { inputValue } = params;
             // Suggest the creation of a new value
             const isExisting = options.some(
@@ -363,7 +361,6 @@ function ItemForm({
                 index + 1
               );
               setCurrentOrder({ ...currentOrder, items: newOrderItems });
-              console.log(currentOrder);
             }}
           />
           <Box
@@ -387,7 +384,6 @@ function ItemForm({
                   index + 1
                 );
                 setCurrentOrder({ ...currentOrder, items: newOrderItems });
-                console.log(currentOrder);
               }}
             />
             <span style={{ fontWeight: "bold", fontSize: "1.3rem" }}>x</span>
@@ -405,7 +401,6 @@ function ItemForm({
                   index + 1
                 );
                 setCurrentOrder({ ...currentOrder, items: newOrderItems });
-                console.log(currentOrder);
               }}
             />
           </Box>
@@ -424,7 +419,6 @@ function ItemForm({
                 index + 1
               );
               setCurrentOrder({ ...currentOrder, items: newOrderItems });
-              console.log(currentOrder);
             }}
           />
           <TextField
@@ -441,7 +435,6 @@ function ItemForm({
                 index + 1
               );
               setCurrentOrder({ ...currentOrder, items: newOrderItems });
-              console.log(currentOrder);
             }}
           />
           <TextField
@@ -459,7 +452,6 @@ function ItemForm({
                 index + 1
               );
               setCurrentOrder({ ...currentOrder, items: newOrderItems });
-              console.log(currentOrder);
             }}
           />
         </Box>

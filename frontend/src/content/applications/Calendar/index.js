@@ -259,7 +259,6 @@ function ApplicationsCalendar() {
       const response = await axios.get(
         "/api/v1/order/all/" + user.organization
       );
-      console.log(response);
 
       const eventArray = [];
 

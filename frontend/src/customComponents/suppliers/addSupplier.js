@@ -294,17 +294,16 @@ function AddSupplier() {
 
   const handleCreateSupplier = async (values) => {
     const dataToSend = { ...values, organization: user.organization };
-    console.log("DTS", dataToSend);
+
     try {
       const response = await axios.post(
         "/api/v1/supplier/newsupplier",
         dataToSend
       );
       if (response.status === 201) {
-        console.log("Backend Create supplier response: ", response);
         navigateToClientOverview();
       } else {
-        console.log("error");
+        console.error("error");
       }
     } catch (err) {
       console.error(err);
@@ -551,8 +550,7 @@ function AddSupplier() {
                           values.shippingAddress = values.billingAddress;
                         }
                         handleSubmit(e);
-                        console.log(errors);
-                        console.log(values);
+                        console.error(errors);
                       }}
                       startIcon={
                         isSubmitting ? <CircularProgress size="1rem" /> : null

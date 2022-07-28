@@ -191,7 +191,7 @@ const COMPANY_FORM_VALIDATION = Yup.object().shape({
 function AddClient() {
   const { t } = useTranslation();
   const { user } = useAuth();
-  console.log(user);
+
   const [showContact, setShowContact] = useState(false);
   const [showShipping, setShowShipping] = useState(true);
   const [SaSameAsBa, setSaSameAsBa] = useState(false);
@@ -245,7 +245,7 @@ function AddClient() {
 
   const [removeCp, setRemoveCp] = useState(false);
   const { clientId } = useParams();
-  console.log(clientId);
+
   const updateFields = (fieldName, fieldValue) => {
     setFormData({ ...formData, fieldValue });
   };
@@ -348,7 +348,7 @@ function AddClient() {
   const handleGetClient = async (clientId) => {
     try {
       const response = await axios.get("/api/v1/client/" + clientId);
-      console.log(response);
+
       const testtest = {
         /* Client Details */
         clientType: response.data.data.clientType,
@@ -401,12 +401,11 @@ function AddClient() {
   };
   useEffect(() => {
     handleGetClient(clientId);
-    console.log("CTE: ", clientToEdit);
   }, []);
 
   const handleCreateClient = async (values) => {
     const dataToSend = { ...values, organization: user.organization };
-    console.log("DTS:", dataToSend);
+
     try {
       const response = await axios.post("/api/v1/client/newclient", dataToSend);
       if (response.status === 201) {
@@ -435,7 +434,7 @@ function AddClient() {
 
   const handleEditClient = async (values) => {
     const dataToSend = { ...values, organization: user.organization };
-    console.log("DTS:", dataToSend);
+
     try {
       const response = await axios.put(
         "/api/v1/client/" + clientId,
@@ -710,7 +709,7 @@ function AddClient() {
                           values.shippingAddress = values.billingAddress;
                         }
                         handleSubmit(e);
-                        console.log(errors);
+                        console.error(errors);
                       }}
                       startIcon={
                         isSubmitting ? <CircularProgress size="1rem" /> : null

@@ -6,7 +6,7 @@ import Gantt from "src/customComponents/gantt/index";
 
 function OrderGantt({ currentOrder }) {
   setPrefix("");
-  console.log(currentOrder);
+
   const tasks = {
     tasks: [],
     links: [],
@@ -15,7 +15,6 @@ function OrderGantt({ currentOrder }) {
     new Date(currentOrder.startDate).toDateString() +
     " " +
     new Date(currentOrder.startDate).toLocaleTimeString("it-IT");
-  console.log(dateString);
 
   currentOrder.tasks.forEach((item, index) => {
     const newID = Number(nextId());
@@ -43,7 +42,6 @@ function OrderGantt({ currentOrder }) {
       });
     });
   });
-  console.log(tasks);
 
   //   const createTaskArray = () => {
   //     currentOrder.tasks.forEach((item, index) => {

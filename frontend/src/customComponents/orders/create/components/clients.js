@@ -25,11 +25,9 @@ function Clients({
   orderID,
 }) {
   const { t } = useTranslation();
-  console.log(selectedClient);
 
   const handleClientSelect = (index) => {
     setSelectedClient(clients[index]);
-    console.log(selectedClient);
   };
 
   useEffect(() => {
@@ -258,7 +256,7 @@ function Clients({
                 fontWeight="bold"
               >
                 {t("Contact Person")}
-               </Typography>
+              </Typography>
               <Box
                 p={2}
                 style={{

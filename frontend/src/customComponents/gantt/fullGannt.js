@@ -41,7 +41,7 @@ function FullGantt() {
   const fetchgraphdata = async () => {
     try {
       const response = await axios.get("/api/v1/task/getTask");
-      console.log(response);
+
       const newArray = response.data.map(
         ({
           _id,
@@ -64,10 +64,8 @@ function FullGantt() {
 
       setdataa(newArray);
       setCheck(true);
-
-      console.log(newArray);
     } catch (err) {
-      console.log(`account error ${err}`);
+      console.error(`account error ${err}`);
     }
   };
 
@@ -81,12 +79,12 @@ function FullGantt() {
 
     try {
       const response = await axios.post("api/v1/task/newTask", newTask);
-      console.log(response);
+
       window.location.reload(false);
       handleClose();
       alert("Task Added");
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert("Error in creating Task");
     }
   };

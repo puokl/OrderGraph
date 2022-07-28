@@ -102,7 +102,6 @@ function CreateUser(props) {
         onChange={(e) => {
           handleRoleSelect(e);
           setFieldValue("role", e.target.value.toLowerCase());
-          console.log(field.value);
         }}
       >
         {roles.map((item) => (
@@ -139,7 +138,6 @@ function CreateUser(props) {
   };
 
   const handleCreateUserSuccess = async (values) => {
-    console.log(values);
     // const userToCreate = {
     //   firstname: inputFirstName.current.value,
     //   lastname: inputLastName.current.value,
@@ -164,7 +162,6 @@ function CreateUser(props) {
           ...(userToEdit.role !== values.role ? { role: values.role } : null),
           ...(values.password !== "" ? { password: values.password } : null),
         });
-        console.log(response);
       } else {
         response = await axios.post("/api/v1/user", {
           ...values,
@@ -286,7 +283,6 @@ function CreateUser(props) {
                         onBlur={handleBlur}
                         onChange={(e) => {
                           setFieldValue("firstname", e.target.value);
-                          console.log(touched);
                         }}
                         fullWidth
                         label={t("First name")}
