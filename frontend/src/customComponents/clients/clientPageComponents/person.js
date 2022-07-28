@@ -32,7 +32,6 @@ function ClientPersonDetails() {
           clientID,
         },
       });
-      console.log("res: ", response);
 
       setClients(response.data.data[14]);
       setDataLoaded(true);

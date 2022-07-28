@@ -78,8 +78,6 @@ function Documents({
   const [docList, setDocList] = useState([]);
 
   const fetchDocuments = async (listToFetch) => {
-    console.log(listToFetch);
-
     const newDocList = listToFetch.map((url, index) => {
       const fileRef = ref(storage, url);
 
@@ -157,15 +155,11 @@ function Documents({
         // Uh-oh, an error occurred!
         console.error(error);
       });
-    console.log(currentOrder);
-    console.log(urlList);
   };
 
   useEffect(() => {
     if (loading) return;
     fetchDocuments(urlList);
-    console.log(currentOrder.documents);
-    console.log(docList);
   }, [loading, urlList]);
 
   return (
@@ -183,7 +177,6 @@ function Documents({
       <Divider sx={{ mb: 2 }} />
 
       {docList.map((doc, index) => {
-        console.log(docList);
         return (
           <Card
             key={`${index}`}
@@ -237,7 +230,6 @@ function Documents({
 
       <Dropzone
         onDrop={(acceptedFiles, event) => {
-          console.log(acceptedFiles);
           handleSubmit(acceptedFiles, event);
         }}
         maxFiles={1}

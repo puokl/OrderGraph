@@ -30,7 +30,6 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
     ) {
       setReady(true);
     }
-    console.log(currentOrder.items.every((item) => item.tasks[0].taskName));
   }, [currentOrder]);
 
   const saveDraft = async () => {
@@ -65,8 +64,6 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
           currentOrder
         );
       }
-
-      console.log(response);
 
       if (response.status === 200) {
         enqueueSnackbar(t("The order was successfully saved as a draft."), {
@@ -123,7 +120,6 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
           currentOrder
         );
       }
-      console.log(response);
 
       if (response.status === 200) {
         enqueueSnackbar(t("The order was activated successfully"), {
@@ -174,7 +170,7 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
         "/api/v1/order/" + currentOrder._id,
         currentOrder
       );
-      console.log(response);
+
       if (response.status === 200) {
         enqueueSnackbar(t("The item was saved successfully"), {
           variant: "success",
@@ -260,7 +256,6 @@ function Status({ currentOrder, setCurrentOrder, orderID }) {
             value={currentOrder.startDate}
             onChange={(date) => {
               setCurrentOrder({ ...currentOrder, startDate: date });
-              console.log(currentOrder);
             }}
             label={t("Start date and time...")}
             renderInput={(params) => (

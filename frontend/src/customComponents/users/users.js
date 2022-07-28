@@ -21,16 +21,14 @@ function TestUsers() {
   const [userToEdit, setUserToEdit] = useState();
 
   const handleCreateUserOpen = (user) => {
-    console.log(userToEdit);
     setUserToEdit(user);
     setOpen(true);
-    console.log(userToEdit);
   };
 
   const getUsers = async () => {
     try {
       const response = await axios.get("/api/v1/user/get/UsersInOrg");
-      console.log(response);
+
       setUsers(response.data.data);
     } catch (err) {
       console.error(err);

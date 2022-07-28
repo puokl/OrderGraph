@@ -38,8 +38,6 @@ function ClientDetails() {
   const getClient = async () => {
     try {
       const response = await axios.get("/api/v1/client/" + clientId);
-      console.log("res: ", response);
-      console.log("res2: ", response.data.data[1]);
 
       setClients(response.data.data);
       setDataLoaded(true);
@@ -74,11 +72,6 @@ function ClientDetails() {
         (order) => order.status === "finished"
       );
       setfinishedOrders(previousClientOrders);
-
-      console.log("ORDERS: ", response.data.data);
-      console.log("CLIENT ORDERS :", clientOrders);
-      console.log("ACTIVE ORDERS :", activeClientOrders);
-      console.log("UPCOMING ORDERS :", upcomingClientOrders);
     } catch (err) {
       console.error(err);
     }
@@ -86,7 +79,6 @@ function ClientDetails() {
 
   useEffect(() => {
     getOrder();
-    console.log(orders);
   }, [dataLoaded]);
 
   const addresses = {

@@ -32,7 +32,6 @@ const LoginJWT = ({ setWrongLogin }) => {
         inputEmail.current.value,
         inputPassword.current.value
       );
-      console.log(response);
       if (response.status === 200) {
         if (isMountedRef.current) {
           setStatus({ success: true });

@@ -30,7 +30,6 @@ function Organization() {
       const response = await axios.get(
         "/api/v1/organization/" + user.organization
       );
-      console.log(response);
 
       setOrg(response.data.data);
     } catch (err) {

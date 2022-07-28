@@ -224,12 +224,10 @@ const Results = (props) => {
   };
 
   const handleSelectAllUsers = (event) => {
-    console.log(selectedUsers);
     setSelectedUsers(event.target.checked ? users.map((user) => user._id) : []);
   };
 
   const handleSelectOneUser = (_event, userId) => {
-    console.log(selectedUsers);
     if (!selectedUsers.includes(userId)) {
       setSelectedUsers((prevSelected) => [...prevSelected, userId]);
     } else {
@@ -276,13 +274,12 @@ const Results = (props) => {
     setOpenConfirmDelete(false);
 
     const usersToDelete = { _id: [...selectedUsers] };
-    console.log(usersToDelete);
+
     try {
-      console.log("attempt");
       const response = await axios.delete("/api/v1/user/deleteMany", {
         data: { ids: [...usersToDelete._id] },
       });
-      console.log(response);
+
       if (response.data.data.deletedCount > 0) {
         enqueueSnackbar(t("Successfully deleted."), {
           variant: "success",

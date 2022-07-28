@@ -20,7 +20,7 @@ function PhuocUsers() {
   const getUsers = async () => {
     try {
       const response = await axios.get("/api/users");
-      console.log(response);
+
       setUsers(response.data);
     } catch (err) {
       console.error(err);
@@ -29,7 +29,6 @@ function PhuocUsers() {
 
   useEffect(() => {
     getUsers();
-    console.log(process.env.REACT_APP_BASE_URL);
   }, []);
 
   return (

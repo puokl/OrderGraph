@@ -84,7 +84,6 @@ function ShippingAdress({
                   value={values.shippingAddress.Address}
                   onChange={(e) => {
                     setFieldValue("shippingAddress.Address", e.target.value);
-                    console.log("Sa Address :", values.shippingAddress.Address);
                   }}
                   placeholder="Adress ..."
                   fullWidth
@@ -116,7 +115,6 @@ function ShippingAdress({
                   value={values.shippingAddress.Zip}
                   onChange={(e) => {
                     setFieldValue("shippingAddress.Zip", e.target.value);
-                    console.log("Sa Zip :", values.shippingAddress.Zip);
                   }}
                   placeholder="Zip..."
                   fullWidth
@@ -148,7 +146,6 @@ function ShippingAdress({
                   value={values.shippingAddress.City}
                   onChange={(e) => {
                     setFieldValue("shippingAddress.City", e.target.value);
-                    console.log("Sa City :", values.shippingAddress.City);
                   }}
                   placeholder="City..."
                   fullWidth
@@ -180,7 +177,6 @@ function ShippingAdress({
                   value={values.shippingAddress.State}
                   onChange={(e) => {
                     setFieldValue("shippingAddress.State", e.target.value);
-                    console.log("Sa State :", values.shippingAddress.State);
                   }}
                   placeholder="State..."
                   fullWidth
@@ -214,10 +210,6 @@ function ShippingAdress({
                     setFieldValue(
                       "shippingAddress.AdditionalInformation",
                       e.target.value
-                    );
-                    console.log(
-                      "Sa Additional Information :",
-                      values.shippingAddress.AdditionalInformation
                     );
                   }}
                   placeholder="Additional Information..."

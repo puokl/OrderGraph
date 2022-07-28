@@ -34,7 +34,6 @@ function ClientCompanyDetails() {
           clientID,
         },
       });
-      console.log("res: ", response);
 
       setClients(response.data.data[10]);
       setDataLoaded(true);

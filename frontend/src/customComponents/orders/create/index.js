@@ -49,7 +49,7 @@ function CreateOrder() {
   const getOrder = async (orderID) => {
     try {
       const response = await axios.get("/api/v1/order/" + orderID);
-      console.log(response);
+
       setCurrentOrder({ ...response.data.data });
       setUrlList([...response.data.data.documents]);
       setInvoiceUrlList([...response.data.data.invoices]);
@@ -63,7 +63,7 @@ function CreateOrder() {
       const response = await axios.get(
         "/api/v1/client/all/" + user.organization
       );
-      console.log(response);
+
       if (response !== undefined) {
         setClients(response.data.data);
       }
