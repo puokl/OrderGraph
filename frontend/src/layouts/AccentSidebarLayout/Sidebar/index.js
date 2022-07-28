@@ -58,7 +58,8 @@ function Sidebar() {
               alignItems="center"
               margin="auto"
             >
-              <Logo />
+              {/* <Logo /> */}
+              <img src="/OG-logo.png" style={{ height: "8vh" }} />
             </Box>
           </TopSection>
           <Divider
