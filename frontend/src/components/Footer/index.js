@@ -1,4 +1,4 @@
-import { Box, Card, Link, Typography, styled } from '@mui/material';
+import { Box, Card, Link, Typography, styled } from "@mui/material";
 
 const FooterWrapper = styled(Card)(
   ({ theme }) => `
@@ -12,30 +12,23 @@ function Footer() {
     <FooterWrapper className="footer-wrapper">
       <Box
         p={4}
-        display={{ xs: 'block', md: 'flex' }}
+        display={{ xs: "block", md: "flex" }}
         alignItems="center"
-        textAlign={{ xs: 'center', md: 'left' }}
+        textAlign={{ xs: "center", md: "left" }}
         justifyContent="space-between"
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2021 - Tokyo React Javascript Admin Dashboard
+            &copy; 2022 - OrderGraph - Wild Code School
           </Typography>
         </Box>
         <Typography
           sx={{
-            pt: { xs: 2, md: 0 }
+            pt: { xs: 2, md: 0 },
           }}
           variant="subtitle1"
         >
-          Crafted by{' '}
-          <Link
-            href="https://bloomui.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            BloomUI.com
-          </Link>
+          Crafted by the OrderGraph team
         </Typography>
       </Box>
     </FooterWrapper>

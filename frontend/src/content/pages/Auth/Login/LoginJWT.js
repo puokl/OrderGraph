@@ -43,12 +43,12 @@ const LoginJWT = ({ setWrongLogin }) => {
       }
     } catch (err) {
       console.error(err);
+      setWrongLogin(true);
       if (isMountedRef.current) {
         setStatus({ success: false });
         setErrors({ submit: err.message });
         setSubmitting(false);
       }
-      setWrongLogin(true);
     }
   };
 
