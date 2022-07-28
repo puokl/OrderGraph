@@ -78,8 +78,6 @@ function Invoices({
   const [invoiceList, setInvoiceList] = useState([]);
 
   const fetchDocuments = async (listToFetch) => {
-    console.log(listToFetch);
-
     const newDocList = listToFetch.map((url, index) => {
       const fileRef = ref(storage, url);
 
@@ -137,15 +135,11 @@ function Invoices({
         // Uh-oh, an error occurred!
         console.error(error);
       });
-    console.log(currentOrder);
-    console.log(urlList);
   };
 
   useEffect(() => {
     if (loading) return;
     fetchDocuments(invoiceUrlList);
-    console.log(currentOrder.invoices);
-    console.log(invoiceList);
   }, [loading, invoiceUrlList]);
 
   const style = {
@@ -241,11 +235,7 @@ function Invoices({
                   m: 1,
                 }}
               >
-                <CardActionArea
-                  onClick={(e) => {
-                    console.log("hi");
-                  }}
-                >
+                <CardActionArea onClick={(e) => {}}>
                   <CardContent xs={12} sm={6} lg={3}>
                     <AvatarAddWrapper>
                       <AddTwoToneIcon fontSize="medium" />
@@ -267,7 +257,6 @@ function Invoices({
           >
             <Dropzone
               onDrop={(acceptedFiles, event) => {
-                console.log(acceptedFiles);
                 handleSubmit(acceptedFiles, event);
               }}
               maxFiles={1}

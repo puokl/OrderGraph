@@ -22,7 +22,6 @@ function Status({ currentOrder }) {
     new Date(currentOrder.startDate).toDateString() +
     " " +
     new Date(currentOrder.startDate).toLocaleTimeString("it-IT");
-  console.log(dateString);
 
   const multipleExist = (arr, values) => {
     return values.every((value) => {
@@ -31,7 +30,6 @@ function Status({ currentOrder }) {
   };
 
   useEffect(() => {
-    console.log(isReady);
     if (currentOrder && currentOrder.status !== "active") {
       if (
         multipleExist(Object.keys(currentOrder), [
@@ -52,7 +50,6 @@ function Status({ currentOrder }) {
         "/api/v1/order/neworder/" + user.organization,
         currentOrder
       );
-      console.log(response);
 
       if (response.status === 200) {
         enqueueSnackbar(t("The order was created successfully"), {
@@ -87,7 +84,6 @@ function Status({ currentOrder }) {
         "/api/v1/order/neworder/" + user.organization,
         currentOrder
       );
-      console.log(response);
 
       if (response.status === 200) {
         enqueueSnackbar(t("The order was activated successfully"), {

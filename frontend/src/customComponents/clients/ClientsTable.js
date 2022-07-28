@@ -39,7 +39,6 @@ export default function ClientsTable(props) {
     {
       field: "lastOrder",
       headerName: "LAST ORDER",
-      sortable: TrustedScriptURL,
       width: 200,
     },
     {
@@ -73,11 +72,8 @@ export default function ClientsTable(props) {
     },
   ];
   const removeClient = async (id) => {
-    console.log(`hi ${id} u gone bye bye`);
-
     try {
       const response = await axios.delete(`/api/v1/client/${id}`);
-      console.log(response);
 
       if (response.data.success === true) {
         enqueueSnackbar(t("Successfully deleted."), {
@@ -128,7 +124,7 @@ export default function ClientsTable(props) {
       clientName: client.clientName,
       clientType: client.clientType,
       email: client.clientEMail,
-      orders: client.orders ? client.orders.length : 0,
+      orders: client.orders ? client.orders.createdAt : 0,
       lastOrder: client.orders.length != 0 ? client.orders[0] : "never",
     }));
   }

@@ -53,7 +53,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
         "/api/v1/order/" + orderToUpdate._id,
         orderToUpdate
       );
-      console.log(response);
+
       if (response.status === 200) {
         enqueueSnackbar(t("The item was saved successfully"), {
           variant: "success",
@@ -81,7 +81,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
   const handleItemTemplate = async () => {
     try {
       const response = await axios.post("/api/v1/item/newitem", selectedItem);
-      console.log(response);
+
       if (response.status === 201) {
         enqueueSnackbar(t("Item template was saved successfully"), {
           variant: "success",
@@ -114,7 +114,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
         "/api/v1/item/" + selectedItem._id,
         selectedItem
       );
-      console.log(response);
+
       if (response.status === 200) {
         enqueueSnackbar(t("Item template was updated successfully"), {
           variant: "success",
@@ -559,7 +559,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                             timeEstimate: "",
                             finished: false,
                           });
-                          console.log(itemCopy);
+
                           setSelectedItem({ ...itemCopy });
                         }}
                       />
@@ -579,7 +579,7 @@ function ItemForm({ itemToEdit, onClose, orderToUpdate }) {
                             timeEstimate: e.target.value,
                             finished: false,
                           });
-                          console.log(itemCopy);
+
                           setSelectedItem({ ...itemCopy });
                         }}
                       />

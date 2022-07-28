@@ -25,7 +25,7 @@ function OrderDetails() {
   const getOrder = async () => {
     try {
       const response = await axios.get("/api/v1/order/" + orderID);
-      console.log(response);
+
       setCurrentOrder(response.data.data);
     } catch (err) {
       console.error(err);

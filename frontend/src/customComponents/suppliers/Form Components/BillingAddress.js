@@ -43,9 +43,7 @@ function SupplierBillingAdress({
               onBlur={handleBlur}
               value={values.billingAddress.Address}
               onChange={(e) => {
-                console.log(touched);
                 setFieldValue("billingAddress.Address", e.target.value);
-                console.log("BA Address :", values.billingAddress.Address);
               }}
               placeholder="Adress ..."
               fullWidth
@@ -77,7 +75,6 @@ function SupplierBillingAdress({
               value={values.billingAddress.Zip}
               onChange={(e) => {
                 setFieldValue("billingAddress.Zip", e.target.value);
-                console.log("BA Zip :", values.billingAddress.Zip);
               }}
               placeholder="Zip..."
               fullWidth
@@ -109,7 +106,6 @@ function SupplierBillingAdress({
               value={values.billingAddress.City}
               onChange={(e) => {
                 setFieldValue("billingAddress.City", e.target.value);
-                console.log("BA City :", values.billingAddress.City);
               }}
               placeholder="City..."
               fullWidth
@@ -141,7 +137,6 @@ function SupplierBillingAdress({
               value={values.billingAddress.State}
               onChange={(e) => {
                 setFieldValue("billingAddress.State", e.target.value);
-                console.log("BA State :", values.billingAddress.State);
               }}
               placeholder="State..."
               fullWidth
@@ -175,10 +170,6 @@ function SupplierBillingAdress({
                 setFieldValue(
                   "billingAddress.AdditionalInformation",
                   e.target.value
-                );
-                console.log(
-                  "BA Additional Information :",
-                  values.billingAddress.AdditionalInformation
                 );
               }}
               placeholder="Additional Information..."

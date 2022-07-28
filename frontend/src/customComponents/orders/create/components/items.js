@@ -94,7 +94,7 @@ function Items({
   const getItems = async () => {
     try {
       const response = await axios.get("/api/v1/item/all/" + user.organization);
-      console.log(response);
+
       setItems(response.data.data);
     } catch (err) {
       console.error(err);

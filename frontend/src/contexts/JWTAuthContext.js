@@ -23,7 +23,7 @@ const setSession = (accessToken) => {
 const handlers = {
   INITIALIZE: (state, action) => {
     const { isAuthenticated, user, hasOrg, role } = action.payload;
-    console.log(user);
+
     return {
       ...state,
       isAuthenticated,
@@ -98,7 +98,6 @@ export const AuthProvider = (props) => {
                 role: user.role,
               },
             });
-            console.log();
           } else if (user) {
             dispatch({
               type: "INITIALIZE",
@@ -141,7 +140,7 @@ export const AuthProvider = (props) => {
       email,
       password,
     });
-    console.log(response);
+
     const accessToken = response.data.accessToken;
     const user = response.data.data;
 
@@ -155,7 +154,6 @@ export const AuthProvider = (props) => {
           role: user.role,
         },
       });
-      console.log("false");
     } else {
       dispatch({
         type: "LOGIN",

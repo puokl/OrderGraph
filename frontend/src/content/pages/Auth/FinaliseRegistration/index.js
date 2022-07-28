@@ -121,8 +121,6 @@ function FinaliseRegisterWizard(props) {
         onChange={(e) => {
           handleSizeSelect(e);
           setFieldValue("orgSize", e.target.value.toLowerCase());
-          console.log(field.value);
-          console.log(touched[field.name]);
         }}
       >
         {sizes.map((item) => (
@@ -215,7 +213,6 @@ function FinaliseRegisterWizard(props) {
               }}
               onSubmit={async (values) => {
                 values.orgSize = selectedSize;
-                console.log("values", values);
               }}
               selectedSize={selectedSize}
               sameAddress={sameAddress}
@@ -577,14 +574,13 @@ export function FormikStepper({
     if (sameAddress) {
       values.workplaceAddress = values.address;
     }
-    console.log(values);
     if (isLastStep()) {
       await props.onSubmit(values, helpers);
       const response = await axios.post(
         "api/v1/organization/neworganization/" + user._id,
         values
       );
-      // console.log(response);
+
       if (response.data.success) {
         const res2 = await axios.put("/api/v1/auth/update/" + user._id, {
           organization: response.data.data._id,

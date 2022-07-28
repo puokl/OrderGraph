@@ -63,11 +63,7 @@ function Documents() {
       <Divider sx={{ mb: 2 }} />
       <Tooltip arrow title={t("Click to add a new item")}>
         <CardAddAction style={{ backgroundColor: "lightgrey" }}>
-          <CardActionArea
-            onClick={(e) => {
-              console.log("hi");
-            }}
-          >
+          <CardActionArea onClick={(e) => {}}>
             <CardContent
               xs={12}
               sm={6}
