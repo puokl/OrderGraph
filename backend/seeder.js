@@ -49,11 +49,11 @@ const items = JSON.parse(
 // import into DB
 const importData = async () => {
   try {
-    // await User.create(users);
-    // await Organization.create(organizations);
-    // await Client.create(clients);
-    // await Order.create(orders);
-    // await Supplier.create(suppliers);
+    await User.create(users);
+    await Organization.create(organizations);
+    await Client.create(clients);
+    await Order.create(orders);
+    await Supplier.create(suppliers);
     await Item.create(items);
 
     console.log("Data Imported...".green.inverse);
@@ -66,11 +66,11 @@ const importData = async () => {
 // delete data
 const deleteData = async () => {
   try {
-    // await User.deleteMany();
-    // await Organization.deleteMany();
-    // await Client.deleteMany();
-    // await Order.deleteMany();
-    // await Supplier.deleteMany();
+    await User.deleteMany();
+    await Organization.deleteMany();
+    await Client.deleteMany();
+    await Order.deleteMany();
+    await Supplier.deleteMany();
     await Item.deleteMany();
 
     console.log("Data Destroyed...".red.inverse);
